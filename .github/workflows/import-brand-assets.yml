@@ -1,0 +1,77 @@
+name: Import Dr Fayza original brand assets
+
+on:
+  push:
+    paths:
+      - ".github/workflows/import-brand-assets.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: read
+
+jobs:
+  import-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download temporary source and extract assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          source_url="$(gh api "repos/$REPO/issues/1" --jq .body | grep -oE 'https://[^[:space:]]+\.rar' | head -1)"
+          test -n "$source_url"
+          curl --fail --location --retry 3 "$source_url" --output /tmp/dr-fayza-original.rar
+          if command -v 7z >/dev/null 2>&1; then
+            archive_cmd=7z
+          else
+            sudo apt-get update -qq
+            sudo apt-get install -y p7zip-full
+            archive_cmd=7z
+          fi
+          mkdir -p /tmp/dr-fayza-extracted
+          "$archive_cmd" x -y -o/tmp/dr-fayza-extracted /tmp/dr-fayza-original.rar
+          python3 - <<'PY'
+          from pathlib import Path
+          from shutil import copy2
+          import hashlib
+          import json
+          base=Path('/tmp/dr-fayza-extracted')
+          out=Path('brand/source/original')
+          out.mkdir(parents=True,exist_ok=True)
+          allowed={'.ai','.pdf','.jpg','.jpeg','.png','.txt'}
+          entries=[]
+          for src in sorted(base.rglob('*')):
+              if not src.is_file() or src.suffix.lower() not in allowed:
+                  continue
+              # No unlicensed fonts, and no nested unsupported files
+              if 'Fonts' in src.parts or 'fonts' in [p.lower() for p in src.parts]:
+                  continue
+              dest=out/src.name
+              if dest.exists(): raise RuntimeError('Duplicate filename '+src.name)
+              copy2(src,dest)
+              entries.append((dest.name,src.stat().st_size,hashlib.sha256(src.read_bytes()).hexdigest()))
+          if len(entries)!=12: raise RuntimeError(f'Expected 12 design/source files, found {len(entries)}')
+          with open('brand/source/original/INVENTORY.md','w',encoding='utf-8') as f:
+              f.write('# Original identity source files / ملفات الهوية الأصلية\n\n')
+              f.write('Extracted from the supplied RAR without changing files. Fonts excluded pending redistribution license verification.\n\n')
+              f.write('| Filename | Size (bytes) | SHA-256 |\n|---|---:|---|\n')
+              for name,size,sha in entries:
+                  f.write(f'| {name} | {size} | \`{sha}\` |\n')
+          print('Imported:',len(entries),'files',sum(e[1] for e in entries),'bytes')
+          PY
+
+      - name: Commit original assets
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add brand/source/original
+          if ! git diff --cached --quiet; then
+            git commit -m "assets: import original Dr Fayza identity package (without fonts)"
+            git push
+          fi
