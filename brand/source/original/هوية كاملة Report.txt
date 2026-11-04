@@ -1,0 +1,42 @@
+Package Report
+
+-----------------------------------------------------------------------------
+Document:
+Name: ???? ?????.ai
+Color Mode: RGB color
+Color Profile: none
+Ruler Units: millimeters
+Artboard Dimensions: 150.03 mm x 150.6848 mm
+Show Images in Outline Mode: OFF
+Highlight Substituted Fonts: OFF
+Highlight Substituted Glyphs: OFF
+Preserve Text Editability
+Simulate Colored Paper: OFF
+
+-----------------------------------------------------------------------------
+Spot Color Objects:
+
+-----------------------------------------------------------------------------
+Missing Fonts:NONE
+
+-----------------------------------------------------------------------------
+Protected Fonts that were not packaged:NONE
+
+-----------------------------------------------------------------------------
+Fonts:
+Myriad Pro (OTF)
+Swis721 BT Roman (OTF)
+Noor (TrueType)
+Noor Bold (TrueType)
+
+-----------------------------------------------------------------------------
+Embedded Fonts:
+NONE
+
+-----------------------------------------------------------------------------
+Missing Links:
+NONE
+
+-----------------------------------------------------------------------------
+Linked Images:
+NONE
