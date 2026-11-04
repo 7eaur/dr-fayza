@@ -1,6 +1,12 @@
+/* Derived from brand/guidelines/VISUAL_IDENTITY.md; logo and UI palettes are intentionally separate. */
 :root {
-  --dr-fayza-primary-dark-teal: #00475B;
-  --dr-fayza-secondary-mint: #50B291;
-  --dr-fayza-pale-mint: #E9F4F1;
-  --dr-fayza-monochrome-black: #000000;
+  --dr-fayza-logo-primary-dark-teal: #00475B;
+  --dr-fayza-logo-secondary-mint: #50B291;
+  --dr-fayza-logo-pale-mint: #E9F4F1;
+  --dr-fayza-logo-monochrome-black: #000000;
+
+  --dr-fayza-ui-primary-medical-teal: #0C495C;
+  --dr-fayza-ui-secondary-seafoam: #45A18E;
+  --dr-fayza-ui-accent-soft-pink: #C76D8C;
+  --dr-fayza-ui-background-light: #F4F8F7;
 }

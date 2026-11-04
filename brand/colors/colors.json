@@ -1,6 +1,10 @@
 {
-  "primary-dark-teal": "#00475B",
-  "secondary-mint": "#50B291",
-  "pale-mint": "#E9F4F1",
-  "monochrome-black": "#000000"
+  "logo-primary-dark-teal": "#00475B",
+  "logo-secondary-mint": "#50B291",
+  "logo-pale-mint": "#E9F4F1",
+  "logo-monochrome-black": "#000000",
+  "ui-primary-medical-teal": "#0C495C",
+  "ui-secondary-seafoam": "#45A18E",
+  "ui-accent-soft-pink": "#C76D8C",
+  "ui-background-light": "#F4F8F7"
 }
