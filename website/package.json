@@ -1,0 +1,10 @@
+{
+  "name": "dr-fayza-website",
+  "private": true,
+  "version": "3.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "check": "node --check build.mjs"
+  }
+}
