@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://dr-fayza.vercel.app/sitemap.xml
