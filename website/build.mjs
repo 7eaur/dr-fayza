@@ -8,7 +8,7 @@ const site = {
   short: 'عيادة الدكتورة فايزة',
   phone: '785600066',
   call: 'tel:+967785600066',
-  whatsapp: 'https://wa.me/967785600066?text=' + encodeURIComponent('مرحبًا، اسمي __، أود الاستفسار عن خدمة __ والوقت المناسب للزيارة.'),
+  whatsapp: 'https://wa.me/967785600066?text=' + encodeURIComponent('مرحبًا، أود الاستفسار عن خدمات العيادة والوقت المناسب للزيارة.'),
   url: 'https://dr-fayza.vercel.app',
   address: 'ذمار — شارع صنعاء تعز، قبل جولة كمران، أمام بنك الكريمي',
   hours: 'السبت إلى الخميس، 8 صباحًا–1 ظهرًا، و4 عصرًا–8 مساءً.'
@@ -78,21 +78,21 @@ function cta(title = 'هل تريدين معرفة الخطوة التالية؟
   return '<section class="cta"><div class="container cta-inner"><div><span class="kicker kicker-light">تواصلي قبل الزيارة</span><h2>' + title + '</h2><p>اسألي عن الخدمة المناسبة، الدوام، أو طريقة الوصول قبل الحضور.</p></div><div class="cta-actions">' + link(site.whatsapp, 'اسألي عبر واتساب', 'white', 'message') + link(site.call, 'اتصلي الآن', 'ghost', 'phone') + '</div></div></section>';
 }
 function pageHead(kicker, title, sub, art = 'motherhood', variant = '') {
-  return '<section class="page-head ' + (variant ? 'page-head--' + variant : '') + '"><div class="container page-head-grid"><div><div class="breadcrumbs"><a href="/">الرئيسية</a><span>/</span><span>' + title + '</span></div><span class="kicker">' + kicker + '</span><h1>' + title + '</h1><p>' + sub + '</p></div><div class="page-art"><img src="/assets/illustrations/' + art + '.svg" alt="رسم توضيحي طبي" width="960" height="640" loading="lazy"></div></div></section>';
+  return '<section class="page-head ' + (variant ? 'page-head--' + variant : '') + '"><div class="container page-head-grid"><div><div class="breadcrumbs"><a href="/">الرئيسية</a><span>/</span><span>' + title + '</span></div><span class="kicker">' + kicker + '</span><h1>' + title + '</h1><p>' + sub + '</p></div><div class="page-art"><img src="/assets/illustrations/' + art + '.svg" alt="" aria-hidden="true" width="960" height="640" loading="lazy"></div></div></section>';
 }
 function values() {
   return '<section class="section values-section"><div class="container"><div class="heading"><span class="kicker">طريقة الرعاية</span><h2>معلومات أوضح، وقرار أهدأ</h2><p>نشرح ما نعرفه، نوضح ما يحتاج إلى تقييم، ولا نستبدل الاستشارة الطبية بتخمينات عامة.</p></div><div class="values-grid"><article class="value-item"><span class="value-icon">' + ico('message') + '</span><div><h3>نستمع أولًا</h3><p>وصفك للأعراض وتاريخك الصحي جزء أساسي من فهم الحالة.</p></div></article><article class="value-item"><span class="value-icon">' + ico('shield') + '</span><div><h3>نحترم الخصوصية</h3><p>نحافظ على لغة محترمة ومعلومات مسؤولة دون مبالغة أو وعود.</p></div></article><article class="value-item"><span class="value-icon">' + ico('arrow') + '</span><div><h3>نوضح الخطوة التالية</h3><p>تخرجين من الزيارة وأنت تعرفين ما يلزم متابعته أو السؤال عنه.</p></div></article></div></div></section>';
 }
 function home() {
   return [
-    "<section class=\"agency-hero\" aria-labelledby=\"agency-hero-title\"><div class=\"container agency-hero__top\"><div class=\"agency-hero__intro\"><span class=\"agency-hero__eyebrow\"><span class=\"agency-hero__dot\" aria-hidden=\"true\"></span>عيادة الدكتورة فايزة الوصابي <span aria-hidden=\"true\">•</span> ذمار</span><h1 id=\"agency-hero-title\">صحتكِ تستحق <span>رعاية تسمعكِ وتوضح لكِ الطريق.</span></h1><p class=\"agency-hero__lead\">استشارات في أمراض النساء والتوليد، ومتابعة الحمل وتأخر الإنجاب، مع توضيح خطوات التقييم والمتابعة المناسبة لكل حالة.</p><div class=\"agency-hero__actions\">",
+    "<section class=\"agency-hero\" aria-labelledby=\"agency-hero-title\"><div class=\"container agency-hero__top\"><div class=\"agency-hero__intro\"><span class=\"agency-hero__eyebrow\"><span class=\"agency-hero__dot\" aria-hidden=\"true\"></span>عيادة الدكتورة فايزة الوصابي <span aria-hidden=\"true\">•</span> ذمار</span><h1 id=\"agency-hero-title\">رعاية متخصصة لصحة المرأة <span>والحمل وتأخر الإنجاب.</span></h1><p class=\"agency-hero__lead\">استشارات في أمراض النساء والتوليد، ومتابعة الحمل وتأخر الإنجاب، مع توضيح خطوات التقييم والمتابعة المناسبة لكل حالة.</p><div class=\"agency-hero__actions\">",
     link(site.whatsapp, 'اسألي عبر واتساب', 'solid', 'message'),
     link('/services/', 'تعرّفي على الخدمات', 'line', 'arrow'),
     "</div><p class=\"agency-hero__micro\">للاستفسار عن توفر الخدمة وموعد الزيارة، تواصلي مع العيادة مباشرة.</p></div><aside class=\"agency-hero__aside\" aria-label=\"معلومات الزيارة\"><span class=\"agency-hero__aside-icon\">",
     ico('clock'),
     "</span><span class=\"agency-hero__aside-kicker\">مواعيد العيادة</span><strong>السبت – الخميس</strong><p>8:00 صباحًا – 1:00 ظهرًا<br>4:00 عصرًا – 8:00 مساءً</p><a href=\"/contact/\">العنوان ووسائل التواصل ",
     ico('arrow'),
-    "</a></aside></div><div class=\"container agency-hero__media\"><figure class=\"agency-hero__figure\"><img src=\"/assets/generated/hero-mother-care.webp\" alt=\"صورة توضيحية عامة للرعاية النسائية وليست صورة للمقر أو للطبيبة\" width=\"2560\" height=\"1440\" fetchpriority=\"high\" decoding=\"async\"><figcaption>صورة توضيحية عامة، وليست تصويرًا لمقر العيادة</figcaption></figure><div class=\"agency-hero__image-label\" aria-label=\"مجالات العيادة\"><span>صحة المرأة</span><span aria-hidden=\"true\">•</span><span>الحمل والولادة</span><span aria-hidden=\"true\">•</span><span>تأخر الإنجاب</span></div></div></section>",
+    "</a></aside></div><div class=\"container agency-hero__media\"><figure class=\"agency-hero__figure\"><img src=\"/assets/generated/hero-mother-care.webp\" alt=\"صورة توضيحية عامة للرعاية النسائية وليست صورة للمقر أو للطبيبة\" width=\"2560\" height=\"1440\" fetchpriority=\"high\" decoding=\"async\"><figcaption>صورة توضيحية</figcaption></figure><div class=\"agency-hero__image-label\" aria-label=\"مجالات العيادة\"><span>صحة المرأة</span><span aria-hidden=\"true\">•</span><span>الحمل والولادة</span><span aria-hidden=\"true\">•</span><span>تأخر الإنجاب</span></div></div></section>",
     "<section class=\"agency-needs\" aria-labelledby=\"agency-needs-title\"><div class=\"container agency-needs__inner\"><div class=\"agency-needs__intro\"><span class=\"kicker\">ابدئي من احتياجكِ</span><h2 id=\"agency-needs-title\">ما الذي تبحثين عنه؟</h2></div><div class=\"agency-needs__grid\"><a href=\"/services/pregnancy/\"><span class=\"agency-needs__icon\">",
     ico('baby'),
     "</span><strong>متابعة الحمل</strong>",
@@ -226,12 +226,49 @@ function schemaFor(p) {
   ];
   if (p.url !== '/') graph.push({ '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'الرئيسية', item: site.url }, { '@type': 'ListItem', position: 2, name: p.title, item: site.url + p.url }] });
   if (p.url === '/faq/') graph.push({ '@type': 'FAQPage', mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) });
-  if (p.article) graph.push({ '@type': 'Article', headline: p.article.title, description: p.article.desc, image: site.url + '/assets/generated/' + p.article.image, author: { '@id': site.url + '/#doctor' }, publisher: { '@id': site.url + '/#clinic' }, mainEntityOfPage: site.url + p.url });
+  if (p.article) graph.push({ '@type': 'Article', headline: p.article.title, description: p.article.desc, image: site.url + '/assets/generated/' + p.article.image, publisher: { '@id': site.url + '/#clinic' }, mainEntityOfPage: site.url + p.url });
   return JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
 }
 function html(p) {
   const title = p.title + ' | ' + site.short;
-  return '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0C495C"><title>' + title + '</title><meta name="description" content="' + p.desc + '"><link rel="canonical" href="' + site.url + p.url + '"><meta property="og:type" content="website"><meta property="og:title" content="' + title + '"><meta property="og:description" content="' + p.desc + '"><meta property="og:url" content="' + site.url + p.url + '"><meta property="og:image" content="' + site.url + '/assets/generated/hero-mother-care.webp"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/assets/symbol-primary.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/styles/site.css"><link rel="stylesheet" href="/styles/agency.css"><script type="application/ld+json">' + schemaFor(p) + '</script><script src="/scripts/site.js" defer></script></head><body>' + header(p.url) + '<main id="main">' + p.body + '</main>' + footer() + '<div class="floating-actions"><a href="' + site.whatsapp + '" target="_blank" rel="noopener noreferrer" aria-label="واتساب">' + ico('message') + '</a><a href="' + site.call + '" aria-label="اتصال">' + ico('phone') + '</a></div></body></html>';
+  const noindex = p.url === '/404/';
+  const canonical = noindex
+    ? '<meta name="robots" content="noindex,follow">'
+    : '<link rel="canonical" href="' + site.url + p.url + '">';
+  const ogType = p.article ? 'article' : 'website';
+  const ogImage = p.article
+    ? site.url + '/assets/generated/' + p.article.image
+    : site.url + '/assets/logo-horizontal-primary.png';
+  const ogImageAlt = p.article
+    ? 'صورة توضيحية لمقال توعوي'
+    : 'الشعار الرسمي لعيادة الدكتورة فايزة';
+  return '<!doctype html><html lang="ar" dir="rtl"><head>' +
+    '<meta charset="utf-8">' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+    '<meta name="theme-color" content="#0C495C">' +
+    '<title>' + title + '</title>' +
+    '<meta name="description" content="' + p.desc + '">' +
+    canonical +
+    '<meta property="og:locale" content="ar_YE">' +
+    '<meta property="og:type" content="' + ogType + '">' +
+    '<meta property="og:title" content="' + title + '">' +
+    '<meta property="og:description" content="' + p.desc + '">' +
+    '<meta property="og:url" content="' + site.url + p.url + '">' +
+    '<meta property="og:image" content="' + ogImage + '">' +
+    '<meta property="og:image:alt" content="' + ogImageAlt + '">' +
+    '<meta name="twitter:card" content="summary_large_image">' +
+    '<link rel="icon" href="/assets/symbol-primary.png">' +
+    '<link rel="preconnect" href="https://fonts.googleapis.com">' +
+    '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' +
+    '<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">' +
+    '<link rel="stylesheet" href="/styles/site.css">' +
+    '<link rel="stylesheet" href="/styles/agency.css">' +
+    '<script type="application/ld+json">' + schemaFor(p) + '</script>' +
+    '<script src="/scripts/site.js" defer></script></head><body>' +
+    header(p.url) +
+    '<main id="main">' + p.body + '</main>' +
+    footer() +
+    '</body></html>';
 }
 
 fs.rmSync(OUT, { recursive: true, force: true });

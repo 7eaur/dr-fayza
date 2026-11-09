@@ -19,3 +19,18 @@ for(const token of ['--ink: #0c495c','@media (max-width: 600px)','prefers-reduce
 }
 if(issues.length){console.error(issues.join('\n'));process.exit(1);}
 console.log('Agency design checks passed: Arabic RTL, imagery, SEO, tokens and CSS.');
+
+
+for(const p of pages) {
+ const html=fs.readFileSync(path.join(root,p),'utf8');
+ const isArticle=p.startsWith('guides/') && p!=='guides/index.html';
+ if(isArticle && !html.includes('<meta property="og:type" content="article">')) issues.push('Missing article OG type: '+p);
+ if(!isArticle && html.includes('<meta property="og:type" content="article">')) issues.push('Wrong OG type: '+p);
+ if(html.includes('author":{"@id":"https://dr-fayza.vercel.app/#doctor"')) issues.push('Unverified medical content authorship: '+p);
+ if(!html.includes('<meta property="og:image:alt"')) issues.push('Missing social image description: '+p);
+}
+const notFound=fs.readFileSync(path.join(root,'404.html'),'utf8');
+if(!notFound.includes('name="robots" content="noindex,follow"')) issues.push('404 page must be noindex');
+if(notFound.includes('<link rel="canonical"')) issues.push('404 page must not claim canonical');
+if(issues.length){console.error(issues.join('\n'));process.exit(1);}
+console.log('Agency editorial SEO and medical attribution checks passed.');
