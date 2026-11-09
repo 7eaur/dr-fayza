@@ -7,7 +7,7 @@
 ## Core visual tokens
 
 - Deep teal: `#0B4F5C`
-- Action green: `#198A78`
+- Action green: `#167565`
 - Ivory background: `#FBFAF7`
 - Pale blush: `#F7E8EA`
 - Body ink: `#17323A`
@@ -27,10 +27,10 @@
 
 These are generic editorial images generated for visual support. They are not photos of the named doctor, clinic, staff, or patients and must not be presented as such.
 
-- Hero: `website/assets/generated/hero-mother-care.jpg`
-- Pregnancy article: `website/assets/generated/pregnancy-care.jpg`
-- Women's consultation article: `website/assets/generated/womens-consultation.jpg`
-- Fertility article: `website/assets/generated/fertility-support.jpg`
+- Hero: `website/assets/generated/hero-mother-care.webp`
+- Pregnancy article: `website/assets/generated/pregnancy-care.webp`
+- Women's consultation article: `website/assets/generated/womens-consultation.webp`
+- Fertility article: `website/assets/generated/fertility-support.webp`
 
 ## Content guardrails
 
