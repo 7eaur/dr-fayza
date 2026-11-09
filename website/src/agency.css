@@ -287,3 +287,8 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
  .agency-contact__hours dl div { gap: 8px; }
  .agency-contact__hours dd { white-space: nowrap; }
 }
+
+/* Review correction: avoid clipped needs labels on 320px Arabic RTL devices. */
+@media (max-width: 600px) {
+  .agency-needs__grid strong { white-space: normal; overflow-wrap: anywhere; line-height: 1.45; }
+}
