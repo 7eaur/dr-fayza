@@ -1,6 +1,10 @@
-# موقع عيادة الدكتورة فايزة — V3
+# موقع عيادة الدكتورة فايزة — Agency redesign branch
 
 موقع عربي متعدد الصفحات، ثابت وسريع، باستخدام HTML مولَّد أثناء البناء دون إطار عمل ثقيل.
+
+## فرع التصميم
+تطوير `design/agency-suite-fayza-20261109` بتوجيه `.agents/skills/agency-design-and-copy-suite/SKILL.md` ومراحله في `docs/agency-redesign-plan-20261109.md`.
+التعديلات لا تعني نشرًا على الإنتاج.
 
 ## التشغيل
 من داخل `website`:
@@ -12,7 +16,8 @@ python -m http.server 8000 -d dist
 
 ## البنية
 - `build.mjs`: مصدر موحد لبيانات الصفحات والخدمات، وينتج HTML ثابت لكل رابط.
-- `src/styles.css`: نظام التصميم والتجاوب Mobile-first.
+- `src/styles.css`: القاعدة القائمة لنظام التصميم.
+- `src/agency.css`: اتجاه التصميم التحريري الجديد وتجاوبه Mobile-first.
 - `src/client.js`: سلوك قائمة الهاتف.
 - `assets/illustrations/`: رسوم توضيحية طبية أصلية بصيغة SVG.
 - `assets/`: الشعارات الأصلية والصور التوضيحية القديمة المعتمدة.
