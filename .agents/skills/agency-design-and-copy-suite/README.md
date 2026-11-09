@@ -1,40 +1,23 @@
-# Agency Design & Copy Suite
+# agency-design-and-copy-suite — installation in dr-fayza
 
-حزمة مهارة متعددة الملفات لتصميم مواقع وواجهات احترافية، تطوير React/Next.js، تدقيق تجربة المستخدم والوصولية، الهوية البصرية، الكتابة التسويقية، تحسين التحويل، ونصوص الواجهات باللغة العربية والإنجليزية.
+The **Master Router** in `SKILL.md` activates for clinic web design, static HTML/JS/CSS, responsive interfaces, UX audit, ethical marketing copy, human editorial writing, accessibility, and conversion-oriented content.
 
-## الهيكل
+Before working on this clinic website:
 
-```text
-agency-design-and-copy-suite/
-├── SKILL.md                              # الموجّه العام والبوابة الإلزامية
-├── references/
-│   ├── 01-vercel-web-and-react.md         # ويب + وصولية + React/Next.js
-│   ├── 02-frontend-and-ui-audit.md        # هوية + تصميم + تدقيق 19 محوراً
-│   ├── 03-copywriting-and-cro.md         # كتابة + CRO + سيكولوجية تسويق
-│   └── 04-ux-writing-and-humanize.md     # نصوص واجهات + تحرير بشري
-├── SOURCE_MANIFEST.md                    # المصادر والتراخيص والنطاق الحقيقي
-├── README.md
-└── scripts/
-    ├── validate_bundle.py               # فحص بنية مهارة وملفاتها
-    └── sync_upstreams.py                # أرشفة النصوص الأصلية اختيارياً
-```
+1. Read `SKILL.md` and **all four** `references/*.md` files.
+2. Read `docs/CLINIC_MASTER.md` and `brand/guidelines/VISUAL_IDENTITY.md` from the repository root.
+3. Follow `docs/agency-redesign-plan-20261109.md` and record quality checks in `docs/agency-redesign-qa-20261109.md`.
+4. Keep clinical facts, logo and official contact details unchanged unless confirmed by the project owner. No unsupported outcomes, prices, facilities, testimonials or locations.
+5. Preserve accessibility and mobile-first responsiveness; avoid a generic template or repeated large mobile cards.
+6. Do not merge into `main` without explicit project review and permission.
 
-## الاستخدام
+## Reference status
 
-1. استورد `agency-design-and-copy-suite.zip` من قسم إنشاء/إدارة Skills إن كان رفع ZIP متاحاً في حسابك.
-2. اسم المهارة في الـ YAML هو `agency-design-and-copy-suite`؛ يجب أن يشير المدخل الرئيسي إلى `SKILL.md`، والمراجع تكون في `references/` دون تغيير أسمائها.
-3. المهارة موجّهة لاستخدامها تلقائيًا عند بناء واجهة، تصميم موقع، تدقيق تجربة المستخدم، إنشاء محتوى بيعي أو تحسين نصوص.
-4. قبل التنفيذ يختار الموجّه الملفات المناسبة ويقرأها كاملة ويمرّ بقائمة التحقق، ثم يُظهر قيود الأدلة إن لم يكن الفحص الكامل ممكناً.
-5. على جهازك، يمكن اختبار الحزمة: `python scripts/validate_bundle.py .` من داخل المجلد.
+This **repository edition** uses the master SKILL.md from the prepared bundle, with four reference files assembled from the **full licensed source rulebooks** where possible, plus clinic-specific audit notes. This is not a byte-for-byte copy of the four authored reference documents inside the earlier ZIP. The Podo audit/brand material is a catalogue pointer, not a complete copy of the separate external skills; original upstream sources without a clear redistribution license are intentionally not bundled. You can run this local skill without fetching resources, with those limitations.
 
-## ملاحظة بشأن اكتمال المصادر
+- 01: Vercel web-interface rules + compiled React rules (React-specific advice only when relevant).
+- 02: Anthropic frontend-design + 19-category audit gate + Podo directory pointers.
+- 03: Corey Haines copywriting and marketing psychology + PAS/AIDA instructions.
+- 04: Vercel writing guide + full MIT-licensed UX writing and humanize-text skills + Arabic anti-cliché gate.
 
-الفصول الأربعة تتضمن قواعد عملية واسعة مكتوبة بصياغة أصلية، **وليست نسخًا حرفية كاملة من جميع مستندات GitHub**. للحصول على ملفات الجهات الأصلية دون اختصار، استخدم `python scripts/sync_upstreams.py` على جهاز متصل بالإنترنت؛ سيجلب ما تسمح به المصادر إلى مجلد `upstream-snapshots/` بجانب المهارة، وليس ضرورياً لاستخدام المهارة الأساسية. بعض المصادر روابط لمهارات في مستودعات مختلفة وتتطلب فحص تراخيصها المستقلة.
-
-## إدارة الجودة
-
-- سياسة صارمة لعدم اختلاق أرقام وأداء وتجارب ومراجعات.
-- منع ادعاء تنفيذ فحص بصري دون صور فعلية.
-- مراعاة RTL والعربية والهواتف وWCAG.
-- توجيه ديناميكي لأربعة مراجع مع حالات تداخل واضحة.
-- تدقيق محدد للبنية عبر السكربت المرفق.
+See `LICENSES_AND_SOURCES.md` and the `licenses/` directory for attribution and redistribution notices.
