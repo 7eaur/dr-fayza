@@ -1,59 +1,81 @@
-# Agency Design Suite — QA report (branch-only)
+# تقرير المراجعة الشاملة — تصميم عيادة الدكتورة فايزة | Agency Suite
 
-**Branch:** `design/agency-suite-fayza-20261109`  
-**Status:** implementation ready for visual inspection, not merged.  
-**Baseline:** `main@7266fb5`.
+**التاريخ:** 9 نوفمبر 2026  
+**الفرع:** `design/agency-suite-fayza-20261109`  
+**المنشور:** `main` محفوظ ولم يُدمج الفرع.  
+**المعاينة العامة الثابتة:** https://dr-fayza-git-design-agency-suite-fayza-20261109-wasl15.vercel.app  
+**مراجعة GitHub:** https://github.com/7eaur/dr-fayza/pull/2 (Draft).  
 
-## Implementation evidence
-- Master skill router and all four reference files installed in `.agents/skills/agency-design-and-copy-suite/`.
-- Created a separate editorial CSS layer: `website/src/agency.css`.
-- Updated homepage, doctor profile, services listing, contact page, guide index, FAQ.
-- Preserved 6 service detail pages, 4 guide article pages, diagnostics, 404, footer and SEO generation.
-- Removed developer-facing notes about missing map links and internal asset readiness from visitor-facing UI.
-- Kept official contact `785600066`, city and street, Saturday–Thursday hours and 24-hour childbirth reception scope.
-- Production branch `main` not changed.
+## النتيجة
 
-## Automated evidence (Vercel Preview for commit 28bb970)
-```text
-Built 17 routes.
-Verified 17 static pages and 37 total output files.
-Agency design checks passed: Arabic RTL, imagery, SEO, tokens and CSS.
-Build Completed in /vercel/output [1s].
-Deployment completed.
-```
+**مطابقة جيدة جداً للمتطلبات القابلة للتحقق في الكود والمتصفح.** ليست موافقة نهائية على صحة جميع البيانات الطبية أو تمثيل الصور للمقر، وليست شهادة WCAG شاملة أو قياس أداء ميداني.
 
-Static tests cover route count, page title, description, one H1, internal links/assets, HTML `lang=ar` / `dir=rtl`, imported CSS, OG image tag, image alt attribute, absence of retired phone, and design token / responsive-media presence.
+### أدلة الاختبار
 
-## Color contract (calculated using sRGB/WCAG relative luminance)
-- White text on action dark-teal `#12685D`: 6.64:1.
-- White text on brand petroleum `#0C495C`: 9.89:1.
-- Muted body text `#526B71` on white: 5.68:1.
-- White on raw turquoise `#45A18E`: 3.11:1 **not** suitable for normal-sized body text; used as accent rather than default CTA background.
+- Vercel Build: **READY**.
+- 17 صفحة HTML مولدة وتحقق من 37 ملفاً/أصلاً في مخرجات البناء وقت الاختبار الأساسي، مع فحوص الروابط والعناوين.
+- فحص Chromium + Playwright على 360 و390 و768 و1280 و1440 CSS px، لجميع صفحات الخدمات والمقالات و404.
+- الجولة النهائية: **45 حالة، 43 لقطة شاشة، 0 أخطاء، 0 تحذيرات**.
+- فحوص Axe WCAG 2/2.1 A/AA على صفحات نموذجية: الرئيسية، الدكتورة، الخدمات، التواصل، مقالة الحمل، عند 390 و1440 بكسل.
+- تم العثور على **فئتين من الأخطاء** وإصلاحهما: تسمية رابط واتساب الأيقوني على الهاتف، وتباين مسار التنقل. نجحت إعادة الفحص.
+- الروابط الداخلية والصور والتجاوب وفتح قائمة الهاتف وإغلاقها بـ Escape بلا أخطاء في التغطية الآلية.
+- الدليل: https://github.com/7eaur/dr-fayza/actions/runs/42665702018 (43 صورة وتقرير JSON مرفقان بالأرشيف).
 
-## NOT VERIFIED — manual and visual
-- Actual browser screenshots at 360, 390, 768, 1280, 1440 CSS px.
-- Keyboard, touch, focus order, VoiceOver/TalkBack, screen zoom and reduced-motion manual behavior.
-- Real-world LCP, CLS, INP, image cropping across physical devices.
-- External phone and WhatsApp service response.
-- Exact preview rendering: Vercel preview protection is enabled; generic web fetch cannot access it. Review through authenticated project access.
+## تدقيق المحاور الـ19 وفق مهارات التصميم
 
-## Next manual review matrix
-| Page / view | Phone | Tablet | Desktop | Keyboard |
-|---|---|---|---|---|
-| Homepage hero + needs | Pending | Pending | Pending | Pending |
-| Services & detail pages | Pending | Pending | Pending | Pending |
-| Doctor profile | Pending | Pending | Pending | Pending |
-| Contact & hours | Pending | Pending | Pending | Pending |
-| Guides, article, FAQ, 404 | Pending | Pending | Pending | Pending |
+| المحور | النتيجة المستندة إلى الدليل |
+|---|---|
+| 1. الخطوط | جيد: IBM Plex Sans Arabic وهياكل عناوين واضحة بالصور؛ قد تستفيد النصوص الثانوية الدقيقة من مراجعة قراءة على هاتف فعلي |
+| 2. اللون والتباين | اجتاز فحص Axe للصفحات المختارة بعد تصحيح مسار التنقل؛ ألوان الهوية البحرية والفيروزية مضبوطة |
+| 3. المسافات والتخطيط | جيد: تباعد متوازن، والهيرو الديسكتوب أعيد ضبطه لإظهار الصورة مبكراً |
+| 4. التسلسل البصري | جيد: العنوان ثم الفكرة ثم الإجراء ثم الصورة، وأقسام خدمات واضحة |
+| 5. التناسق | جيد: أزرار وروابط وأيقونات ونصوص متسقة، لكن CSS القديم والجديد لا يزالان طبقتين |
+| 6. الوصولية | اجتازت الحالات الآلية المختارة؛ قارئات الشاشة والأجهزة الفعلية ليست ضمن الاختبار |
+| 7. النماذج | غير منطبق: لا تجمع الصفحة بيانات المرضى عبر نموذج عام |
+| 8. الحركة | دعم `prefers-reduced-motion` موجود؛ لا حركات ثقيلة |
+| 9. الوضع الداكن | غير مطلوب في هوية الموقع الحالية |
+| 10. تجاوب الشاشات | اجتاز الاختبار على خمسة عروض دون تمرير أفقي |
+| 11. التحميل والخطأ | صفحة 404 فعلية برمز 404 و`noindex`؛ الحالة ثابتة دون نماذج أو API يحتاج حالات تحميل |
+| 12. نصوص الواجهة | جيد: CTA واضح، رسائل مختصرة، إزالة نصوص التطوير |
+| 13. العربية وRTL | اجتازت الصفحات `lang=ar` و`dir=rtl` ومواضع التنقل |
+| 14. الظلال والطبقات | مسطحات هادئة وتباين موزون بلا إفراط في الظلال |
+| 15. الأيقونات | رموز SVG موحدة ومخفية لقارئ الشاشة عندما تكون زخرفية |
+| 16. التنقل | روابط رئيسية سليمة، قائمة الهاتف مع Escape، رابط تخطي المحتوى |
+| 17. متغيرات التصميم | موجودة ومطبقة؛ يوصى مستقبلاً بدمج `site.css` و`agency.css` لتقليل التكرار |
+| 18. أخلاقية التسويق | لا وعود شفاء أو تقييمات مختلقة؛ استقبال 24 ساعة مقصور على حالات الولادة |
+| 19. مبادئ Nielsen | مهام واضحة، تنقل متسق، CTA قابل للتنبؤ، والإيضاحات قبل الزيارة |
 
-## Release gate
-Do **not** promote to production until visual and interaction QA is complete and explicitly approved.
+## مطابقة المرجع البصري المعتمد
 
-## مراجعة الجودة الإضافية — 2026-11-09
-- إصلاح عنوان الهيرو ليذكر مجالات التخصص مباشرة، وتقليل النص الظاهر على الصورة إلى «صورة توضيحية».
-- جعل صور الزخرفة الداخلية `alt=""` مع `aria-hidden` بدلاً من تكرار وصف غير مفيد لقارئات الشاشة.
-- مشاركة الصفحات الرسمية بالشعار المعتمد؛ المقالات بصورها التوضيحية المناسبة، مع تمييز `og:type=article` للمقالات.
-- حذف نسبة تأليف المقالات إلى الطبيبة في البيانات المنظمة لأن مراجعتها/تأليفها غير موثق؛ إبقاء العيادة جهة نشر فقط.
-- صفحة 404 أصبحت `noindex` بلا canonical غير موجود.
-- تبسيط رسالة واتساب الافتراضية وعدم مطالبة الزائرة باسمها في النص المبدئي.
-- تم تفعيل استثناء وصول عام لرابط معاينة الفرع المستقر على Vercel دون تعطيل حماية بقية المعاينات.
+- اتجاه RTL وهوية `#0C495C` + `#45A18E` مع استخدام وردي محدود ✓
+- الشعار الرسمي محفوظ في الهيدر والفوتر ✓
+- Hero بعنوان فوق صورة أفقية في الهاتف والديسكتوب ✓
+- الصورة ليست متضخمة أو مشوهة في اللقطات المختبرة ✓
+- صفوف الخدمات والمقالات على الهاتف أصغر من الكروت الكبيرة القديمة ✓
+- فوتر الهاتف مضغوط نسبياً ولا يحتوي أعمدة ضخمة ✓
+- التعريف بالدكتورة مقسّم إلى شرح + مؤهلات ✓
+- المعلومات الأساسية: الرقم 785600066، العنوان، والدوام السبت إلى الخميس ✓
+
+## المحتوى، التحويل والـSEO
+
+- النصوص تستهدف الاستفسار عن النساء والتوليد والحمل والعقم بدلاً من عبارات دعائية عامة.
+- CTA اتصال وواتساب مع نص مباشر وتلقيم WhatsApp دون طلب اسم مسبق.
+- 6 تفاصيل خدمات و4 مقالات موجودة؛ sitemap وrobots وMedicalClinic/FAQ/Article JSON-LD تولد أثناء البناء.
+- المقالات لا تنسب إلى الطبيبة باعتبارها المؤلفة أو المراجعة دون إثبات.
+- Open Graph يستخدم الشعار الرسمي في الصفحات العامة وصورة الموضوع في المقالات.
+- هذه تهيئة تقنية للبحث والمشاركة ولا تعني ضمان الظهور في Google أو مساعدات الذكاء الاصطناعي.
+
+## ما لم يتحقق بعد — ليس عيباً برمجياً مثبتاً
+
+1. **الصور الحقيقية:** الصور الحالية تحريرية توضيحية وليست صوراً موثّقة للطبيبة/مقر العيادة؛ صور حقيقية مع إذن ستقوي الثقة.
+2. **الموقع والخرائط:** لا يوجد رابط Google Maps رسمي مؤكد، ولذلك لم نضع دبوساً متخيلاً.
+3. **التوثيق الطبي:** المسميات التفصيلية للشهادات وبعض الإجراءات تحتاج تدقيقاً من وثائق العيادة قبل توسعة النصوص.
+4. **الاختبار اليدوي:** قارئات الشاشة، التكبير الشديد، أجهزة iOS/Android الحقيقية، والتحقق من جهات الاتصال خارج المتصفح.
+5. **الأداء الميداني:** لم تقَس LCP وINP وCLS من زيارات فعلية؛ لم نخترع قيمها أو نتائج Lighthouse.
+6. **التسويق:** لا توجد بيانات تحويلات أو A/B تثبت تحسناً رقمياً، وهو خارج نطاق مراجعة الكود.
+7. **مصادر المهارة:** أغلب المراجع محفوظة محلياً بالكامل. قاعدتا Podo المتعلقتان بالتدقيق والهوية متاحتان كفهرس وموجّه، ولا توجد نسختان كاملتان من upstream مستقل غير واضح الترخيص داخل الحزمة؛ استخدمنا الأصل في المراجعة دون نسخه إلى المستودع.
+
+## قرار التسليم
+
+**الفرع جاهز للمعاينة والمراجعة من صاحب المشروع، لكنه لا يُدمج تلقائياً إلى `main`.**
+يحافظ على كافة مسارات الموقع، واجتازت النسخة الحالية الفحوص الآلية المتاحة؛ تُحسم الملاحظات المتبقية بالبيانات والصور والمراجعة البشرية.
