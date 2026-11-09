@@ -17,6 +17,7 @@ const allRoutes = [
   '/faq/', '/contact/', '/missing-page-test'
 ];
 const configs = [
+  { width: 320, height: 700, routes: ['/', '/about/', '/services/pregnancy/', '/contact/'] },
   { width: 360, height: 800, routes: ['/', '/contact/'] },
   { width: 390, height: 844, routes: allRoutes },
   { width: 768, height: 1024, routes: ['/', '/about/', '/services/', '/guides/', '/contact/'] },
@@ -78,6 +79,13 @@ for (const config of configs) {
       if (entry.width > entry.viewport + 2) report.errors.push({ width: config.width, route, issue: 'Horizontal scroll overflow: ' + entry.width + ' > ' + entry.viewport });
       if (entry.brokenImages.length) report.errors.push({ width: config.width, route, issue: 'Broken images', images: entry.brokenImages });
       if (entry.missingAlt.length) report.errors.push({ width: config.width, route, issue: 'Image missing alt', images: entry.missingAlt });
+      if (config.width <= 600 && ['/about/', '/services/pregnancy/', '/services/maternity/'].includes(route)) {
+        const relatedCardWidths = await page.locator('.section .cards:not(.agency-services__cards) > .card')
+          .evaluateAll(nodes => nodes.map(node => Math.round(node.getBoundingClientRect().width)));
+        if (relatedCardWidths.some(width => width < 270)) {
+          report.errors.push({ width: config.width, route, issue: 'Unusable narrow related service cards', relatedCardWidths });
+        }
+      }
       if ([390, 1440].includes(config.width) && ['/', '/about/', '/services/', '/contact/', '/guides/pregnancy-care/'].includes(route)) {
         const axe = await new AxeBuilder({ page })
           .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])

@@ -34,3 +34,16 @@ if(!notFound.includes('name="robots" content="noindex,follow"')) issues.push('40
 if(notFound.includes('<link rel="canonical"')) issues.push('404 page must not claim canonical');
 if(issues.length){console.error(issues.join('\n'));process.exit(1);}
 console.log('Agency editorial SEO and medical attribution checks passed.');
+
+// Marketing-and-mobile regression gates.
+const homeHtml=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const aboutHtml=fs.readFileSync(path.join(root,'about/index.html'),'utf8');
+const faqHtml=fs.readFileSync(path.join(root,'faq/index.html'),'utf8');
+if(!homeHtml.includes('agency-first-visit__steps')) issues.push('Missing practical first-visit guide');
+if(!homeHtml.includes('agency-services__diagnostics')) issues.push('Missing diagnostic service discovery');
+if(!aboutHtml.includes('agency-mission__grid')) issues.push('Missing clinic vision and mission');
+if(!faqHtml.includes('كيف أستعد لزيارتي الأولى؟')) issues.push('Missing first-visit FAQ');
+const agencyCssMobile=fs.readFileSync(path.join(root,'styles/agency.css'),'utf8');
+if(!agencyCssMobile.includes('.section .cards:not(.agency-services__cards)')) issues.push('Mobile related service layout regression');
+if(issues.length){console.error(issues.join('\n'));process.exit(1);}
+console.log('Agency mobile UX and content coverage gates passed.');
