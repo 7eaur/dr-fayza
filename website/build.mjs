@@ -11,7 +11,7 @@ const site = {
   whatsapp: 'https://wa.me/967785600066?text=' + encodeURIComponent('مرحبًا، اسمي __، أود الاستفسار عن خدمة __ والوقت المناسب للزيارة.'),
   url: 'https://dr-fayza.vercel.app',
   address: 'ذمار — شارع صنعاء تعز، قبل جولة كمران، أمام بنك الكريمي',
-  hours: 'السبت إلى الخميس، 8 صباحًا–1 ظهرًا، و4 عصرًا–8 مساءً. الجمعة خارج الدوام الاعتيادي.'
+  hours: 'السبت إلى الخميس، 8 صباحًا–1 ظهرًا، و4 عصرًا–8 مساءً.'
 };
 
 const services = [
@@ -26,8 +26,8 @@ const services = [
 const faqs = [
   ['ما أوقات دوام العيادة؟', site.hours],
   ['هل استقبال حالات الولادة متاح 24 ساعة؟', 'نعم، استقبال حالات الولادة مُعلن عنه على مدار 24 ساعة تحت إشراف كادر طبي متخصص. اتصلي لتأكيد مكان الاستقبال قبل الحضور.'],
-  ['أين تقع العيادة؟', site.address + ' لم نستلم رابط خرائط رسميًا بعد، لذلك يُفضّل الاتصال لتأكيد الوصول.'],
-  ['كيف أستفسر عن موعد أو خدمة؟', 'يمكنك الاتصال أو مراسلة واتساب على الرقم ' + site.phone + '. تفاصيل الحجز الإلكتروني غير متاحة حاليًا، لذلك يؤكد الموعد بالتواصل المباشر.'],
+  ['أين تقع العيادة؟', site.address + ' يُرجى الاتصال عند الحاجة إلى إرشادات دقيقة للوصول.'],
+  ['كيف أستفسر عن موعد أو خدمة؟', 'يمكنك الاتصال أو مراسلة واتساب على الرقم ' + site.phone + '. وللتأكد من الموعد، يُرجى التواصل مباشرة مع العيادة.'],
   ['هل يمكن إحضار فحوصات سابقة؟', 'نعم، إحضار التقارير والتحاليل السابقة وقائمة الأدوية يساعد على جعل الاستشارة أكثر وضوحًا.'],
   ['هل كل الخدمات متاحة طوال اليوم؟', 'لا. استقبال حالات الولادة فقط مُعلن عنه 24 ساعة، أما الدوام الاعتيادي وبقية الخدمات فتحتاج إلى الالتزام بالساعات أو التأكيد بالاتصال.'],
   ['هل تقدم المقالات تشخيصًا للحالة؟', 'لا. المقالات للتثقيف العام ولا تغني عن الفحص أو الاستشارة الطبية المناسبة للحالة.']
@@ -149,7 +149,7 @@ function about() {
     ico('check'),
     "دبلوم تجميل نسائي</li><li>",
     ico('check'),
-    "دبلوم طب الإنجاب والإخصاب المساعد (IVF)</li></ul><small>المسميات وفق البيانات المقدمة من العيادة؛ تدقيق الصيغة النهائية للشهادات يتطلب مراجعة الوثائق الأصلية.</small></aside></div></section>",
+    "دبلوم طب الإنجاب والإخصاب المساعد (IVF)</li></ul><small></small></aside></div></section>",
     values(),
     "<section class=\"section agency-guides\"><div class=\"container\">",
     heading('مجالات الاستشارة', 'خدمات مخصصة لصحة المرأة', 'اطلعي على مجال الخدمة ثم تواصلي لتأكيد التفاصيل المناسبة.'),
@@ -159,14 +159,52 @@ function about() {
     cta('هل لديكِ سؤال قبل الزيارة؟')
   ].join('');
 }
-function servicesPage() { return pageHead('دليل الخدمات', 'الخدمات الطبية', 'اختاري الخدمة الأقرب لاحتياجك، ثم تواصلي للتأكد من التفاصيل والتوفر قبل الحضور.', 'womens') + '<section class="section"><div class="container service-intro"><p>الخدمات التالية مجالات للاستشارة والتقييم. لا تعني قراءة الوصف وجود تشخيص أو ملاءمة إجراء معين لحالتك.</p></div><div class="container cards">' + services.map(card).join('') + '</div><div class="container note">بعض الأجهزة والإجراءات الواردة في مواد سابقة تحتاج إلى تأكيد التوفر ومكان التنفيذ قبل الحضور.</div></section>' + cta(); }
+function servicesPage() {
+  return [
+    "<section class=\"agency-page-intro\"><div class=\"container\"><div class=\"breadcrumbs\"><a href=\"/\">الرئيسية</a><span aria-hidden=\"true\">/</span><span>الخدمات</span></div><span class=\"kicker\">الخدمات الطبية</span><h1>استشارات ورعاية لصحة المرأة</h1><p>من متابعة الحمل إلى أمراض النساء وتأخر الإنجاب، تعرّفي على الخدمة التي تودين السؤال عنها. تُحدد خطة التقييم وفق الحالة بعد الاستشارة.</p></div></section>",
+    "<section class=\"section agency-services-page\"><div class=\"container\"><div class=\"agency-section-head\"><div><span class=\"kicker\">مجالات الاستشارة</span><h2>ابدئي من احتياجكِ</h2><p>افتحي تفاصيل أي خدمة لمعرفة الخطوات العامة وما يمكنكِ التحضير له قبل الزيارة.</p></div></div><div class=\"cards agency-services__cards\">",
+    services.map(card).join(''),
+    "</div><p class=\"agency-services-page__note\">نوع الإجراء أو الفحص وتوفره يُؤكدان بالتواصل مع العيادة قبل الحضور، وفق الاحتياج الطبي.</p></div></section>",
+    cta('هل تحتاجين إلى استفسار عن خدمة محددة؟')
+  ].join('');
+}
 function detail(s) { return pageHead('خدمات العيادة', s.name, s.desc, s.art) + '<section class="section"><div class="container detail"><article class="prose"><span class="kicker">فهم الخدمة</span><h2>كيف تبدأ المتابعة؟</h2><p>' + s.intro + '</p><h2>ما الذي قد تتضمنه الزيارة؟</h2><ul class="feature-list">' + s.benefits.map(x => '<li>' + ico('check') + x + '</li>').join('') + '</ul><h2>لمن قد تناسب الاستشارة؟</h2><p>' + s.who + '</p><div class="note"><strong>قبل الزيارة: </strong>' + s.tip + '</div></article><aside><div class="panel"><span class="kicker">اسألي قبل الحضور</span><h2>هل هذه الخدمة مناسبة لك؟</h2><p>أرسلي سؤالك عبر واتساب أو اتصلي لمعرفة التفاصيل المتاحة والوقت المناسب.</p>' + link(site.whatsapp, 'اسألي عبر واتساب', 'solid', 'message') + link(site.call, 'اتصلي بالعيادة', 'line', 'phone') + '</div><div class="panel pale"><h3>الدوام الاعتيادي</h3><p>' + site.hours + '</p></div></aside></div></section><section class="section alt"><div class="container">' + heading('قد تهمك أيضًا', 'خدمات مرتبطة') + '<div class="cards">' + services.filter(x => x.id !== s.id).slice(0, 3).map(card).join('') + '</div></div></section>' + cta(); }
 function diagnostics() { return pageHead('الفحوصات الطبية', 'الفحوصات والسونار', 'الفحوصات وسائل مساعدة في التقييم، ويحدد نوعها وتوقيتها بحسب الأعراض والحالة.', 'diagnostics') + '<section class="section"><div class="container diagnostic-layout"><div class="prose"><span class="kicker">تقييم بحسب الحالة</span><h2>الفحص المناسب يبدأ باستشارة مناسبة</h2><p>قد تساعد الفحوصات المخبرية والتصوير بالموجات فوق الصوتية في تقييم بعض الحالات النسائية ومتابعة الحمل. لا يلزم كل فحص لكل سيدة، وتحدد الطبيبة ما يناسب بعد مراجعة المعلومات الطبية.</p><ul class="feature-list"><li>' + ico('check') + 'مناقشة الحاجة إلى الفحص</li><li>' + ico('check') + 'مراجعة التقارير والنتائج السابقة</li><li>' + ico('check') + 'توضيح التحضير والخطوة التالية</li></ul>' + link(site.whatsapp, 'اسألي عن الفحوصات المتاحة', 'solid', 'message') + '</div><div class="page-art large"><img src="/assets/illustrations/diagnostics.svg" alt="رسم توضيحي للتشخيص الطبي" loading="lazy"></div></div><div class="container note">تفاصيل الأجهزة والفحوصات المتاحة حاليًا ليست قائمة تشغيلية نهائية؛ يرجى التأكد قبل الحضور.</div></section>' + cta(); }
-function guides() { return pageHead('دليل التوعية', 'مقالات صحية مبسطة', 'محتوى يساعدك على فهم الأسئلة الأولى حول الحمل وصحة المرأة وتأخر الإنجاب.', 'pregnancy') + '<section class="section"><div class="container article-note"><div class="note">المقالات تثقيفية عامة وليست تشخيصًا أو خطة علاجية. إذا كان لديك عرض شديد أو مفاجئ، اطلبي تقييمًا طبيًا مناسبًا.</div></div><div class="container tiles">' + articles.map(articleTile).join('') + '</div></section>' + cta(); }
+function guides() {
+  return [
+    "<section class=\"agency-page-intro\"><div class=\"container\"><div class=\"breadcrumbs\"><a href=\"/\">الرئيسية</a><span aria-hidden=\"true\">/</span><span>التوعية الصحية</span></div><span class=\"kicker\">التوعية الصحية</span><h1>معلومات مفهومة قبل زيارتكِ</h1><p>مقالات تثقيفية عامة عن الحمل وصحة المرأة وتأخر الإنجاب. خذي منها الأسئلة المفيدة لاستشارتكِ، وليس تشخيصًا لحالتكِ.</p></div></section><section class=\"section agency-article-index\"><div class=\"container\"><div class=\"note agency-article-index__notice\">إذا كنتِ تعانين من أعراض شديدة أو مفاجئة، اطلبي تقييمًا طبيًا عاجلًا ولا تنتظري الرد على الرسائل.</div><div class=\"tiles\">",
+    articles.map(articleTile).join(''),
+    "</div></div></section>",
+    cta('لديكِ استفسار عن المتابعة؟')
+  ].join('');
+}
 function article(a) { return pageHead(a.category, a.title, a.desc, 'motherhood', 'compact') + '<article class="section"><div class="container article-layout"><div class="article-main"><div class="article-cover"><img src="/assets/generated/' + a.image + '" alt="صورة تحريرية عامة عن ' + a.category + '" width="960" height="720" loading="eager"></div><div class="note">هذه معلومات تثقيفية عامة وليست تشخيصًا أو خطة علاج شخصية.</div>' + a.parts.map(([h, p]) => '<h2>' + h + '</h2><p>' + p + '</p>').join('') + '<p class="article-signoff">إذا كانت لديك حالة أو أعراض مقلقة، تواصلي مع الطبيبة لتحديد ما يلزم من تقييم ومتابعة.</p><a class="text-link" href="/guides/">عودة إلى التوعية الصحية ' + ico('arrow') + '</a></div><aside class="article-aside"><span class="kicker">هل لديك سؤال؟</span><h3>خذي المعلومة إلى استشارة مناسبة</h3><p>المقال يشرح الفكرة العامة، أما القرار الطبي فيعتمد على حالتك وتاريخك الصحي.</p>' + link(site.whatsapp, 'اسألي عبر واتساب', 'solid', 'message') + '</aside></div></article>' + cta('هل تريدين مناقشة حالتك؟'); }
-function faqPage() { return pageHead('استفسارات الزائرات', 'الأسئلة الشائعة', 'إجابات عملية عن الدوام والموقع والخدمات وطريقة التواصل.', 'motherhood') + '<section class="section"><div class="container narrow">' + faq(faqs) + '</div></section>' + cta(); }
-function contact() { return pageHead('تواصل وزيارة', 'تواصلي مع العيادة', 'اتصلي أو راسلي واتساب لمعرفة الخدمة والدوام ومكان استقبال الحالة قبل الحضور.', 'motherhood') + '<section class="section"><div class="container contact-grid"><article class="contact-card">' + ico('phone') + '<span class="kicker">اتصال مباشر</span><h2>785 600 066</h2><p>للاستفسار عن الخدمات ومكان الزيارة.</p>' + link(site.call, 'اتصلي الآن', 'line', 'phone') + '</article><article class="contact-card">' + ico('message') + '<span class="kicker">واتساب</span><h2>اسألي برسالة</h2><p>أرسلي سؤالك عن الوقت أو الخدمة المتاحة.</p>' + link(site.whatsapp, 'افتحي واتساب', 'solid', 'message') + '</article><article class="contact-card">' + ico('clock') + '<span class="kicker">الدوام</span><h2>السبت–الخميس</h2><p>8 ص–1 م، 4 م–8 م<br>الجمعة خارج الدوام الاعتيادي.</p></article></div></section><section class="section alt"><div class="container address-grid"><div><span class="kicker">كيف تصلين إلينا</span><h2>عنوان العيادة</h2><p class="body-large">' + site.address + '</p><p>لم نستلم رابط خرائط رسميًا بعد، لذلك لا نضع دبوسًا افتراضيًا قد يقودك إلى مكان غير صحيح. اتصلي لتأكيد الوصول.</p>' + link(site.call, 'استفسري عن الطريق', 'line', 'phone') + '</div><div class="address-art">' + ico('pin') + '<strong>ذمار</strong><span>شارع صنعاء تعز</span><span>قبل جولة كمران · أمام بنك الكريمي</span></div></div></section><section class="section"><div class="container contact-strip"><div><span class="kicker">تنبيه الولادة</span><h2>الاستقبال متاح على مدار 24 ساعة</h2><p>تحت إشراف كادر طبي متخصص. يرجى الاتصال لتأكيد مكان الاستقبال قبل الحضور.</p></div>' + link(site.call, 'اتصلي للتأكيد', 'solid', 'phone') + '</div></section>'; }
-
+function faqPage() {
+  return [
+    "<section class=\"agency-page-intro\"><div class=\"container\"><div class=\"breadcrumbs\"><a href=\"/\">الرئيسية</a><span aria-hidden=\"true\">/</span><span>الأسئلة الشائعة</span></div><span class=\"kicker\">قبل الزيارة</span><h1>إجابات عن الأسئلة الشائعة</h1><p>المواعيد والخدمات والتواصل ومكان الوصول، تجدين أهم التفاصيل هنا.</p></div></section><section class=\"section agency-faq-page\"><div class=\"container agency-faq-page__grid\"><div>",
+    faq(faqs),
+    "</div><aside class=\"agency-faq-page__contact\"><span class=\"kicker\">هل لديكِ سؤال آخر؟</span><h2>تواصلي مع العيادة مباشرة</h2><p>يمكنكِ التأكد من الخدمة والوقت المناسب قبل الحضور.</p>",
+    link(site.whatsapp, 'اسألي عبر واتساب', 'solid', 'message'),
+    link(site.call, 'اتصلي الآن', 'line', 'phone'),
+    "</aside></div></section>"
+  ].join('');
+}
+function contact() {
+  return [
+    "<section class=\"agency-page-intro\"><div class=\"container\"><div class=\"breadcrumbs\"><a href=\"/\">الرئيسية</a><span aria-hidden=\"true\">/</span><span>التواصل</span></div><span class=\"kicker\">الزيارة والتواصل</span><h1>نحن هنا للإجابة عن استفساركِ</h1><p>اسألي عن الخدمة أو وقت الزيارة، وتحققي من تفاصيل الوصول قبل الحضور.</p></div></section><section class=\"section agency-contact\"><div class=\"container agency-contact__grid\"><div><span class=\"kicker\">اتصال مباشر</span><h2>اختاري طريقة التواصل المناسبة لكِ</h2><p>للأسئلة عن الخدمات وتوفرها وتوقيت المراجعة، اتصلي أو أرسلي رسالة عبر واتساب.</p><div class=\"agency-contact__actions\">",
+    link(site.call, 'اتصلي الآن · 785600066', 'solid', 'phone'),
+    link(site.whatsapp, 'افتحي محادثة واتساب', 'line', 'message'),
+    "</div><p class=\"agency-contact__privacy\">لا ترسلي صورًا أو معلومات طبية حساسة إلا عبر قناة تنصح بها العيادة.</p></div><aside class=\"agency-contact__hours\"><span class=\"agency-contact__small\">أوقات الدوام الاعتيادي</span><strong>السبت إلى الخميس</strong><dl><div><dt>الفترة الصباحية</dt><dd>8:00 ص – 1:00 م</dd></div><div><dt>الفترة المسائية</dt><dd>4:00 م – 8:00 م</dd></div></dl></aside></div></section><section class=\"agency-contact__location\"><div class=\"container agency-contact__location-inner\"><span class=\"agency-contact__place-icon\">",
+    ico('pin'),
+    "</span><div><span class=\"kicker\">العنوان</span><h2>تفضلي بزيارتنا في ذمار</h2><p>ذمار، شارع صنعاء تعز، قبل جولة كمران، أمام بنك الكريمي.</p><small>للتأكد من جهة الوصول ومكان استقبال الحالة، تواصلي مع العيادة قبل الحضور.</small></div>",
+    link(site.call, 'استفسري عن الطريق', 'line', 'phone'),
+    "</div></section><section class=\"agency-birth\"><div class=\"container agency-birth__inner\"><span class=\"agency-birth__icon\">",
+    ico('clock'),
+    "</span><div><span class=\"agency-birth__kicker\">استقبال حالات الولادة</span><h2>الاستقبال على مدار 24 ساعة</h2><p>تحت إشراف كادر طبي متخصص؛ يرجى الاتصال لتأكيد مكان الاستقبال. لا يعني ذلك توفر بقية خدمات العيادة طوال اليوم.</p></div>",
+    link(site.call, 'اتصلي للتأكيد', 'white', 'phone'),
+    "</div></section>"
+  ].join('');
+}
 const pages = [
   { url: '/', title: 'الرئيسية', desc: 'عيادة الدكتورة فايزة الوصابي في ذمار؛ استشارات النساء والتوليد ومتابعة الحمل وتأخر الإنجاب.', body: home() },
   { url: '/about/', title: 'عن الدكتورة', desc: 'تعرفي على الدكتورة فايزة الوصابي وتخصصها ومجالات الاستشارة.', body: about() },

@@ -1,1 +1,21 @@
 import fs from 'node:fs';import path from 'node:path';const root=path.join(process.cwd(),'dist');const files=[];function scan(dir){for(const x of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,x.name);if(x.isDirectory())scan(p);else files.push(path.relative(root,p).replaceAll('\\','/'));}}scan(root);const pages=files.filter(p=>p.endsWith('index.html'));const issues=[];if(pages.length!==17)issues.push('Expected 17 HTML pages; got '+pages.length);for(const p of pages){const html=fs.readFileSync(path.join(root,p),'utf8');const title=html.match(/<title>(.*?)<\/title>/)?.[1];if(!title)issues.push('Missing title: '+p);if(!html.includes('name="description"'))issues.push('Missing description: '+p);if(!html.includes('<main id="main">'))issues.push('Missing main: '+p);for(const m of html.matchAll(/(?:href|src)="(\/[^"#?]*)/g)){let u=m[1];if(u==='/')u='index.html';else if(u.endsWith('/'))u+='index.html';else u=u.slice(1);if(u.startsWith('/'))u=u.slice(1);if(!files.includes(u))issues.push(p+' => missing '+m[1]);}if((html.match(/<h1\b/g)||[]).length!==1)issues.push('Expected one h1: '+p);}if(issues.length){console.error(issues.join('\n'));process.exit(1);}console.log('Verified '+pages.length+' static pages and '+files.length+' total output files.');
+
+
+// Agency redesign acceptance gates. These are static checks, not a visual-browser audit.
+for(const p of pages){
+ const html=fs.readFileSync(path.join(root,p),'utf8');
+ if(!html.includes('<html lang="ar" dir="rtl">'))issues.push('Arabic RTL missing: '+p);
+ if(!html.includes('href="/styles/agency.css"'))issues.push('Agency styles missing: '+p);
+ if(!html.includes('<meta property="og:image"'))issues.push('OG image missing: '+p);
+ if(html.includes('774694946'))issues.push('Retired phone number: '+p);
+ if(html.includes('لم نستلم رابط خرائط'))issues.push('Internal editorial text leaked: '+p);
+ for(const match of html.matchAll(/<img\b[^>]*>/g)){
+   if(!/\balt="/.test(match[0]))issues.push('Image alt missing: '+p);
+ }
+}
+const agencyCss=fs.readFileSync(path.join(root,'styles/agency.css'),'utf8');
+for(const token of ['--ink: #0c495c','@media (max-width: 600px)','prefers-reduced-motion']){
+ if(!agencyCss.includes(token))issues.push('Design token or responsive gate missing: '+token);
+}
+if(issues.length){console.error(issues.join('\n'));process.exit(1);}
+console.log('Agency design checks passed: Arabic RTL, imagery, SEO, tokens and CSS.');

@@ -220,3 +220,70 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
 @media (prefers-reduced-motion: reduce) {
   *,*::before,*::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* Agency interior pages: distinct editorial composition and mobile-first surfaces */
+.agency-page-intro { background: #f4f8f7; padding: clamp(36px,5vw,72px) 0; border-bottom: 1px solid #e0ece7; }
+.agency-page-intro .breadcrumbs { margin-bottom: 19px; }
+.agency-page-intro h1 { max-width: 20ch; color: #0c495c; font-size: clamp(32px,4.6vw,57px); line-height: 1.34; letter-spacing: -.04em; margin-bottom: 13px; }
+.agency-page-intro p { max-width: 63ch; color: #526b71; font-size: 17px; margin-bottom: 0; }
+.agency-services-page .agency-section-head { margin-bottom: 25px; }
+.agency-services-page .agency-section-head h2 { font-size: clamp(25px,3vw,36px); }
+.agency-services-page__note { color: #526b71; border-inline-start: 3px solid #45a18e; padding-inline-start: 14px; margin: 24px 0 0; max-width: 68ch; font-size: 13px; }
+.agency-article-index { background: #fff; }
+.agency-article-index__notice { max-width: 900px; margin-bottom: 22px; }
+.agency-article-index .tiles { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.agency-article-index .tile { box-shadow: none; }
+.agency-article-index .tile-visual { height: 235px; }
+.agency-faq-page__grid { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(240px,.7fr); gap: clamp(30px,5vw,75px); align-items: start; }
+.agency-faq-page__contact { padding: 28px; border-radius: 18px; background: #f4f8f7; border: 1px solid #dceae4; }
+.agency-faq-page__contact h2 { color: #0c495c; font-size: 26px; }
+.agency-faq-page__contact p { font-size: 14px; color: #526b71; }
+.agency-faq-page__contact .button { display: flex; width: 100%; margin-top: 9px; }
+.agency-contact__grid { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(260px,.7fr); gap: clamp(35px,6vw,85px); align-items: center; }
+.agency-contact h2 { max-width: 16ch; color: #0c495c; font-size: clamp(28px,3.8vw,45px); }
+.agency-contact__grid>div>p { font-size: 16px; color: #526b71; max-width: 59ch; }
+.agency-contact__actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+.agency-contact__privacy { font-size: 12px!important; margin: 14px 0 0; max-width: 66ch; }
+.agency-contact__hours { border-radius: 19px; background: #0c495c; color: #fff; padding: 30px; }
+.agency-contact__small { display: block; font-size: 12px; color: #b5ded4; }
+.agency-contact__hours>strong { display: block; font-size: 24px; margin: 3px 0 18px; }
+.agency-contact__hours dl { margin: 0; }
+.agency-contact__hours dl div { display: flex; justify-content: space-between; gap: 12px; padding: 13px 0; border-top: 1px solid rgba(255,255,255,.16); }
+.agency-contact__hours dt { font-size: 12px; color: #cde7df; }
+.agency-contact__hours dd { margin: 0; font-weight: 700; font-size: 14px; }
+.agency-contact__location { padding: 34px 0; border-block: 1px solid #e0ece7; background: #f4f8f7; }
+.agency-contact__location-inner { display: flex; align-items: center; gap: 20px; }
+.agency-contact__place-icon { display: grid; flex: none; place-items: center; width: 60px; height: 60px; border-radius: 17px; background: #dff1e9; color: #12685d; }
+.agency-contact__location h2 { font-size: 25px; color: #0c495c; margin: 0 0 5px; }
+.agency-contact__location p { font-size: 15px; margin-bottom: 0; }
+.agency-contact__location small { display: block; color: #526b71; font-size: 12px; }
+.agency-contact__location-inner>.button { margin-inline-start: auto; flex: none; }
+@media (max-width: 880px) {
+ .agency-contact__grid,.agency-faq-page__grid { grid-template-columns: 1fr; }
+ .agency-contact__hours { max-width: 630px; }
+ .agency-article-index .tiles { grid-template-columns: repeat(2,minmax(0,1fr)); }
+ .agency-contact__location-inner { flex-wrap: wrap; }
+ .agency-contact__location-inner>.button { margin-inline-start: 80px; }
+}
+@media (max-width: 600px) {
+ .agency-page-intro { padding: 33px 0; }
+ .agency-page-intro h1 { font-size: clamp(30px,8.3vw,40px); }
+ .agency-page-intro p { font-size: 15px; }
+ .agency-article-index .tiles { grid-template-columns: 1fr; gap: 10px; }
+ .agency-article-index .tile { display: grid; grid-template-columns: 105px minmax(0,1fr); border-radius: 13px; }
+ .agency-article-index .tile-visual { height: 100%; min-height: 135px; }
+ .agency-article-index .tile-body { padding: 13px; }
+ .agency-article-index .tile-body h3 { font-size: 15px; }
+ .agency-article-index .tile-body p { display: none; }
+ .agency-faq-page__contact { padding: 21px; }
+ .agency-contact__hours { padding: 22px; }
+ .agency-contact__actions { flex-direction: column; }
+ .agency-contact__actions .button { width: 100%; }
+ .agency-contact__location { padding: 25px 0; }
+ .agency-contact__location-inner { gap: 12px; }
+ .agency-contact__place-icon { width: 43px; height: 43px; }
+ .agency-contact__location h2 { font-size: 22px; }
+ .agency-contact__location-inner>.button { width: 100%; margin: 7px 0 0; }
+ .agency-contact__hours dl div { gap: 8px; }
+ .agency-contact__hours dd { white-space: nowrap; }
+}
