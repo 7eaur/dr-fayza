@@ -1,4 +1,5 @@
 import { chromium } from 'playwright';
+import AxeBuilder from '@axe-core/playwright';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -6,12 +7,21 @@ const base = (process.env.CLINIC_PREVIEW_URL || 'https://dr-fayza-git-design-age
 const out = path.resolve('visual-audit');
 fs.mkdirSync(out, { recursive: true });
 
+const allRoutes = [
+  '/', '/about/', '/services/',
+  '/services/pregnancy/', '/services/womens-health/', '/services/fertility/',
+  '/services/ultrasound/', '/services/maternity/', '/services/cosmetic/',
+  '/diagnostics/', '/guides/',
+  '/guides/pregnancy-care/', '/guides/womens-visit/',
+  '/guides/fertility-consultation/', '/guides/ultrasound-guide/',
+  '/faq/', '/contact/', '/missing-page-test'
+];
 const configs = [
   { width: 360, height: 800, routes: ['/', '/contact/'] },
-  { width: 390, height: 844, routes: ['/', '/about/', '/services/', '/services/pregnancy/', '/diagnostics/', '/guides/', '/guides/pregnancy-care/', '/faq/', '/contact/', '/missing-page-test'] },
+  { width: 390, height: 844, routes: allRoutes },
   { width: 768, height: 1024, routes: ['/', '/about/', '/services/', '/guides/', '/contact/'] },
   { width: 1280, height: 800, routes: ['/', '/about/'] },
-  { width: 1440, height: 900, routes: ['/', '/about/', '/services/', '/services/pregnancy/', '/diagnostics/', '/guides/', '/guides/pregnancy-care/', '/faq/', '/contact/', '/missing-page-test'] }
+  { width: 1440, height: 900, routes: allRoutes }
 ];
 const report = {
   url: base,
@@ -68,6 +78,19 @@ for (const config of configs) {
       if (entry.width > entry.viewport + 2) report.errors.push({ width: config.width, route, issue: 'Horizontal scroll overflow: ' + entry.width + ' > ' + entry.viewport });
       if (entry.brokenImages.length) report.errors.push({ width: config.width, route, issue: 'Broken images', images: entry.brokenImages });
       if (entry.missingAlt.length) report.errors.push({ width: config.width, route, issue: 'Image missing alt', images: entry.missingAlt });
+      if ([390, 1440].includes(config.width) && ['/', '/about/', '/services/', '/contact/', '/guides/pregnancy-care/'].includes(route)) {
+        const axe = await new AxeBuilder({ page })
+          .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+          .analyze();
+        const violationRows = axe.violations.map(v => ({
+          id: v.id, impact: v.impact, description: v.help,
+          selectors: v.nodes.map(n => n.target.join(' ')).slice(0, 8)
+        }));
+        const severity = violationRows.filter(x => ['serious', 'critical'].includes(x.impact));
+        const lesser = violationRows.filter(x => !['serious', 'critical'].includes(x.impact));
+        if (severity.length) report.errors.push({ width: config.width, route, issue: 'Axe WCAG severe violations', findings: severity });
+        if (lesser.length) report.warnings.push({ width: config.width, route, issue: 'Axe WCAG lower-severity violations', findings: lesser });
+      }
     } catch (err) {
       report.errors.push({ width: config.width, route, issue: String(err) });
     }

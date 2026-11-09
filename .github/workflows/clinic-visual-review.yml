@@ -20,7 +20,7 @@ jobs:
       - name: Install pinned Playwright
         working-directory: website
         run: |
-          npm install --no-save --ignore-scripts --no-audit playwright@1.56.1
+          npm install --no-save --ignore-scripts --no-audit playwright@1.56.1 @axe-core/playwright@4.10.2
           npx playwright install --with-deps chromium
       - name: Inspect public branch preview
         working-directory: website
