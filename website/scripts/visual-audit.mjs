@@ -33,7 +33,16 @@ for (const config of configs) {
     const is404 = route === '/missing-page-test';
     try {
       const response = await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      await page.waitForTimeout(500);
+      await page.evaluate(async () => {
+        // Full-page capture does not scroll the page; trigger lazy images explicitly.
+        const images = [...document.images];
+        for (const image of images) image.loading = 'eager';
+        await Promise.race([
+          Promise.all(images.map(image => image.decode().catch(() => null))),
+          new Promise(resolve => setTimeout(resolve, 15000))
+        ]);
+      });
+      await page.waitForTimeout(250);
       const d = await page.evaluate(() => ({
         title: document.title,
         h1Count: document.querySelectorAll('h1').length,
