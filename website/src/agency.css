@@ -303,3 +303,6 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
   .agency-page-intro { padding-block: 50px; }
   .agency-services-page,.agency-contact,.agency-article-index,.agency-faq-page { padding-block: 76px; }
 }
+
+/* Axe WCAG AA: breadcrumb text contrast on light interior backgrounds. */
+.breadcrumbs, .agency-page-intro .breadcrumbs { color: #526b71; }
