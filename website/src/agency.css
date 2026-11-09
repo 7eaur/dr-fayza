@@ -382,3 +382,15 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
   .agency-mission__grid h3 { font-size: 20px; margin: 7px 0; }
   .agency-mission__grid p { font-size: 14px; }
 }
+
+/* Mobile journey polish: avoid a second full-width CTA panel after an existing contact panel. */
+.agency-related-action {
+ display:flex; align-items:center; justify-content:space-between; gap:16px;
+ border-top:1px solid #dceae4; padding-top:20px; margin-top:24px;
+ color:#526b71; font-size:14px;
+}
+.agency-related-action .button { flex:none; }
+@media(max-width:600px) {
+ .agency-related-action { align-items:stretch; flex-direction:column; gap:10px; margin-top:18px; }
+ .agency-related-action .button { width:100%; min-height:44px; }
+}
