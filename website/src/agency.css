@@ -616,3 +616,6 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
 .clinic-footer__meta p,
 .clinic-footer__meta a { color:#476267; }
 .clinic-footer__meta a:hover { color:#0c574f; }
+
+/* Preserve readable breadcrumb category labels on editorial page heroes. */
+.clinic-inner-hero__copy .breadcrumbs, .clinic-inner-hero__copy .breadcrumbs span, .clinic-inner-hero__copy .breadcrumbs a { color:#355b60; opacity:1; }
