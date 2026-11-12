@@ -110,10 +110,17 @@ function footer() {
  '<div class="clinic-footer__meta"><p>جميع الحقوق محفوظة © <span id="year">2026</span> '+site.short+'</p><p><a href="/privacy/">سياسة الخصوصية</a> <span aria-hidden="true">·</span> تطوير <a href="https://www.wasl-tech.com" target="_blank" rel="noopener noreferrer">وصل تك</a></p></div></div></footer>';
 }
 function cta(title = 'هل تريدين معرفة الخطوة التالية؟') {
-  return '<section class="cta"><div class="container cta-inner"><div><span class="kicker kicker-light">تواصلي قبل الزيارة</span><h2>' + title + '</h2><p>اسألي عن الخدمة المناسبة، الدوام، أو طريقة الوصول قبل الحضور.</p></div><div class="cta-actions">' + link(site.whatsapp, 'اسألي عبر واتساب', 'white', 'message') + link(site.call, 'اتصلي الآن', 'ghost', 'phone') + '</div></div></section>';
+  return '<section class="cta clinic-page-cta"><div class="container cta-inner"><div><span class="kicker kicker-light">تواصلي قبل الزيارة</span><h2>' + title + '</h2><p>اسألي عن الخدمة المناسبة، الدوام، أو طريقة الوصول قبل الحضور.</p></div><div class="cta-actions">' + link(site.whatsapp, 'اسألي عبر واتساب', 'white', 'message') + link(site.call, 'اتصلي الآن', 'ghost', 'phone') + '</div></div></section>';
 }
-function pageHead(kicker, title, sub, art = 'motherhood', variant = '') {
-  return '<section class="page-head ' + (variant ? 'page-head--' + variant : '') + '"><div class="container page-head-grid"><div><div class="breadcrumbs"><a href="/">الرئيسية</a><span>/</span><span>' + title + '</span></div><span class="kicker">' + kicker + '</span><h1>' + title + '</h1><p>' + sub + '</p></div><div class="page-art"><img src="/assets/illustrations/' + art + '.svg" alt="" aria-hidden="true" width="960" height="640" loading="lazy"></div></div></section>';
+const innerHero = (kicker,title,desc,asset='hero-mother-care.webp',mode='image') =>
+ '<section class="clinic-inner-hero"><div class="container clinic-inner-hero__grid">'+
+ '<div class="clinic-inner-hero__copy"><nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><span>'+kicker+'</span></nav><span class="kicker">'+kicker+'</span><h1>'+title+'</h1><p>'+desc+'</p></div>'+
+ '<div class="clinic-inner-hero__visual"><img src="'+(mode==='svg'?'/assets/illustrations/'+asset+'.svg':'/assets/generated/'+asset)+'" alt="'+(mode==='svg'?'رسم توضيحي':'صورة تحريرية توضيحية عامة، وليست صورة لمقر العيادة أو الطبيبة')+'" width="960" height="540" loading="eager" decoding="async"></div>'+
+ '</div></section>';
+function pageHead(kicker,title,sub,art='motherhood',variant='') {
+ const assets={motherhood:'hero-mother-care.webp',pregnancy:'pregnancy-care.webp',womens:'womens-consultation.webp',fertility:'fertility-support.webp',diagnostics:'diagnostics'};
+ const asset=assets[art]||'hero-mother-care.webp';
+ return innerHero(kicker,title,sub,asset,art==='diagnostics'?'svg':'image');
 }
 function values() {
   return '<section class="section values-section"><div class="container"><div class="heading"><span class="kicker">طريقة الرعاية</span><h2>معلومات أوضح، وقرار أهدأ</h2><p>نشرح ما نعرفه، نوضح ما يحتاج إلى تقييم، ولا نستبدل الاستشارة الطبية بتخمينات عامة.</p></div><div class="values-grid"><article class="value-item"><span class="value-icon">' + ico('message') + '</span><div><h3>نستمع أولًا</h3><p>وصفك للأعراض وتاريخك الصحي جزء أساسي من فهم الحالة.</p></div></article><article class="value-item"><span class="value-icon">' + ico('shield') + '</span><div><h3>نحترم الخصوصية</h3><p>نحافظ على لغة محترمة ومعلومات مسؤولة دون مبالغة أو وعود.</p></div></article><article class="value-item"><span class="value-icon">' + ico('arrow') + '</span><div><h3>نوضح الخطوة التالية</h3><p>تخرجين من الزيارة وأنت تعرفين ما يلزم متابعته أو السؤال عنه.</p></div></article></div></div></section>';
@@ -228,10 +235,9 @@ function home() {
 }
 function about() {
   return [
-    '<section class="agency-profile"><div class="container agency-profile__intro"><div class="breadcrumbs"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><span>عن الدكتورة</span></div><span class="kicker">التعريف بالدكتورة</span><h1>الدكتورة فايزة علي ناصر الوصابي</h1><p class="agency-profile__lead">استشارية أمراض وجراحة النساء والتوليد والعقم</p><p>مجال طبي يجمع بين متابعة رحلة الحمل، ورعاية صحة المرأة في مراحلها المختلفة، وفهم التحديات المتعلقة بالإنجاب. الهدف من هذه الصفحة أن تتعرفي على خلفية الطبيبة وطبيعة الرعاية التي تسعين إليها.</p></div></section>',
+    innerHero('عن الدكتورة','الدكتورة فايزة علي ناصر الوصابي','استشارية أمراض وجراحة النساء والتوليد والعقم؛ رعاية تشمل صحة المرأة ومتابعة الحمل والخصوبة، مع اهتمام بالتقييم الواضح لكل حالة.','womens-consultation.webp'),
     '<section class="section"><div class="container agency-profile__grid"><article class="agency-profile__story"><span class="kicker">النهج المهني</span><h2>الاهتمام بالتفاصيل يصنع فرقًا في فهم الحالة</h2><p>لكل مراجعة تاريخ صحي وظروف مختلفة. تبدأ الاستشارة بفهم الشكوى وأهداف الزيارة، ثم ربط الأعراض والتقارير المتاحة بخيارات الفحص والمتابعة. وتبقى الأسئلة جزءًا طبيعيًا من الحوار الطبي، سواء كانت الزيارة لأول مرة أو ضمن متابعة مستمرة.</p><p>تشمل مجالات الاهتمام صحة المرأة والحمل والولادة وتأخر الإنجاب والاستشارات النسائية التجميلية، مع توجيه كل حالة إلى التقييم المناسب بدل افتراض أن الحل واحد للجميع.</p></article><aside class="agency-profile__credentials"><span class="kicker">التأهيل المهني</span><h2>المؤهلات</h2><ul class="check-list"><li>'+ico('check')+'دكتوراه زمالة عربية (الأردن)</li><li>'+ico('check')+'دكتوراه زمالة يمنية</li><li>'+ico('check')+'دبلوم تجميل نسائي</li><li>'+ico('check')+'دبلوم طب الإنجاب والإخصاب المساعد (IVF)</li></ul></aside></div></section>',
     '<section class="agency-mission" aria-labelledby="agency-mission-title"><div class="container"><div class="agency-section-head"><div><span class="kicker">ما نطمح إليه</span><h2 id="agency-mission-title">رؤيتنا ورسالتنا</h2><p>توجه تحريري للعيادة يضع احتياجات المرأة وفهمها للخيارات الطبية في المقدمة.</p></div></div><div class="agency-mission__grid"><article><span>01 / الرؤية</span><h3>رعاية نسائية أقرب إلى احتياجات كل امرأة</h3><p>أن تكون العيادة وجهة معروفة في ذمار للاستشارة النسائية المتخصصة، حيث تجد المرأة مساحة لطرح أسئلتها، وفهم خياراتها، ومتابعة صحتها بوعي في كل مرحلة من حياتها.</p></article><article><span>02 / الرسالة</span><h3>الجمع بين التخصص والوضوح والاحترام</h3><p>نسعى إلى تقديم رعاية واستشارات في أمراض النساء والولادة والخصوبة، تقوم على الإنصات والتقييم المناسب وتوضيح خطوات المتابعة، مع احترام الخصوصية والاختلافات الفردية بين المراجعات.</p></article></div></div></section>',
-    editorialSection('القيم التي توجهنا','ما الذي يهمنا في تجربة المراجعة؟','ليست الزيارة مجرد قائمة فحوصات؛ بل تجربة تحتاج إلى تواصل وتفسير واهتمام.',[['الإنصات دون أحكام','نتعامل مع الأسئلة الحساسة والقلق والتردد باحترام، ونمنح الوصف الشخصي للأعراض قيمته.'],['قرارات مبنية على التقييم','نوضح ما قد يلزم من فحص أو متابعة بحسب الحالة، مع تجنب الوعود أو التعميم.'],['متابعة تفهمين هدفها','من حق المراجعة أن تعرف سبب الفحص، ومعنى النتيجة، ومتى يلزم الرجوع أو طلب المساعدة.']]),
     editorialSection('مراحل من حياة المرأة','احتياجات تتغير ورعاية تتطور','تختلف الأسئلة الصحية من سن إلى آخر، ولهذا لا تُختصر صحة المرأة في الحمل والولادة فقط.',[['الصحة النسائية اليومية','متابعة اضطرابات الدورة وآلام الحوض والأسئلة المتعلقة بالهرمونات وتنظيم الأسرة.'],['الحمل والأمومة','مراجعات الحمل والاستعداد للولادة، ومناقشة ما يتغير قبل الحمل وبعده.'],['الخصوبة والقرارات الشخصية','فهم أسباب تأخر الإنجاب أو مناقشة خيارات نسائية أخرى وفق الأهداف والحالة الصحية.']]),
     cta('هل ترغبين في معرفة الخدمة التي تناسب استفساركِ؟')
   ].join('');
@@ -239,7 +245,7 @@ function about() {
 
 function servicesPage() {
  return [
- '<section class="agency-page-intro"><div class="container"><div class="breadcrumbs"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><span>الخدمات</span></div><span class="kicker">مجالات الرعاية</span><h1>خدمات طبية ترافق المرأة في مراحل مختلفة</h1><p>من الأسئلة اليومية عن الدورة وصحة الحوض إلى متابعة الحمل والخصوبة، اختاري المجال الذي تبحثين عنه. تحتوي كل صفحة على شرح لما يمكن مناقشته وأسئلة تساعدك في التحضير.</p></div></section>',
+ innerHero('الخدمات الطبية','رعاية تناسب مراحل مختلفة من حياتكِ','استكشفي مجالات النساء والتوليد والحمل والخصوبة، وتعرّفي على تفاصيل كل خدمة والأسئلة المناسبة قبل الزيارة.','pregnancy-care.webp'),
  '<section class="section agency-services-page"><div class="container"><div class="cards agency-services__cards">'+services.map(card).join('')+'</div></div></section>',
  editorialSection('كيف تختارين الخدمة؟','ثلاثة أمور تساعدك على البدء','لا تحتاجين إلى معرفة اسم الفحص أو تشخيص الحالة قبل التواصل؛ ابدئي بوصف ما تحتاجينه.',[['حددي سبب الزيارة','هل لديك عرض جديد، أم متابعة سابقة، أم سؤال عن الحمل أو الإنجاب؟'],['جهزي ما لديك','التحاليل والتقارير والأدوية السابقة تساعد على تجنب تكرار التفاصيل.'],['اسألي عن الخطوة التالية','يمكنك الاستفسار عن توفر الخدمة والتحضير والتوقيت المناسب قبل الحضور.']]),
  '<section class="section alt"><div class="container">'+heading('خدمات مساندة','المختبر والسونار','الفحوصات تدعم القرار الطبي عندما تدعو الحاجة إليها؛ تابعي صفحة الفحوصات لمعرفة دورها وما الذي ينبغي سؤاله قبل إجرائها.')+link('/diagnostics/','تفاصيل الفحوصات والمختبر','line','arrow')+'</div></section>',
@@ -265,16 +271,18 @@ function diagnostics() {
 
 function guides() {
   return [
-    "<section class=\"agency-page-intro\"><div class=\"container\"><div class=\"breadcrumbs\"><a href=\"/\">الرئيسية</a><span aria-hidden=\"true\">/</span><span>التوعية الصحية</span></div><span class=\"kicker\">التوعية الصحية</span><h1>معلومات مفهومة قبل زيارتكِ</h1><p>مقالات تثقيفية عامة عن الحمل وصحة المرأة وتأخر الإنجاب. خذي منها الأسئلة المفيدة لاستشارتكِ، وليس تشخيصًا لحالتكِ.</p></div></section><section class=\"section agency-article-index\"><div class=\"container\"><div class=\"note agency-article-index__notice\">إذا كنتِ تعانين من أعراض شديدة أو مفاجئة، اطلبي تقييمًا طبيًا عاجلًا ولا تنتظري الرد على الرسائل.</div><div class=\"tiles\">",
+    innerHero('التوعية الصحية','معلومات تساعدكِ على فهم صحتكِ','مقالات مبسطة عن الحمل وصحة المرأة وتأخر الإنجاب، لتجهيزي أسئلتك قبل الاستشارة.','fertility-support.webp'),
+    "<section class=\"section agency-article-index\"><div class=\"container\"><div class=\"note agency-article-index__notice\">إذا كنتِ تعانين من أعراض شديدة أو مفاجئة، اطلبي تقييمًا طبيًا عاجلًا ولا تنتظري الرد على الرسائل.</div><div class=\"tiles\">",
     articles.map(articleTile).join(''),
     "</div></div></section>",
     cta('لديكِ استفسار عن المتابعة؟')
   ].join('');
 }
-function article(a) { return pageHead(a.category, a.title, a.desc, 'motherhood', 'compact') + '<article class="section"><div class="container article-layout"><div class="article-main"><div class="article-cover"><img src="/assets/generated/' + a.image + '" alt="صورة تحريرية عامة عن ' + a.category + '" width="960" height="720" loading="eager"></div><div class="note">هذه معلومات تثقيفية عامة وليست تشخيصًا أو خطة علاج شخصية.</div>' + a.parts.map(([h, p]) => '<h2>' + h + '</h2><p>' + p + '</p>').join('') + '<p class="article-signoff">إذا كانت لديك حالة أو أعراض مقلقة، تواصلي مع الطبيبة لتحديد ما يلزم من تقييم ومتابعة.</p><a class="text-link" href="/guides/">عودة إلى التوعية الصحية ' + ico('arrow') + '</a></div><aside class="article-aside"><span class="kicker">هل لديك سؤال؟</span><h3>خذي المعلومة إلى استشارة مناسبة</h3><p>المقال يشرح الفكرة العامة، أما القرار الطبي فيعتمد على حالتك وتاريخك الصحي.</p>' + link(site.whatsapp, 'اسألي عبر واتساب', 'solid', 'message') + '</aside></div></article>'; }
+function article(a) { return innerHero(a.category,a.title,a.desc,a.image) + '<article class="section clinic-article"><div class="container article-layout"><div class="article-main"><div class="note">هذه معلومات تثقيفية عامة وليست تشخيصًا أو خطة علاج شخصية.</div>' + a.parts.map(([h, p]) => '<h2>' + h + '</h2><p>' + p + '</p>').join('') + '<p class="article-signoff">إذا كانت لديك حالة أو أعراض مقلقة، تواصلي مع الطبيبة لتحديد ما يلزم من تقييم ومتابعة.</p><a class="text-link" href="/guides/">عودة إلى التوعية الصحية ' + ico('arrow') + '</a></div><aside class="article-aside"><span class="kicker">هل لديك سؤال؟</span><h3>خذي المعلومة إلى استشارة مناسبة</h3><p>المقال يشرح الفكرة العامة، أما القرار الطبي فيعتمد على حالتك وتاريخك الصحي.</p>' + link(site.whatsapp, 'اسألي عبر واتساب', 'solid', 'message') + '</aside></div></article>'; }
 function faqPage() {
   return [
-    "<section class=\"agency-page-intro\"><div class=\"container\"><div class=\"breadcrumbs\"><a href=\"/\">الرئيسية</a><span aria-hidden=\"true\">/</span><span>الأسئلة الشائعة</span></div><span class=\"kicker\">قبل الزيارة</span><h1>إجابات عن الأسئلة الشائعة</h1><p>المواعيد والخدمات والتواصل ومكان الوصول، تجدين أهم التفاصيل هنا.</p></div></section><section class=\"section agency-faq-page\"><div class=\"container agency-faq-page__grid\"><div>",
+    innerHero('الأسئلة الشائعة','كل ما يهمك قبل الزيارة','إجابات واضحة عن التواصل والدوام والخدمات والموقع والتحضير للاستشارة.','motherhood','svg'),
+    "<section class=\"section agency-faq-page\"><div class=\"container agency-faq-page__grid\"><div>",
     faq(faqs),
     "</div><aside class=\"agency-faq-page__contact\"><span class=\"kicker\">هل لديكِ سؤال آخر؟</span><h2>تواصلي مع العيادة مباشرة</h2><p>يمكنكِ التأكد من الخدمة والوقت المناسب قبل الحضور.</p>",
     link(site.whatsapp, 'اسألي عبر واتساب', 'solid', 'message'),
@@ -284,7 +292,8 @@ function faqPage() {
 }
 function contact() {
   return [
-    "<section class=\"agency-page-intro\"><div class=\"container\"><div class=\"breadcrumbs\"><a href=\"/\">الرئيسية</a><span aria-hidden=\"true\">/</span><span>التواصل</span></div><span class=\"kicker\">الزيارة والتواصل</span><h1>نحن هنا للإجابة عن استفساركِ</h1><p>اسألي عن الخدمة أو وقت الزيارة، وتحققي من تفاصيل الوصول قبل الحضور.</p></div></section><section class=\"section agency-contact\"><div class=\"container agency-contact__grid\"><div><span class=\"kicker\">اتصال مباشر</span><h2>اختاري طريقة التواصل المناسبة لكِ</h2><p>للأسئلة عن الخدمات وتوفرها وتوقيت المراجعة، اتصلي أو أرسلي رسالة عبر واتساب.</p><div class=\"agency-contact__actions\">",
+    innerHero('تواصلي معنا','نساعدكِ على الوصول والاستفسار','تواصلي عبر الهاتف أو واتساب لمعرفة الوقت المناسب، أو اطلعي على العنوان وساعات الدوام.','motherhood','svg'),
+    "<section class=\"section agency-contact\"><div class=\"container agency-contact__grid\"><div><span class=\"kicker\">اتصال مباشر</span><h2>اختاري طريقة التواصل المناسبة لكِ</h2><p>للأسئلة عن الخدمات وتوفرها وتوقيت المراجعة، اتصلي أو أرسلي رسالة عبر واتساب.</p><div class=\"agency-contact__actions\">",
     link(site.call, 'اتصلي الآن · 785600066', 'solid', 'phone'),
     link(site.whatsapp, 'افتحي محادثة واتساب', 'line', 'message'),
     "</div><p class=\"agency-contact__privacy\">لا ترسلي صورًا أو معلومات طبية حساسة إلا عبر قناة تنصح بها العيادة.</p></div><aside class=\"agency-contact__hours\"><span class=\"agency-contact__small\">أوقات الدوام الاعتيادي</span><strong>السبت إلى الخميس</strong><dl><div><dt>الفترة الصباحية</dt><dd>8:00 ص – 1:00 م</dd></div><div><dt>الفترة المسائية</dt><dd>4:00 م – 8:00 م</dd></div></dl></aside></div></section><section class=\"agency-contact__location\"><div class=\"container agency-contact__location-inner\"><span class=\"agency-contact__place-icon\">",
@@ -299,7 +308,7 @@ function contact() {
   ].join('');
 }
 function privacyPage() {
-  return '<section class="agency-page-intro"><div class="container"><div class="breadcrumbs"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><span>الخصوصية</span></div><span class="kicker">معلومات شفافة</span><h1>الخصوصية واستخدام الموقع</h1><p>كيف يعمل هذا الموقع وما الذي يحدث عند استخدام وسائل التواصل الخارجية.</p></div></section>' +
+  return innerHero('الخصوصية','الخصوصية واستخدام الموقع','معلومات واضحة حول تصفح الموقع وروابط الاتصال والخدمات الخارجية.','diagnostics','svg') +
     '<section class="section agency-privacy"><div class="container agency-privacy__content"><h2>تصفح الموقع</h2><p>الموقع يقدم معلومات عامة عن العيادة وخدماتها. لا يتضمن حالياً حسابات مستخدمين أو نماذج تطلب ملفات صحية أو معلومات مرضى.</p>' +
     '<h2>بيانات تقنية</h2><p>قد تعالج جهة الاستضافة بيانات تقنية لازمة لتقديم صفحات الموقع وحمايتها، مثل عنوان الإنترنت ومعلومات الطلب. تُحمّل الخطوط المعروضة عبر خدمات Google Fonts، وقد يتصل متصفحك بخوادمها.</p>' +
     '<h2>روابط الخدمات الخارجية</h2><p>عند اختيار واتساب أو الاتصال أو البحث عن العنوان في خرائط Google، تنتقلين إلى خدمة أخرى تخضع لشروطها وسياسة خصوصيتها. لا ترسلي معلومات صحية حساسة في رسائل عامة دون التأكد من قناة التواصل المناسبة مع العيادة.</p>' +

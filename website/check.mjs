@@ -53,10 +53,10 @@ if(!privacyHtml.includes('الخصوصية واستخدام الموقع')) issu
 if(!homeHtml.includes('https://www.google.com/maps/search/')) issues.push('Map search link missing');
 if(!aboutHtml.includes('رؤيتنا ورسالتنا')) issues.push('Clinic story missing');
 if(!homeHtml.includes('OpeningHoursSpecification')) issues.push('Opening hours missing from structured data');
-if(!fs.readFileSync(path.join(root,'services/pregnancy/index.html'),'utf8').includes('compact')) { 
+if(!fs.readFileSync(path.join(root,'services/pregnancy/index.html'),'utf8').includes('clinic-inner-hero')) { 
   // Page-head compact hides duplicated decorative art above service content.
   const servicePage=fs.readFileSync(path.join(root,'services/pregnancy/index.html'),'utf8');
-  if(!servicePage.includes('page-head--compact')) issues.push('Interior service header too tall');
+  if(!servicePage.includes('clinic-inner-hero__grid')) issues.push('Interior service hero missing');
 }
 if(issues.length){console.error(issues.join('\n'));process.exit(1);}
 console.log('Unified clinic release gates passed.');
