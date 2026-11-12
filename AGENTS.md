@@ -3,4 +3,4 @@ Before editing website HTML/CSS/JS, run the agency skill router: [agency-design-
 
 Use `website/build.mjs` for page content, `website/src/styles.css` for base styling and `website/src/client.js` for behavior. Preserve all routes. Never publish medical claims not verified by the master document. Do not modify production `main` unless explicitly authorized.
 
-Active design plan: [docs/agency-redesign-plan-20261109.md](docs/agency-redesign-plan-20261109.md).
+Unified site release reference: [docs/SITE_RELEASE.md](docs/SITE_RELEASE.md).

@@ -6,7 +6,7 @@ Before working on this clinic website:
 
 1. Read `SKILL.md` and **all four** `references/*.md` files.
 2. Read `docs/CLINIC_MASTER.md` and `brand/guidelines/VISUAL_IDENTITY.md` from the repository root.
-3. Follow `docs/agency-redesign-plan-20261109.md` and record quality checks in `docs/agency-redesign-qa-20261109.md`.
+3. Follow `docs/SITE_RELEASE.md`, recording new tests in that single release record; keep the brand and official clinic records as their own authoritative references.
 4. Keep clinical facts, logo and official contact details unchanged unless confirmed by the project owner. No unsupported outcomes, prices, facilities, testimonials or locations.
 5. Preserve accessibility and mobile-first responsiveness; avoid a generic template or repeated large mobile cards.
 6. Do not merge into `main` without explicit project review and permission.
