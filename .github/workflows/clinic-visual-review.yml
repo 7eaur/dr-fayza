@@ -1,0 +1,46 @@
+name: Clinic Design Visual QA
+on:
+  push:
+    branches:
+      - release/clinic-unified-20261112
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Install pinned Playwright
+        working-directory: website
+        run: |
+          npm install --no-save --ignore-scripts --no-audit playwright@1.56.1 @axe-core/playwright@4.10.2
+          npx playwright install --with-deps chromium
+      - name: Build static site
+        working-directory: website
+        run: npm run build
+      - name: Inspect exact built commit in browser
+        working-directory: website
+        env:
+          CLINIC_PREVIEW_URL: http://127.0.0.1:8000
+        run: |
+          node scripts/audit-server.mjs > "${RUNNER_TEMP}/clinic-audit-server.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" || true' EXIT
+          sleep 2
+          node scripts/visual-audit.mjs
+      - name: Upload visual report and screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: dr-fayza-agency-visual-audit
+          path: website/visual-audit/
+          if-no-files-found: warn
+          retention-days: 14
