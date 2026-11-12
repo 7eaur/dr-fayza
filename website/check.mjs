@@ -1,4 +1,4 @@
-import fs from 'node:fs';import path from 'node:path';const root=path.join(process.cwd(),'dist');const files=[];function scan(dir){for(const x of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,x.name);if(x.isDirectory())scan(p);else files.push(path.relative(root,p).replaceAll('\\','/'));}}scan(root);const pages=files.filter(p=>p.endsWith('index.html'));const issues=[];if(pages.length!==17)issues.push('Expected 17 HTML pages; got '+pages.length);for(const p of pages){const html=fs.readFileSync(path.join(root,p),'utf8');const title=html.match(/<title>(.*?)<\/title>/)?.[1];if(!title)issues.push('Missing title: '+p);if(!html.includes('name="description"'))issues.push('Missing description: '+p);if(!html.includes('<main id="main">'))issues.push('Missing main: '+p);for(const m of html.matchAll(/(?:href|src)="(\/[^"#?]*)/g)){let u=m[1];if(u==='/')u='index.html';else if(u.endsWith('/'))u+='index.html';else u=u.slice(1);if(u.startsWith('/'))u=u.slice(1);if(!files.includes(u))issues.push(p+' => missing '+m[1]);}if((html.match(/<h1\b/g)||[]).length!==1)issues.push('Expected one h1: '+p);}if(issues.length){console.error(issues.join('\n'));process.exit(1);}console.log('Verified '+pages.length+' static pages and '+files.length+' total output files.');
+import fs from 'node:fs';import path from 'node:path';const root=path.join(process.cwd(),'dist');const files=[];function scan(dir){for(const x of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,x.name);if(x.isDirectory())scan(p);else files.push(path.relative(root,p).replaceAll('\\','/'));}}scan(root);const pages=files.filter(p=>p.endsWith('index.html'));const issues=[];if(pages.length!==18)issues.push('Expected 18 HTML pages; got '+pages.length);for(const p of pages){const html=fs.readFileSync(path.join(root,p),'utf8');const title=html.match(/<title>(.*?)<\/title>/)?.[1];if(!title)issues.push('Missing title: '+p);if(!html.includes('name="description"'))issues.push('Missing description: '+p);if(!html.includes('<main id="main">'))issues.push('Missing main: '+p);for(const m of html.matchAll(/(?:href|src)="(\/[^"#?]*)/g)){let u=m[1];if(u==='/')u='index.html';else if(u.endsWith('/'))u+='index.html';else u=u.slice(1);if(u.startsWith('/'))u=u.slice(1);if(!files.includes(u))issues.push(p+' => missing '+m[1]);}if((html.match(/<h1\b/g)||[]).length!==1)issues.push('Expected one h1: '+p);}if(issues.length){console.error(issues.join('\n'));process.exit(1);}console.log('Verified '+pages.length+' static pages and '+files.length+' total output files.');
 
 
 // Agency redesign acceptance gates. These are static checks, not a visual-browser audit.
@@ -47,3 +47,16 @@ const agencyCssMobile=fs.readFileSync(path.join(root,'styles/agency.css'),'utf8'
 if(!agencyCssMobile.includes('.section .cards:not(.agency-services__cards)')) issues.push('Mobile related service layout regression');
 if(issues.length){console.error(issues.join('\n'));process.exit(1);}
 console.log('Agency mobile UX and content coverage gates passed.');
+
+const privacyHtml=fs.readFileSync(path.join(root,'privacy/index.html'),'utf8');
+if(!privacyHtml.includes('الخصوصية واستخدام الموقع')) issues.push('Privacy page missing');
+if(!homeHtml.includes('https://www.google.com/maps/search/')) issues.push('Map search link missing');
+if(!aboutHtml.includes('رؤيتنا ورسالتنا')) issues.push('Clinic story missing');
+if(!homeHtml.includes('OpeningHoursSpecification')) issues.push('Opening hours missing from structured data');
+if(!fs.readFileSync(path.join(root,'services/pregnancy/index.html'),'utf8').includes('compact')) { 
+  // Page-head compact hides duplicated decorative art above service content.
+  const servicePage=fs.readFileSync(path.join(root,'services/pregnancy/index.html'),'utf8');
+  if(!servicePage.includes('page-head--compact')) issues.push('Interior service header too tall');
+}
+if(issues.length){console.error(issues.join('\n'));process.exit(1);}
+console.log('Unified clinic release gates passed.');

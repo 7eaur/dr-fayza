@@ -2,7 +2,8 @@ name: Clinic Design Visual QA
 on:
   push:
     branches:
-      - design/agency-suite-fayza-20261109
+      - release/clinic-unified-20261112
+      - main
   workflow_dispatch:
 
 permissions:
@@ -25,7 +26,7 @@ jobs:
       - name: Inspect public branch preview
         working-directory: website
         env:
-          CLINIC_PREVIEW_URL: https://dr-fayza-git-design-agency-suite-fayza-20261109-wasl15.vercel.app
+          CLINIC_PREVIEW_URL: https://dr-fayza-git-release-clinic-unified-20261112-wasl15.vercel.app
         run: node scripts/visual-audit.mjs
       - name: Upload visual report and screenshots
         if: always()

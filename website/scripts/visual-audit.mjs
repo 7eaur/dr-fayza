@@ -14,11 +14,11 @@ const allRoutes = [
   '/diagnostics/', '/guides/',
   '/guides/pregnancy-care/', '/guides/womens-visit/',
   '/guides/fertility-consultation/', '/guides/ultrasound-guide/',
-  '/faq/', '/contact/', '/missing-page-test'
+  '/faq/', '/contact/', '/privacy/', '/missing-page-test'
 ];
 const configs = [
   { width: 320, height: 700, routes: ['/', '/about/', '/services/pregnancy/', '/contact/'] },
-  { width: 360, height: 800, routes: ['/', '/contact/'] },
+  { width: 360, height: 800, routes: ['/', '/contact/', '/privacy/'] },
   { width: 390, height: 844, routes: allRoutes },
   { width: 768, height: 1024, routes: ['/', '/about/', '/services/', '/guides/', '/contact/'] },
   { width: 1280, height: 800, routes: ['/', '/about/'] },
@@ -86,7 +86,7 @@ for (const config of configs) {
           report.errors.push({ width: config.width, route, issue: 'Unusable narrow related service cards', relatedCardWidths });
         }
       }
-      if ([390, 1440].includes(config.width) && ['/', '/about/', '/services/', '/contact/', '/guides/pregnancy-care/'].includes(route)) {
+      if ([390, 1440].includes(config.width) && ['/', '/about/', '/services/', '/contact/', '/guides/pregnancy-care/', '/privacy/'].includes(route)) {
         const axe = await new AxeBuilder({ page })
           .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
           .analyze();

@@ -394,3 +394,21 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
  .agency-related-action { align-items:stretch; flex-direction:column; gap:10px; margin-top:18px; }
  .agency-related-action .button { width:100%; min-height:44px; }
 }
+
+/* Consolidated release — accessible mobile navigation and compact reading pages. */
+@media (max-width: 880px) {
+  .nav { max-height: calc(100dvh - 84px); overflow-y: auto; overscroll-behavior: contain; }
+}
+.agency-privacy__content { max-width: 760px; }
+.agency-privacy__content h2 { color: #0c495c; font-size: 23px; margin: 25px 0 6px; }
+.agency-privacy__content h2:first-child { margin-top: 0; }
+.agency-privacy__content p { color: #526b71; font-size: 15px; line-height: 1.95; }
+.agency-privacy__content a { color: #12685d; text-decoration: underline; text-underline-offset: 3px; }
+.agency-privacy__note { border-inline-start: 3px solid #45a18e; padding-inline-start: 14px; margin-top: 30px; }
+@media (max-width: 600px) {
+  .page-head--compact { padding-block: 24px 20px; }
+  .page-head--compact h1 { font-size: clamp(28px, 7.6vw, 38px); }
+  .agency-privacy { padding-block: 36px; }
+  .agency-privacy__content h2 { font-size: 20px; }
+  .agency-privacy__content p { font-size: 14px; }
+}
