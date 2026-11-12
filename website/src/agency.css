@@ -412,3 +412,18 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
   .agency-privacy__content h2 { font-size: 20px; }
   .agency-privacy__content p { font-size: 14px; }
 }
+
+
+/* Expanded editorial content: readable, varied sections without repeating service cards. */
+.editorial-block { background:#fff; }
+.editorial-block:nth-of-type(even) { background:#f7faf8; }
+.editorial-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+.editorial-item { padding:26px 24px; border:1px solid #dbeae4; border-radius:18px; background:#fafdfb; min-width:0; }
+.editorial-number { display:inline-block; margin-bottom:12px; font-size:13px; font-weight:700; color:#237969; }
+.editorial-item h3 { color:#0c495c; font-size:clamp(19px,1.9vw,23px); line-height:1.45; margin:0 0 12px; }
+.editorial-item p { color:#526b71; font-size:15px; line-height:1.95; margin:0; }
+.editorial-questions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; list-style:none; padding:0; margin:0; }
+.editorial-questions li { background:white; border:1px solid #dceae4; border-radius:13px; padding:16px; font-size:15px; line-height:1.8; }
+.editorial-questions li .ico { color:#237969; }
+@media(max-width:880px) { .editorial-grid { grid-template-columns:1fr 1fr; gap:12px; } .editorial-questions { grid-template-columns:1fr; } }
+@media(max-width:600px) { .editorial-grid { grid-template-columns:1fr; gap:11px; } .editorial-item { padding:20px; border-radius:13px; } .editorial-item h3 { font-size:19px; } .editorial-item p { font-size:14px; } .editorial-questions li { font-size:14px; } }
