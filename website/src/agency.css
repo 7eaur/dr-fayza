@@ -609,3 +609,10 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
 .clinic-page-cta .cta-actions .button{min-height:40px;white-space:nowrap;font-size:12px;padding:8px 12px}
 @media(max-width:680px){.clinic-page-cta .cta-inner{grid-template-columns:1fr;padding:19px 16px;gap:11px}.clinic-page-cta .cta-actions .button{flex:1;min-width:0}.clinic-page-cta .cta-inner h2{font-size:20px}}
 @media(max-width:360px){.clinic-page-cta .cta-actions{flex-direction:column;align-items:stretch}.clinic-page-cta .cta-actions .button{width:100%}}
+
+
+/* WCAG contrast corrections for the shared process and footer on light surfaces. */
+.clinic-process__timeline small { color:#4b6662; }
+.clinic-footer__meta p,
+.clinic-footer__meta a { color:#476267; }
+.clinic-footer__meta a:hover { color:#0c574f; }
