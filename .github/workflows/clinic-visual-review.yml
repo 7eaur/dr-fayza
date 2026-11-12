@@ -23,11 +23,19 @@ jobs:
         run: |
           npm install --no-save --ignore-scripts --no-audit playwright@1.56.1 @axe-core/playwright@4.10.2
           npx playwright install --with-deps chromium
-      - name: Inspect public branch preview
+      - name: Build static site
+        working-directory: website
+        run: npm run build
+      - name: Inspect exact built commit in browser
         working-directory: website
         env:
-          CLINIC_PREVIEW_URL: https://dr-fayza-git-release-clinic-unified-20261112-wasl15.vercel.app
-        run: node scripts/visual-audit.mjs
+          CLINIC_PREVIEW_URL: http://127.0.0.1:8000
+        run: |
+          node scripts/audit-server.mjs > "${RUNNER_TEMP}/clinic-audit-server.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" || true' EXIT
+          sleep 2
+          node scripts/visual-audit.mjs
       - name: Upload visual report and screenshots
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
