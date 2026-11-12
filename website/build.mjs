@@ -106,7 +106,7 @@ function footer() {
  '<section class="clinic-footer__contact"><h2>تواصلي معنا</h2><a href="'+site.whatsapp+'" target="_blank" rel="noopener noreferrer">'+ico('message')+'<span>واتساب العيادة</span></a><a href="'+site.call+'">'+ico('phone')+'<span>'+site.phone+'</span></a><span class="clinic-footer__item">'+ico('pin')+'<span>'+site.address+'</span></span><a href="'+site.url+'" target="_blank" rel="noopener noreferrer">'+ico('globe')+'<span>'+site.url.replace(/^https:\/\//,'')+'</span></a></section>'+
  '<nav class="clinic-footer__links" aria-label="روابط سريعة"><h2>روابط سريعة</h2>'+officialLinks.map(([href,label])=>'<a href="'+href+'">'+label+'</a>').join('')+'</nav>'+
  '<nav class="clinic-footer__links" aria-label="الخدمات الطبية"><h2>الخدمات الطبية</h2>'+serviceLinks.map(x=>'<a href="/services/'+x.id+'/">'+x.name+'</a>').join('')+'<a href="/diagnostics/">المختبر والفحوصات</a></nav>'+
- '<section class="clinic-footer__brand"><a href="/"><img src="/assets/logo-horizontal-dark.png" alt="'+site.name+'" width="225" height="86" loading="lazy"></a><h2 class="visually-hidden">'+site.short+'</h2><p>رعاية متخصصة لصحة المرأة ومتابعة الحمل وتأخر الإنجاب في ذمار.</p><p class="clinic-footer__hours">الدوام: السبت–الخميس<br>8 صباحًا–1 ظهرًا، 4 عصرًا–8 مساءً</p></section>'+
+ '<section class="clinic-footer__brand"><a href="/"><img src="/assets/logo-horizontal-primary.png" alt="'+site.name+'" width="225" height="86" loading="lazy"></a><h2 class="visually-hidden">'+site.short+'</h2><p>رعاية متخصصة لصحة المرأة ومتابعة الحمل وتأخر الإنجاب في ذمار.</p><p class="clinic-footer__hours">الدوام: السبت–الخميس<br>8 صباحًا–1 ظهرًا، 4 عصرًا–8 مساءً</p></section>'+
  '<div class="clinic-footer__meta"><p>جميع الحقوق محفوظة © <span id="year">2026</span> '+site.short+'</p><p><a href="/privacy/">سياسة الخصوصية</a> <span aria-hidden="true">·</span> تطوير <a href="https://www.wasl-tech.com" target="_blank" rel="noopener noreferrer">وصل تك</a></p></div></div></footer>';
 }
 function cta(title = 'هل تريدين معرفة الخطوة التالية؟') {
@@ -163,7 +163,7 @@ function home() {
     "</span><div><strong>الدوام الاعتيادي</strong><p>السبت إلى الخميس، 8 ص–1 م و4 م–8 م.</p></div></div><div class=\"agency-visit__actions\">",
     link(site.call, 'اتصلي بالعيادة', 'solid', 'phone'),
     link(mapsSearch, 'ابحثي عن العنوان في الخرائط', 'line', 'pin'),
-    "</div></div></section>"
+    "</div></div></div></section>"
 
   ].join('');
 }
