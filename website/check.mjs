@@ -88,3 +88,14 @@ if(!contactHtml.includes('agency-contact__hours-head')) issues.push('Contact sch
 if(!agencyCss.includes('prefers-reduced-motion')) issues.push('Motion reduced preference missing');
 if(issues.length){console.error(issues.join('\\n'));process.exit(1);}
 console.log('Privacy removal, error-page and motion checks passed.');
+
+// Optimized files and responsive media are required after the build transform.
+for(const file of ['assets/logo-horizontal-480.webp','assets/symbol-128.webp','assets/favicon-64.png','assets/generated/hero-mother-care-960.webp']){
+ if(!files.includes(file)) issues.push('Optimized media missing: '+file);
+}
+const finalHome=fs.readFileSync(path.join(root,'index.html'),'utf8');
+if(!finalHome.includes('srcset="/assets/generated/')) issues.push('Responsive image srcset missing');
+if(finalHome.includes('src="/assets/logo-horizontal-primary.png"')) issues.push('Heavy PNG logo still used for display');
+if(!finalHome.includes('clinic-loader__layer--one')) issues.push('Animated split-logo missing');
+if(issues.length){console.error(issues.join('\n'));process.exit(1);}
+console.log('Optimized image and logo source checks passed.');
