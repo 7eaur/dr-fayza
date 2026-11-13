@@ -70,3 +70,12 @@ if(!fs.readFileSync(path.join(root,'services/pregnancy/index.html'),'utf8').incl
 }
 if(issues.length){console.error(issues.join('\n'));process.exit(1);}
 console.log('Unified clinic release gates passed.');
+
+// The retired standalone diagnostics page and redirect must not return accidentally.
+if(files.includes('diagnostics/index.html')) issues.push('Retired diagnostics page still generated');
+if(!fs.readFileSync(path.join(root,'services/index.html'),'utf8').includes('id="diagnostics"')) issues.push('Integrated services diagnostics missing');
+const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
+if(!index.includes('clinic-hours__sessions') || !index.includes('clinic-visit__layout')) issues.push('Home visit and hours component missing');
+if(index.includes('الدوام الاعتيادي')) issues.push('Retired ordinary-hours label on homepage');
+if(issues.length){console.error(issues.join('\\n'));process.exit(1);}
+console.log('Visit section, schedule and diagnostics cleanup verified.');
