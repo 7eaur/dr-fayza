@@ -983,3 +983,7 @@ body,.clinic-hero,.agency-services,.agency-visit,.clinic-inner-hero,
  .clinic-diagnostic-feature__steps p{font-size:13px}
  .clinic-diagnostic-prepare__layout{gap:5px}
 }
+
+/* Accessibility audit: ensure small index labels and clinic hours meet WCAG contrast. */
+.clinic-service-row__index{color:#47665f}
+.agency-contact__hours dd{color:#294e53!important;opacity:1}
