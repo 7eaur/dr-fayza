@@ -6,6 +6,7 @@
  const dataSaver=navigator.connection?.saveData===true;
  const loader=document.querySelector('.clinic-loader');
  if(loader){
+   try{sessionStorage.setItem('clinic-visited','1')}catch(e){}
    const dismiss=()=>loader.remove();
    if(reduced||dataSaver){dismiss();}
    else {loader.addEventListener('animationend',e=>{if(e.target===loader)dismiss()},{once:true});}
