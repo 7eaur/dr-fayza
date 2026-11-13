@@ -987,3 +987,10 @@ body,.clinic-hero,.agency-services,.agency-visit,.clinic-inner-hero,
 /* Accessibility audit: ensure small index labels and clinic hours meet WCAG contrast. */
 .clinic-service-row__index{color:#47665f}
 .agency-contact__hours dd{color:#294e53!important;opacity:1}
+
+/* Medical services anchor: visible content lives in the services directory, not a separate page. */
+.clinic-diagnostics-anchor{scroll-margin-top:90px}
+.agency-services__cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:880px){.agency-services__cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.agency-services__cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.agency-services__cards .card{padding:12px;min-width:0}}
+@media(max-width:390px){.agency-services__cards{grid-template-columns:1fr}}
