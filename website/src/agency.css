@@ -1128,3 +1128,14 @@ button,.button,a.card,a.tile,.clinic-service-feature,.clinic-service-row,.clinic
 @media(max-width:600px){.clinic-loader__mark{width:min(80vw,270px)}}
 @media(prefers-reduced-motion:reduce){.clinic-loader{display:none!important}.clinic-loader__layer,.clinic-loader__line,.clinic-in-view{animation:none!important}}
 @media(hover:none){.clinic-service-feature:hover,.agency-services__cards .card:hover{transform:none}}
+
+/* Layered logo reveal overrides legacy icon-loader image dimensions and animation. */
+.clinic-loader .clinic-loader__layer{
+ position:absolute;inset:0;display:block;width:100%;height:100%;
+ object-fit:contain;opacity:0;z-index:1;will-change:clip-path,opacity;
+}
+.clinic-loader .clinic-loader__layer--one{animation:clinic-logo-first .46s cubic-bezier(.24,.75,.2,1) both}
+.clinic-loader .clinic-loader__layer--two{animation:clinic-logo-second .47s cubic-bezier(.24,.75,.2,1) .20s both}
+.clinic-loader .clinic-loader__layer--full{animation:clinic-logo-complete .17s ease-out .53s both;z-index:2}
+.clinic-loader .clinic-loader__line{z-index:3}
+@media(prefers-reduced-motion:reduce){.clinic-loader .clinic-loader__layer{animation:none!important}}
