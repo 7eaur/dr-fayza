@@ -399,11 +399,11 @@ function html(p) {
     (p.url === '/' ? '<link rel="preload" as="image" href="/assets/generated/hero-mother-care-960.webp" imagesrcset="/assets/generated/hero-mother-care-480.webp 480w, /assets/generated/hero-mother-care-960.webp 960w, /assets/generated/hero-mother-care.webp 2560w" imagesizes="(max-width: 680px) 100vw, 1100px">' : '') +
     '<link rel="preconnect" href="https://fonts.googleapis.com">' +
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' +
-    '<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">' +
+    '<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media=\'all\'">' +
     '<link rel="stylesheet" href="/styles/site.css">' +
     '<link rel="stylesheet" href="/styles/agency.css">' +
     '<script type="application/ld+json">' + schemaFor(p) + '</script>' +
-    '<script>try{if(sessionStorage.getItem("clinic-visited"))document.documentElement.classList.add("clinic-has-visited")}catch(e){}</script>' +
+    '<script>try{if(sessionStorage.getItem("clinic-visited")||navigator.connection?.saveData||['2g','slow-2g'].includes(navigator.connection?.effectiveType))document.documentElement.classList.add("clinic-has-visited")}catch(e){}</script>' +
     '<script src="/scripts/site.js" defer></script></head><body>' +
     (noindex ? '' : '<div class="clinic-loader" aria-hidden="true"><div class="clinic-loader__mark"><img class="clinic-loader__layer clinic-loader__layer--one" src="/assets/logo-horizontal-480.webp" width="320" height="110" alt=""><img class="clinic-loader__layer clinic-loader__layer--two" src="/assets/logo-horizontal-480.webp" width="320" height="110" alt=""><img class="clinic-loader__layer clinic-loader__layer--full" src="/assets/logo-horizontal-480.webp" width="320" height="110" alt=""><span class="clinic-loader__line"></span></div></div>') +
     (noindex ? '' : header(p.url)) +
