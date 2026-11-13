@@ -402,6 +402,7 @@ function html(p) {
     '<link rel="stylesheet" href="/styles/site.css">' +
     '<link rel="stylesheet" href="/styles/agency.css">' +
     '<script type="application/ld+json">' + schemaFor(p) + '</script>' +
+    '<script>try{if(sessionStorage.getItem("clinic-visited"))document.documentElement.classList.add("clinic-has-visited")}catch(e){}</script>' +
     '<script src="/scripts/site.js" defer></script></head><body>' +
     (noindex ? '' : '<div class="clinic-loader" aria-hidden="true"><span class="clinic-loader__halo"></span><img src="/assets/symbol-primary.png" alt="" width="72" height="72"><span class="clinic-loader__bar"></span></div>') +
     (noindex ? '' : header(p.url)) +
