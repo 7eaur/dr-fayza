@@ -1095,3 +1095,6 @@ button,.button,a.card,a.tile,.clinic-service-feature,.clinic-service-row,.clinic
  .clinic-in-view{animation:none!important}
  button,.button,a.card,a.tile,.clinic-service-feature,.clinic-service-row,.clinic-diagnostics-feature{transition:none!important}
 }
+
+/* Avoid delaying subsequent page navigations with an unnecessary branding overlay. */
+.clinic-has-visited .clinic-loader{display:none!important}
