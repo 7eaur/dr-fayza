@@ -994,3 +994,40 @@ body,.clinic-hero,.agency-services,.agency-visit,.clinic-inner-hero,
 @media(max-width:880px){.agency-services__cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.agency-services__cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.agency-services__cards .card{padding:12px;min-width:0}}
 @media(max-width:390px){.agency-services__cards{grid-template-columns:1fr}}
+
+/* Clinic visit — clean two-column destination section and expressive schedule card */
+.clinic-visit{background:#fff!important;padding-block:clamp(35px,5vw,75px)}
+.clinic-visit__layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(310px,.84fr);align-items:stretch;gap:clamp(26px,5vw,80px)}
+.clinic-visit__location{padding-block:clamp(10px,2vw,24px);min-width:0}
+.clinic-visit__location .kicker{color:#12685d}
+.clinic-visit__location h2{font-size:clamp(30px,4vw,49px);color:#0c495c;line-height:1.25;margin:5px 0 14px}
+.clinic-visit__intro{max-width:46ch;color:#526b71;line-height:1.85;font-size:16px;margin:0 0 25px}
+.clinic-visit__address{display:grid;grid-template-columns:49px minmax(0,1fr);gap:14px;align-items:start;padding:19px 0 21px;border-block:1px solid #dce9e3}
+.clinic-visit__address-icon{height:47px;width:47px;display:grid;place-items:center;background:#eaf5f0;border-radius:14px;color:#0c495c}
+.clinic-visit__address-icon .ico{width:22px;height:22px}
+.clinic-visit__address strong{font-size:15px;color:#0c495c}
+.clinic-visit__address p{margin:5px 0 0;font-size:15px;color:#526b71;line-height:1.85}
+.clinic-visit__actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:22px}
+.clinic-visit__actions .button{min-height:46px;white-space:normal;text-align:center;font-size:13px;padding:10px 15px}
+.clinic-visit__map-note{display:block;color:#547177;font-size:12px;line-height:1.8;margin-top:12px}
+.clinic-hours{align-self:stretch;position:relative;isolation:isolate;overflow:hidden;padding:clamp(23px,3vw,35px);border:1px solid #dfebe5;border-radius:22px;background:linear-gradient(145deg,#f3f9f6 0%,#fff 60%);box-shadow:0 12px 38px rgba(12,73,92,.055)}
+.clinic-hours::after{content:"";position:absolute;z-index:-1;width:190px;height:190px;border:1px solid #cde4d8;border-radius:50%;top:-105px;left:-75px;opacity:.6}
+.clinic-hours__top{display:flex;align-items:center;gap:12px}
+.clinic-hours__icon{display:grid;place-items:center;width:45px;height:45px;border-radius:14px;background:#0c495c;color:#fff}
+.clinic-hours__icon .ico{width:23px;height:23px}
+.clinic-hours__eyebrow{color:#12685d;font-size:13px;font-weight:800}
+.clinic-hours h3{font-size:clamp(22px,2.4vw,29px);line-height:1.4;color:#0c495c;margin:13px 0 18px}
+.clinic-hours__days{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 0;border-block:1px solid #d9e8e1}
+.clinic-hours__days>span{display:inline-flex;align-items:center;gap:7px;color:#47666a;font-size:13px}
+.clinic-hours__days .ico{width:17px;height:17px;color:#12685d}
+.clinic-hours__days strong{font-size:15px;color:#0c495c}
+.clinic-hours__sessions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-top:18px}
+.clinic-hours__session{display:flex;flex-direction:column;justify-content:space-between;gap:10px;border-radius:13px;padding:18px 13px;background:#fff;border:1px solid #dce9e3}
+.clinic-hours__session:nth-child(2){background:#f7faf9}
+.clinic-hours__session-name{font-size:13px;font-weight:700;color:#2a6b61}
+.clinic-hours__session strong{display:flex;flex-wrap:wrap;align-items:center;gap:5px;font-size:clamp(13px,1.35vw,16px);line-height:1.5;color:#0c495c}
+.clinic-hours__session strong span{color:#5c8079}
+.clinic-hours__footnote{padding-top:16px;margin:16px 0 0;border-top:1px solid #d9e8e1;color:#47666a;font-size:12px;line-height:1.8}
+@media(max-width:900px){.clinic-visit__layout{grid-template-columns:1fr;gap:22px}.clinic-visit__location{padding:0}.clinic-hours{max-width:760px;width:100%}}
+@media(max-width:600px){.clinic-visit{padding-block:34px}.clinic-visit__location h2{font-size:33px;margin-bottom:10px}.clinic-visit__intro{font-size:14px;margin-bottom:18px}.clinic-visit__address{grid-template-columns:40px minmax(0,1fr);gap:11px;padding:15px 0}.clinic-visit__address-icon{width:40px;height:40px;border-radius:11px}.clinic-visit__address p{font-size:13px}.clinic-visit__actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:17px}.clinic-visit__actions .button{font-size:12px;padding:9px;min-height:45px}.clinic-hours{padding:22px 18px;border-radius:17px}.clinic-hours h3{font-size:23px}.clinic-hours__sessions{gap:8px}.clinic-hours__session{padding:14px 10px}.clinic-hours__session strong{font-size:13px}.clinic-hours__days strong{font-size:14px}}
+@media(max-width:360px){.clinic-visit__actions{grid-template-columns:1fr}.clinic-hours__sessions{grid-template-columns:1fr}.clinic-hours__session{gap:5px}}
