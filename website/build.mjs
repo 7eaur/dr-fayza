@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import sharp from 'sharp';
 
 const ROOT = process.cwd();
 const OUT = path.join(ROOT, 'dist');
@@ -395,7 +396,7 @@ function html(p) {
     '<meta property="og:image:alt" content="' + ogImageAlt + '">' +
     '<meta name="twitter:card" content="summary_large_image">' +
     '<link rel="icon" href="/assets/symbol-primary.png">' +
-    (p.url === '/' ? '<link rel="preload" as="image" href="/assets/generated/hero-mother-care.webp">' : '') +
+    (p.url === '/' ? '<link rel="preload" as="image" href="/assets/generated/hero-mother-care-960.webp" imagesrcset="/assets/generated/hero-mother-care-480.webp 480w, /assets/generated/hero-mother-care-960.webp 960w, /assets/generated/hero-mother-care.webp 2560w" imagesizes="(max-width: 680px) 100vw, 1100px">' : '') +
     '<link rel="preconnect" href="https://fonts.googleapis.com">' +
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' +
     '<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">' +
@@ -404,7 +405,7 @@ function html(p) {
     '<script type="application/ld+json">' + schemaFor(p) + '</script>' +
     '<script>try{if(sessionStorage.getItem("clinic-visited"))document.documentElement.classList.add("clinic-has-visited")}catch(e){}</script>' +
     '<script src="/scripts/site.js" defer></script></head><body>' +
-    (noindex ? '' : '<div class="clinic-loader" aria-hidden="true"><span class="clinic-loader__halo"></span><img src="/assets/symbol-primary.png" alt="" width="72" height="72"><span class="clinic-loader__bar"></span></div>') +
+    (noindex ? '' : '<div class="clinic-loader" aria-hidden="true"><div class="clinic-loader__mark"><img class="clinic-loader__layer clinic-loader__layer--one" src="/assets/logo-horizontal-480.webp" width="320" height="110" alt=""><img class="clinic-loader__layer clinic-loader__layer--two" src="/assets/logo-horizontal-480.webp" width="320" height="110" alt=""><img class="clinic-loader__layer clinic-loader__layer--full" src="/assets/logo-horizontal-480.webp" width="320" height="110" alt=""><span class="clinic-loader__line"></span></div></div>') +
     (noindex ? '' : header(p.url)) +
     '<main id="main">' + p.body + '</main>' +
     (noindex ? '' : footer()) +
@@ -417,6 +418,51 @@ for (const p of pages) { const file = path.join(OUT, p.url === '/' ? 'index.html
 for (const [src, dest] of [['styles.css', 'styles/site.css'], ['agency.css', 'styles/agency.css'], ['client.js', 'scripts/site.js']]) { fs.mkdirSync(path.dirname(path.join(OUT, dest)), { recursive: true }); fs.copyFileSync(path.join(ROOT, 'src', src), path.join(OUT, dest)); }
 fs.cpSync(path.join(ROOT, 'assets'), path.join(OUT, 'assets'), { recursive: true });
 fs.writeFileSync(path.join(OUT, '404.html'), html({ url: '/404/', title: 'الصفحة غير موجودة', desc: 'الرابط غير موجود.', body: '<section class="clinic-notfound"><div class="clinic-notfound__inner"><img src="/assets/symbol-primary.png" width="72" height="72" alt=""><span class="clinic-notfound__code">404</span><h1>الصفحة غير موجودة</h1>' + link('/', 'العودة للرئيسية', 'solid','arrow') + '</div></section>' }));
+/* Images are transformed at build time, never in the visitor's browser. */
+const assetsOut=path.join(OUT,'assets');
+const rawLogo=path.join(assetsOut,'logo-horizontal-primary.png');
+const rawSymbol=path.join(assetsOut,'symbol-primary.png');
+const imageBudget=[];
+const convert=async(input,output,width,quality=76)=>{
+ const info=await sharp(input).metadata();
+ await sharp(input).rotate().resize({width,withoutEnlargement:true}).webp({quality,effort:5}).toFile(output);
+ imageBudget.push({asset:path.relative(assetsOut,output),beforeBytes:fs.statSync(input).size,afterBytes:fs.statSync(output).size});
+ return info;
+};
+await convert(rawLogo,path.join(assetsOut,'logo-horizontal-480.webp'),480,78);
+await convert(rawSymbol,path.join(assetsOut,'symbol-128.webp'),128,80);
+await sharp(rawSymbol).resize({width:64,height:64,fit:'contain',background:{r:255,g:255,b:255,alpha:0}}).png({compressionLevel:9}).toFile(path.join(assetsOut,'favicon-64.png'));
+const responsive=new Map();
+const photosDir=path.join(assetsOut,'generated');
+for(const filename of fs.readdirSync(photosDir).filter(n=>n.endsWith('.webp')&&!/-\\d+\\.webp$/.test(n))){
+ const input=path.join(photosDir,filename);
+ const info=await sharp(input).metadata();
+ const formats=[];
+ for(const width of [480,960]){
+  if(info.width <= width)continue;
+  const name=filename.replace(/\\.webp$/,`-${width}.webp`);
+  await convert(input,path.join(photosDir,name),width,70);
+  formats.push({name,width});
+ }
+ formats.push({name:filename,width:info.width});
+ responsive.set(filename,formats);
+}
+const htmlTargets=[...pages.map(p=>path.join(OUT,p.url==='/'?'index.html':p.url.slice(1)+'index.html')),path.join(OUT,'404.html')];
+for(const target of htmlTargets){
+ let document=fs.readFileSync(target,'utf8');
+ document=document.replaceAll('src="/assets/logo-horizontal-primary.png"','src="/assets/logo-horizontal-480.webp"');
+ document=document.replaceAll('src="/assets/symbol-primary.png"','src="/assets/symbol-128.webp"');
+ document=document.replaceAll('rel="icon" href="/assets/symbol-primary.png"','rel="icon" type="image/png" href="/assets/favicon-64.png"');
+ for(const [filename,formats] of responsive){
+  const pattern='src="/assets/generated/'+filename+'"';
+  const selected=formats.find(x=>x.width>=960)||formats[formats.length-1];
+  const srcset=formats.map(x=>'/assets/generated/'+x.name+' '+x.width+'w').join(', ');
+  document=document.replaceAll(pattern,'src="/assets/generated/'+selected.name+'" srcset="'+srcset+'" sizes="(max-width: 680px) 100vw, (max-width: 1100px) 75vw, 1100px"');
+ }
+ fs.writeFileSync(target,document,'utf8');
+}
+console.log('Optimized media:',JSON.stringify(imageBudget));
+
 fs.writeFileSync(path.join(OUT, 'robots.txt'), 'User-agent: *\nAllow: /\nSitemap: ' + site.url + '/sitemap.xml\n');
 fs.writeFileSync(path.join(OUT, 'sitemap.xml'), '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + pages.map(p => '<url><loc>' + site.url + p.url + '</loc></url>').join('') + '</urlset>');
 console.log('Built', pages.length, 'routes.');
