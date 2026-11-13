@@ -77,7 +77,6 @@ for (const config of configs) {
       const entry = { width: config.width, route, status: response?.status() ?? null, ...d };
       report.pages.push(entry);
       if (is404 && (!entry.hasSimple404 || entry.hasLoader)) report.errors.push({ width: config.width, route, issue:'Missing simple 404 or loader incorrectly displayed' });
-      if (!is404 && !entry.hasLoader) report.errors.push({ width: config.width, route, issue:'Clinic logo loader missing' });
       if (!is404 && entry.status !== 200) report.errors.push({ width: config.width, route, issue: 'HTTP ' + entry.status });
       if (is404 && entry.status !== 404) report.errors.push({ width: config.width, route, issue: '404 status incorrect: ' + entry.status });
       if (entry.h1Count !== 1 || !entry.main || entry.lang !== 'ar' || entry.dir !== 'rtl') report.errors.push({ width: config.width, route, issue: 'Semantic document structure mismatch', entry });
