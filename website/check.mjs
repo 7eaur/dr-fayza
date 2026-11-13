@@ -84,9 +84,13 @@ const errorHtml=fs.readFileSync(path.join(root,'404.html'),'utf8');
 if(!errorHtml.includes('clinic-notfound') || !errorHtml.includes('href="/"')) issues.push('Simple 404 missing');
 const contactHtml=fs.readFileSync(path.join(root,'contact/index.html'),'utf8');
 if(!contactHtml.includes('agency-contact__hours-head')) issues.push('Contact schedule missing');
+if(!contactHtml.includes('clinic-contact-hero__stage')) issues.push('Contact hero missing');
+if(!contactHtml.includes('clinic-address-card__zoom')) issues.push('Map enlarge link missing');
+if(!contactHtml.includes('href="/assets/clinic-address-map.webp"')) issues.push('Full map link missing');
+if(agencyCss.includes('clinic-address-card__diagram img{min-width:690px}')) issues.push('Oversized mobile map rule remains');
 if(!contactHtml.includes('clinic-contact-hero__image') || !contactHtml.includes('clinic-contact-hero-720.webp')) issues.push('Contact photo hero not built');
 if(!contactHtml.includes('clinic-address-card__diagram') || !contactHtml.includes('clinic-address-map.webp')) issues.push('Contact address diagram not built');
-if(!contactHtml.includes('tabindex="0"')) issues.push('Mobile diagram keyboard access missing');
+if(!contactHtml.includes('aria-label="افتحي مخطط الوصول بالحجم الكامل في تبويب جديد"')) issues.push('Accessible diagram zoom link missing');
 if(!agencyCss.includes('prefers-reduced-motion')) issues.push('Motion reduced preference missing');
 if(issues.length){console.error(issues.join('\\n'));process.exit(1);}
 console.log('Privacy removal, error-page and motion checks passed.');
