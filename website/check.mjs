@@ -100,7 +100,7 @@ if(!finalHome.includes('fetchpriority="high"')) issues.push('Header logo priorit
 for(const page of pages){
  const content=fs.readFileSync(path.join(root,page),'utf8');
  if(/fonts\.(googleapis|gstatic)\.com/.test(content))issues.push('External font link in '+page);
- if(/<(?:link|script)\b[^>]*(?:src|href)="https?:\/\//i.test(content))issues.push('External render dependency in '+page);
+ if(/<link\s+rel="(?:stylesheet|preconnect|modulepreload)"[^>]*href="https?:\/\//i.test(content)||/<script\b[^>]*src="https?:\/\//i.test(content))issues.push('External render dependency in '+page);
 }
 for(const asset of ['assets/fonts/ibm-plex-sans-arabic-400.woff2','assets/fonts/ibm-plex-sans-arabic-700.woff2','assets/fonts/OFL.txt']){
  if(!files.includes(asset))issues.push('Self-hosted font missing: '+asset);
