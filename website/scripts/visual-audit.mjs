@@ -11,7 +11,7 @@ const allRoutes = [
   '/', '/about/', '/services/',
   '/services/pregnancy/', '/services/womens-health/', '/services/fertility/',
   '/services/ultrasound/', '/services/maternity/', '/services/cosmetic/',
-  '/diagnostics/', '/guides/',
+  '/services/#diagnostics', '/guides/',
   '/guides/pregnancy-care/', '/guides/womens-visit/',
   '/guides/fertility-consultation/', '/guides/ultrasound-guide/',
   '/faq/', '/contact/', '/privacy/', '/missing-page-test'
