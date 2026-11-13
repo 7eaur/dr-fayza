@@ -242,7 +242,7 @@ function home() {
     '<div class="clinic-hours__sessions"><div class="clinic-hours__session"><span class="clinic-hours__session-name">الفترة الصباحية</span><strong><bdi>8:00 ص</bdi> <span>—</span> <bdi>1:00 م</bdi></strong></div>'+
     '<div class="clinic-hours__session"><span class="clinic-hours__session-name">الفترة المسائية</span><strong><bdi>4:00 م</bdi> <span>—</span> <bdi>8:00 م</bdi></strong></div></div>'+
     '<p class="clinic-hours__footnote">يوم الجمعة خارج مواعيد عمل العيادة. لاستقبال حالات الولادة على مدار 24 ساعة، يرجى الاتصال لتأكيد موقع الاستقبال.</p></aside>'+
-    '</div></section>"
+    '</div></section>'
 
   ].join('');
 }
