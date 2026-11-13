@@ -6,5 +6,8 @@
   "scripts": {
     "build": "node build.mjs && node check.mjs",
     "check": "node --check build.mjs && node --check check.mjs"
+  },
+  "dependencies": {
+    "sharp": "0.35.5"
   }
 }

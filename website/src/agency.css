@@ -1098,3 +1098,33 @@ button,.button,a.card,a.tile,.clinic-service-feature,.clinic-service-row,.clinic
 
 /* Avoid delaying subsequent page navigations with an unnecessary branding overlay. */
 .clinic-has-visited .clinic-loader{display:none!important}
+
+/* Update Card-inspired original-logo reveal. Layers use the real clinic logo. */
+.clinic-loader{
+ display:grid;place-items:center;position:fixed;inset:0;z-index:110;
+ background:#fff;pointer-events:none;
+ animation:clinic-brand-exit .24s ease-out .67s forwards;
+}
+.clinic-loader__mark{position:relative;width:min(82vw,320px);aspect-ratio:225/86;contain:layout paint}
+.clinic-loader__layer{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;will-change:clip-path,opacity}
+.clinic-loader__layer--one{animation:clinic-logo-first .46s cubic-bezier(.24,.75,.2,1) both}
+.clinic-loader__layer--two{animation:clinic-logo-second .47s cubic-bezier(.24,.75,.2,1) .20s both}
+.clinic-loader__layer--full{animation:clinic-logo-complete .17s ease-out .53s both}
+.clinic-loader__line{position:absolute;bottom:-5px;inset-inline:20%;height:2px;transform:scaleX(0);transform-origin:right;background:#45a18e;animation:clinic-logo-line .48s ease-out .21s both}
+@keyframes clinic-logo-first{
+ from{opacity:1;clip-path:inset(0 0 0 100%);transform:translateX(-12px)}
+ to{opacity:1;clip-path:inset(0 0 0 50%);transform:translateX(0)}
+}
+@keyframes clinic-logo-second{
+ from{opacity:1;clip-path:inset(0 100% 0 0);transform:translateX(12px)}
+ to{opacity:1;clip-path:inset(0 50% 0 0);transform:translateX(0)}
+}
+@keyframes clinic-logo-complete{from{opacity:0}to{opacity:1}}
+@keyframes clinic-logo-line{0%{opacity:1;transform:scaleX(0)}80%{opacity:1;transform:scaleX(1)}100%{opacity:0;transform:scaleX(1)}}
+@keyframes clinic-brand-exit{from{opacity:1;visibility:visible}to{opacity:0;visibility:hidden}}
+/* Preserve the visual cue, but don't defer reading until every section animates. */
+.clinic-in-view{animation:clinic-fast-reveal .25s ease-out both}
+@keyframes clinic-fast-reveal{from{opacity:.96;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(max-width:600px){.clinic-loader__mark{width:min(80vw,270px)}}
+@media(prefers-reduced-motion:reduce){.clinic-loader{display:none!important}.clinic-loader__layer,.clinic-loader__line,.clinic-in-view{animation:none!important}}
+@media(hover:none){.clinic-service-feature:hover,.agency-services__cards .card:hover{transform:none}}

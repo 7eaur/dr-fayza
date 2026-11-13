@@ -123,10 +123,39 @@ for (const config of configs) {
   if (consoleErrors.length) report.warnings.push({ width: config.width, errors: consoleErrors });
   await context.close();
 }
+// Simulated cold 4G samples provide a more useful mobile check than unthrottled CI localhost-style timings.
+const throttledSamples=[];
+for (const route of ['/', '/contact/']) {
+ const mobileContext=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:1,locale:'ar-YE'});
+ const mobile=await mobileContext.newPage();
+ try {
+  await mobile.addInitScript(()=>{
+   window.__lastLCP=0;
+   try{new PerformanceObserver(list=>{for(const entry of list.getEntries())window.__lastLCP=entry.startTime}).observe({type:'largest-contentful-paint',buffered:true})}catch{}
+  });
+  const cdp=await mobileContext.newCDPSession(mobile);
+  await cdp.send('Network.enable');
+  await cdp.send('Network.setCacheDisabled',{cacheDisabled:true});
+  await cdp.send('Network.emulateNetworkConditions',{offline:false,latency:150,downloadThroughput:200000,uploadThroughput:75000});
+  await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});
+  const response=await mobile.goto(base+route,{waitUntil:'load',timeout:60000});
+  await mobile.waitForTimeout(1000);
+  const sample=await mobile.evaluate(()=>{
+   const nav=performance.getEntriesByType('navigation')[0];
+   const paint=performance.getEntriesByType('paint').find(x=>x.name==='first-contentful-paint');
+   return {responseEndMs:Math.round(nav?.responseEnd||0),domContentLoadedMs:Math.round(nav?.domContentLoadedEventEnd||0),
+    loadMs:Math.round(nav?.loadEventEnd||0),fcpMs:Math.round(paint?.startTime||0),lcpMs:Math.round(window.__lastLCP||0),
+    firstPartyTransferKB:Math.round(performance.getEntriesByType('resource').filter(x=>x.name.startsWith(location.origin)).reduce((a,x)=>a+x.transferSize,0)/1024)};
+  });
+  throttledSamples.push({route,width:390,network:'simulated 1.6 Mbps, 150ms latency, 4x CPU slowdown',status:response?.status(),...sample});
+ }catch(err){report.warnings.push({route,issue:'Mobile throttled sample unavailable: '+String(err)})}
+ finally{await mobileContext.close()}
+}
 await browser.close();
 const performanceSamples=report.pages.filter(p=>['/','/contact/','/services/'].includes(p.route)&&[390,1440].includes(p.width)).map(p=>({width:p.width,route:p.route,...p.navTiming,firstPartyTransferKB:p.firstPartyTransferKB}));
-fs.writeFileSync(path.join(out,'performance-samples.json'),JSON.stringify({note:'Chromium navigation timing samples, not Lighthouse scores or mobile field Core Web Vitals; measured on the GitHub runner.',samples:performanceSamples},null,2));
+fs.writeFileSync(path.join(out,'performance-samples.json'),JSON.stringify({note:'Automated Chrome lab timings, not Lighthouse scores or real-user field Core Web Vitals. Throttled samples emulate 1.6 Mbps/150ms/4x CPU slowdown.',samples:performanceSamples,throttledSamples},null,2));
 console.log('Navigation samples (ms/KB): '+JSON.stringify(performanceSamples));
+console.log('Throttled mobile (ms/KB): '+JSON.stringify(throttledSamples));
 fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify(report, null, 2));
 const summary = {
   pages: report.pages.length, screenshots: report.pages.filter(p => p.route !== '/missing-page-test').length, errors: report.errors.length, warnings: report.warnings.length
