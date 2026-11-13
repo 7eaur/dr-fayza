@@ -88,7 +88,7 @@ const articles = [
 const icons = { menu: 'M4 6h16M4 12h16M4 18h16', close: 'M5 5l14 14M19 5 5 19', heart: 'M20.8 4.6a5.6 5.6 0 0 0-7.9 0L12 5.5l-.9-.9a5.6 5.6 0 0 0-7.9 7.9L12 21l8.8-8.5a5.6 5.6 0 0 0 0-7.9Z', clock: 'M12 7v5l4 2', pin: 'M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z', phone: 'M21 16v4a2 2 0 0 1-2 2C10 21 3 14 2 5a2 2 0 0 1 2-2h4l2 5-2 2a15 15 0 0 0 6 6l2-2Z', message: 'M21 12a9 9 0 0 1-9 9 9 9 0 0 1-4-.9L3 21l1.5-4.3A9 9 0 1 1 21 12Z', arrow: 'M19 12H5m6-6-6 6 6 6', check: 'm4 12 5 5L20 6', scan: 'M3 4h18v15H3Zm5 12c3-8 7-8 10 0', baby: 'M9 4a3 3 0 0 1 6 0M12 7c-6 0-9 4-9 8s4 7 9 7 9-3 9-7-3-8-9-8Z', flower: 'M12 12C7 11 4 6 6 2c4 0 6 4 6 10Zm0 0c5-1 8-6 6-10-4 0-6 4-6 6 10Zm0 0v10', sparkles: 'm12 2 2 7 7 2-7 2-2 7-2-7-7-2 7-2 2-7Z', shield: 'M12 2 21 6v6c0 5-3 8-9 10-6-2-9-5-9-10V6Zm-4 10 3 3 5-6', file: 'M5 2h9l5 5v15H5Z M14 2v6h5 M9 13h6m-6 4h6', info: 'M12 11v6m0-10h.01' };
 const ico = (key) => '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="' + (icons[key] || icons.heart) + '"/>' + (key === 'clock' ? '<circle cx="12" cy="12" r="9"/>' : '') + (key === 'pin' ? '<circle cx="12" cy="10" r="2.5"/>' : '') + (key === 'info' ? '<circle cx="12" cy="12" r="9"/>' : '') + '</svg>';
 const link = (href, label, type = 'solid', icon = 'arrow') => '<a class="button button--' + type + '" href="' + href + '"' + (href.startsWith('https:') ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' + label + ico(icon) + '</a>';
-const nav = [['/', 'الرئيسية'], ['/about/', 'عن الدكتورة'], ['/services/', 'الخدمات'], ['/diagnostics/', 'الفحوصات'], ['/guides/', 'التوعية الصحية'], ['/faq/', 'الأسئلة الشائعة'], ['/contact/', 'التواصل']];
+const nav = [['/', 'الرئيسية'], ['/about/', 'عن الدكتورة'], ['/services/', 'الخدمات'], ['/services/#diagnostics', 'الفحوصات'], ['/guides/', 'التوعية الصحية'], ['/faq/', 'الأسئلة الشائعة'], ['/contact/', 'التواصل']];
 const heading = (kicker, title, sub = '') => '<div class="heading"><span class="kicker">' + kicker + '</span><h2>' + title + '</h2>' + (sub ? '<p>' + sub + '</p>' : '') + '</div>';
 const serviceShowcase = () =>
  '<section class="section clinic-service-showcase" aria-label="دليل الخدمات الطبية"><div class="container">'+
@@ -96,7 +96,7 @@ const serviceShowcase = () =>
  '<div class="clinic-service-showcase__featured">'+
  [services[0],services[1]].map((item,i)=>'<a class="clinic-service-feature clinic-service-feature--'+(i+1)+'" href="/services/'+item.id+'/"><span class="clinic-service-feature__icon">'+ico(item.icon)+'</span><span class="clinic-service-feature__content"><small>0'+(i+1)+' / استشارات متخصصة</small><strong>'+item.name+'</strong><span>'+item.desc+'</span><em>تفاصيل الخدمة '+ico('arrow')+'</em></span></a>').join('')+
  '</div><div class="clinic-service-showcase__index">'+services.slice(2).map((item,i)=>'<a class="clinic-service-row" href="/services/'+item.id+'/"><span class="clinic-service-row__index">0'+(i+3)+'</span><span class="clinic-service-row__symbol">'+ico(item.icon)+'</span><span class="clinic-service-row__content"><strong>'+item.name+'</strong><small>'+item.desc+'</small></span><span class="clinic-service-row__arrow">'+ico('arrow')+'</span></a>').join('')+'</div>'+
- '<a class="clinic-diagnostics-feature" href="/diagnostics/"><span class="clinic-diagnostics-feature__visual">'+ico('scan')+'</span><span class="clinic-diagnostics-feature__body"><small>خدمات تشخيصية مساندة</small><strong>المختبر والفحوصات الطبية</strong><span>تعرفي على الفحوصات المخبرية ودور السونار في دعم تقييم الحالة، وكيفية الاستعداد للفحص.</span></span><span class="clinic-diagnostics-feature__action">تعرفي على التفاصيل '+ico('arrow')+'</span></a>'+
+ '<a class="clinic-diagnostics-feature" href="#diagnostics"><span class="clinic-diagnostics-feature__visual">'+ico('scan')+'</span><span class="clinic-diagnostics-feature__body"><small>خدمات تشخيصية مساندة</small><strong>المختبر والفحوصات الطبية</strong><span>تعرفي على الفحوصات المخبرية ودور السونار في دعم تقييم الحالة، وكيفية الاستعداد للفحص.</span></span><span class="clinic-diagnostics-feature__action">تعرفي على التفاصيل '+ico('arrow')+'</span></a>'+
  '</div></section>';
 const card = (s) => '<a class="card" href="/services/' + s.id + '/"><span class="card-ic">' + ico(s.icon) + '</span><h3>' + s.name + '</h3><p>' + s.desc + '</p><span class="more">اعرفي التفاصيل ' + ico('arrow') + '</span></a>';
 const faq = (items) => '<div class="faq-list">' + items.map(([q, a], i) => '<details ' + (i === 0 ? 'open' : '') + '><summary>' + q + ico('arrow') + '</summary><p>' + a + '</p></details>').join('') + '</div>';
@@ -113,7 +113,7 @@ function footer() {
  return '<footer class="footer clinic-footer"><div class="container clinic-footer__grid">'+
  '<section class="clinic-footer__contact"><h2>تواصلي معنا</h2><a href="'+site.whatsapp+'" target="_blank" rel="noopener noreferrer">'+ico('message')+'<span>واتساب العيادة</span></a><a href="'+site.call+'">'+ico('phone')+'<span>'+site.phone+'</span></a><span class="clinic-footer__item">'+ico('pin')+'<span>'+site.address+'</span></span><a href="'+site.url+'" target="_blank" rel="noopener noreferrer">'+ico('globe')+'<span>'+site.url.replace(/^https:\/\//,'')+'</span></a></section>'+
  '<nav class="clinic-footer__links" aria-label="روابط سريعة"><h2>روابط سريعة</h2>'+officialLinks.map(([href,label])=>'<a href="'+href+'">'+label+'</a>').join('')+'</nav>'+
- '<nav class="clinic-footer__links" aria-label="الخدمات الطبية"><h2>الخدمات الطبية</h2>'+serviceLinks.map(x=>'<a href="/services/'+x.id+'/">'+x.name+'</a>').join('')+'<a href="/diagnostics/">المختبر والفحوصات</a></nav>'+
+ '<nav class="clinic-footer__links" aria-label="الخدمات الطبية"><h2>الخدمات الطبية</h2>'+serviceLinks.map(x=>'<a href="/services/'+x.id+'/">'+x.name+'</a>').join('')+'<a href="/services/#diagnostics">المختبر والفحوصات</a></nav>'+
  '<section class="clinic-footer__brand"><a href="/"><img src="/assets/logo-horizontal-primary.png" alt="'+site.name+'" width="225" height="86" loading="lazy"></a><h2 class="visually-hidden">'+site.short+'</h2><p>رعاية متخصصة لصحة المرأة ومتابعة الحمل وتأخر الإنجاب في ذمار.</p><p class="clinic-footer__hours">الدوام: السبت–الخميس<br>8 صباحًا–1 ظهرًا، 4 عصرًا–8 مساءً</p></section>'+
  '<div class="clinic-footer__meta"><p>جميع الحقوق محفوظة © <span id="year">2026</span> '+site.short+'</p><p><a href="/privacy/">سياسة الخصوصية</a> <span aria-hidden="true">·</span> تطوير <a href="https://www.wasl-tech.com" target="_blank" rel="noopener noreferrer">وصل تك</a></p></div></div></footer>';
 }
@@ -212,8 +212,8 @@ function home() {
     "<section class=\"section agency-services\" aria-labelledby=\"agency-services-title\"><div class=\"container\"><div class=\"agency-section-head\"><div><span class=\"kicker\">الخدمات الطبية</span><h2 id=\"agency-services-title\">لكل مرحلة من صحتكِ، استشارة تناسب احتياجكِ</h2><p>تعرّفي على مجالات الاستشارة، وتواصلي للتأكد من تفاصيل الخدمة قبل الحضور.</p></div><a class=\"agency-text-link\" href=\"/services/\">جميع الخدمات ",
     ico('arrow'),
     "</a></div><div class=\"cards agency-services__cards\">",
-    services.slice(0,4).map(card).join(''),
-    "</div><a class=\"agency-services__diagnostics\" href=\"/diagnostics/\"><span class=\"agency-services__diagnostics-symbol\" aria-hidden=\"true\">",
+    services.map(card).join(''),
+    "</div><a class=\"agency-services__diagnostics\" href=\"/services/#diagnostics\"><span class=\"agency-services__diagnostics-symbol\" aria-hidden=\"true\">",
     ico('scan'),
     "</span><span><strong>المختبر والفحوصات والسونار</strong><small>استفسري عن التحاليل والفحوصات والتصوير المتاح وفق حالتكِ قبل الزيارة.</small></span>",
     ico('arrow'),
@@ -255,6 +255,7 @@ function servicesPage() {
  return [
  innerHero('الخدمات الطبية','رعاية تناسب مراحل مختلفة من حياتكِ','استكشفي مجالات النساء والتوليد والحمل والخصوبة، وتعرّفي على تفاصيل كل خدمة والأسئلة المناسبة قبل الزيارة.','pregnancy-care.webp'),
  serviceShowcase(),
+ diagnostics(),
  editorialSection('كيف تختارين الخدمة؟','ثلاثة أمور تساعدك على البدء','لا تحتاجين إلى معرفة اسم الفحص أو تشخيص الحالة قبل التواصل؛ ابدئي بوصف ما تحتاجينه.',[['حددي سبب الزيارة','هل لديك عرض جديد، أم متابعة سابقة، أم سؤال عن الحمل أو الإنجاب؟'],['جهزي ما لديك','التحاليل والتقارير والأدوية السابقة تساعد على تجنب تكرار التفاصيل.'],['اسألي عن الخطوة التالية','يمكنك الاستفسار عن توفر الخدمة والتحضير والتوقيت المناسب قبل الحضور.']]),
  
  cta('لستِ متأكدة من نوع الاستشارة؟')
@@ -284,7 +285,7 @@ function diagnostics() {
  ['ما بعد التصوير','اسألي عن معنى التقرير وما إذا كانت هناك حاجة إلى مراجعة أو فحص إضافي.']
  ];
  const renderTopics=(items)=>items.map(([h,p],i)=>'<li><span>0'+(i+1)+'</span><div><h3>'+h+'</h3><p>'+p+'</p></div></li>').join('');
- return innerHero('الفحوصات الطبية','المختبر والسونار','الفحوصات أدوات مساعدة لفهم الحالة، وتبقى الاستشارة الطبية أساس اختيارها وتفسير نتائجها.','diagnostics','svg')+
+ return '<div id="diagnostics" class="clinic-diagnostics-anchor" aria-label="المختبر والفحوصات الطبية"></div>'+ 
  '<section class="section clinic-diagnostic-intro"><div class="container clinic-diagnostic-intro__layout"><div><span class="kicker">الخدمات التشخيصية</span><h2>التحليل والصورة الطبية، كلٌ منهما له دوره</h2><p>قد تحتاج بعض الحالات إلى تحاليل مخبرية، وأخرى إلى التصوير بالموجات فوق الصوتية، أو إلى الجمع بينهما وفق التقييم. هدفنا أن تكون الخطوة المطلوبة مفهومة قبل إجرائها.</p></div><div class="clinic-diagnostic-intro__mark">'+ico('scan')+'<span>فحوصات داعمة لتقييم الحالة</span></div></div></section>'+
  '<section class="section clinic-diagnostic-feature clinic-diagnostic-feature--lab"><div class="container clinic-diagnostic-feature__grid"><div class="clinic-diagnostic-feature__heading"><span class="clinic-diagnostic-feature__tag">01 / المختبر</span><h2>فحوصات مخبرية تدعم التقييم</h2><p>يوجد مختبر ضمن خدمات العيادة. يمكنك التأكد من الفحوصات المتاحة، وأوقات استقبال العينات، وتعليمات التحضير قبل الزيارة.</p><a href="'+site.whatsapp+'" class="clinic-diagnostic-feature__link">اسألي عن توفر التحاليل '+ico('arrow')+'</a></div><ol class="clinic-diagnostic-feature__steps">'+renderTopics(lab)+'</ol></div></section>'+
  '<section class="section clinic-diagnostic-feature clinic-diagnostic-feature--scan"><div class="container clinic-diagnostic-feature__grid"><div class="clinic-diagnostic-feature__heading"><span class="clinic-diagnostic-feature__tag">02 / السونار</span><h2>التصوير الطبي عندما يلزم</h2><p>السونار وسيلة للتقييم والمتابعة، ويختلف نوعه وتوقيته بحسب عمر الحمل أو الأعراض والحالة الصحية.</p><a href="/services/ultrasound/" class="clinic-diagnostic-feature__link">تفاصيل السونار '+ico('arrow')+'</a></div><ol class="clinic-diagnostic-feature__steps">'+renderTopics(scan)+'</ol></div></section>'+
@@ -343,7 +344,6 @@ const pages = [
   { url: '/about/', title: 'عن الدكتورة', desc: 'تعرفي على الدكتورة فايزة الوصابي وتخصصها ومجالات الاستشارة.', body: about() },
   { url: '/services/', title: 'الخدمات الطبية', desc: 'خدمات النساء والتوليد ومتابعة الحمل وصحة المرأة وتأخر الإنجاب والسونار.', body: servicesPage() },
   ...services.map(s => ({ url: '/services/' + s.id + '/', title: s.name, desc: s.desc, body: detail(s) })),
-  { url: '/diagnostics/', title: 'الفحوصات والسونار', desc: 'معلومات عامة عن الفحوصات والتصوير الطبي ودورها في دعم التقييم.', body: diagnostics() },
   { url: '/guides/', title: 'التوعية الصحية', desc: 'مقالات صحية مبسطة عن الحمل وصحة المرأة وتأخر الإنجاب.', body: guides() },
   ...articles.map(a => ({ url: '/guides/' + a.id + '/', title: a.title, desc: a.desc, body: article(a), article: a })),
   { url: '/faq/', title: 'الأسئلة الشائعة', desc: 'إجابات عن دوام العيادة وموقعها وخدماتها وطرق التواصل.', body: faqPage() },
