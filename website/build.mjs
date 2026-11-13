@@ -352,7 +352,7 @@ function contactAddressCard() {
         ${link(mapsSearch, 'ابحثي في خرائط Google', 'line', 'pin')}
       </div>
       <figure class="clinic-address-card__figure">
-        <div class="clinic-address-card__diagram" aria-label="مخطط إرشادي للعنوان">
+        <div class="clinic-address-card__diagram">
           <img src="/assets/clinic-address-map.webp" width="1672" height="765"
                alt="مخطط إرشادي على شارع صنعاء تعز بين جولة رداع وجولة كمران، يوضح العيادة قرب بنك الكريمي وعمارة الأوقاف"
                loading="lazy" decoding="async">
