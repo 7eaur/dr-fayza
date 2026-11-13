@@ -273,12 +273,23 @@ function detail(s) {
 }
 
 function diagnostics() {
- return pageHead('الفحوصات المساندة','المختبر والسونار','الفحص المناسب يجيب عن سؤال طبي محدد؛ وتفسير النتيجة جزء من الاستشارة وليس مجرد رقم أو صورة.','diagnostics')+
- editorialSection('مختبر العيادة','ما الدور الذي تؤديه التحاليل؟','يوجد مختبر ضمن خدمات العيادة، ويمكن السؤال عن أنواع الفحوصات المتاحة وتعليمات التحضير وساعات استقبال العينات قبل الزيارة.',[['تحديد الحاجة إلى التحليل','قد تساعد بعض التحاليل على فهم أعراض نسائية أو متابعة جوانب من الحمل، لكن اختيارها يعتمد على تقييم الطبيبة.'],['التحضير وأخذ العينة','يختلف التحضير بحسب نوع الفحص؛ وقد يتطلب بعضها توقيتًا محددًا أو تعليمات مسبقة ينبغي التأكد منها.'],['فهم النتيجة','لا تكفي قراءة الرقم وحده؛ تُفسر النتائج بالرجوع إلى الأعراض والعمر والتاريخ الطبي والنتائج السابقة عند الحاجة.']])+
- editorialSection('التصوير بالموجات فوق الصوتية','السونار جزء من الصورة الطبية','قد يدعم السونار تقييم الحمل وأعضاء الحوض، لكن نوع الفحص وموعده يحددان وفق الهدف من إجرائه.',[['أثناء الحمل','يُستخدم التصوير للمساعدة في تقييم جوانب من الحمل بحسب مرحلته وما تتطلبه المتابعة.'],['في الحالات النسائية','قد يفيد تصوير الرحم والمبيضين ضمن تقييم بعض الأعراض، ويُناقش التقرير مع بقية المعلومات السريرية.'],['بعد الفحص','اسألي عن معنى النتيجة وموعد المراجعة، وما إذا كانت هناك حاجة إلى تقييم إضافي.']])+
- '<section class="section alt"><div class="container">'+heading('قبل إجراء الفحوصات','أشياء تستحق السؤال عنها','التأكد من التفاصيل مسبقًا يجعل زيارتك أكثر تنظيمًا.')+'<ul class="feature-list editorial-questions"><li>'+ico('check')+'هل الفحص متاح اليوم وما ساعات استقبال العينات؟</li><li>'+ico('check')+'هل توجد تعليمات صيام أو تحضير أو موعد محدد؟</li><li>'+ico('check')+'متى تُستلم النتيجة وكيف تناقشها الطبيبة؟</li></ul>'+link(site.whatsapp,'اسألي عن الفحوصات المتاحة','solid','message')+'</div></section>';
+ const lab=[
+ ['متى تُطلب التحاليل؟','تُحدد الفحوصات بحسب الأعراض والتاريخ الطبي وما تحتاجه متابعة الحالة، وليس كل تحليل ضروريًا لكل مراجعة.'],
+ ['الاستعداد للفحص','قد تتطلب بعض التحاليل صيامًا أو توقيتًا مناسبًا؛ تحققي من التعليمات والتوفر قبل الحضور.'],
+ ['قراءة النتائج','تُناقش النتيجة ضمن السياق الصحي الكامل، ولا يكفي تفسير الرقم بمفرده.']
+ ];
+ const scan=[
+ ['متابعة الحمل','قد تساعد الموجات فوق الصوتية في تقييم جوانب من الحمل وفق عمره وسبب الفحص.'],
+ ['الصحة النسائية','يُستخدم التصوير عند الحاجة لدعم تقييم بعض الأعراض المتعلقة بأعضاء الحوض.'],
+ ['ما بعد التصوير','اسألي عن معنى التقرير وما إذا كانت هناك حاجة إلى مراجعة أو فحص إضافي.']
+ ];
+ const renderTopics=(items)=>items.map(([h,p],i)=>'<li><span>0'+(i+1)+'</span><div><h3>'+h+'</h3><p>'+p+'</p></div></li>').join('');
+ return innerHero('الفحوصات الطبية','المختبر والسونار','الفحوصات أدوات مساعدة لفهم الحالة، وتبقى الاستشارة الطبية أساس اختيارها وتفسير نتائجها.','diagnostics','svg')+
+ '<section class="section clinic-diagnostic-intro"><div class="container clinic-diagnostic-intro__layout"><div><span class="kicker">الخدمات التشخيصية</span><h2>التحليل والصورة الطبية، كلٌ منهما له دوره</h2><p>قد تحتاج بعض الحالات إلى تحاليل مخبرية، وأخرى إلى التصوير بالموجات فوق الصوتية، أو إلى الجمع بينهما وفق التقييم. هدفنا أن تكون الخطوة المطلوبة مفهومة قبل إجرائها.</p></div><div class="clinic-diagnostic-intro__mark">'+ico('scan')+'<span>فحوصات داعمة لتقييم الحالة</span></div></div></section>'+
+ '<section class="section clinic-diagnostic-feature clinic-diagnostic-feature--lab"><div class="container clinic-diagnostic-feature__grid"><div class="clinic-diagnostic-feature__heading"><span class="clinic-diagnostic-feature__tag">01 / المختبر</span><h2>فحوصات مخبرية تدعم التقييم</h2><p>يوجد مختبر ضمن خدمات العيادة. يمكنك التأكد من الفحوصات المتاحة، وأوقات استقبال العينات، وتعليمات التحضير قبل الزيارة.</p><a href="'+site.whatsapp+'" class="clinic-diagnostic-feature__link">اسألي عن توفر التحاليل '+ico('arrow')+'</a></div><ol class="clinic-diagnostic-feature__steps">'+renderTopics(lab)+'</ol></div></section>'+
+ '<section class="section clinic-diagnostic-feature clinic-diagnostic-feature--scan"><div class="container clinic-diagnostic-feature__grid"><div class="clinic-diagnostic-feature__heading"><span class="clinic-diagnostic-feature__tag">02 / السونار</span><h2>التصوير الطبي عندما يلزم</h2><p>السونار وسيلة للتقييم والمتابعة، ويختلف نوعه وتوقيته بحسب عمر الحمل أو الأعراض والحالة الصحية.</p><a href="/services/ultrasound/" class="clinic-diagnostic-feature__link">تفاصيل السونار '+ico('arrow')+'</a></div><ol class="clinic-diagnostic-feature__steps">'+renderTopics(scan)+'</ol></div></section>'+
+ '<section class="section clinic-diagnostic-prepare"><div class="container clinic-diagnostic-prepare__layout"><div><span class="kicker">قبل الحضور</span><h2>ثلاثة أسئلة تختصر عليكِ الكثير</h2></div><ul><li>'+ico('check')+'هل الفحص متاح في اليوم المطلوب؟</li><li>'+ico('check')+'هل يتطلب صيامًا أو تحضيرًا خاصًا؟</li><li>'+ico('check')+'متى تصدر النتيجة وكيف تتم مراجعتها؟</li></ul></div></section>';
 }
-
 function guides() {
   return [
     innerHero('التوعية الصحية','معلومات تساعدكِ على فهم صحتكِ','مقالات مبسطة عن الحمل وصحة المرأة وتأخر الإنجاب، لتجهيزي أسئلتك قبل الاستشارة.','fertility-support.webp'),
