@@ -403,7 +403,7 @@ function html(p) {
     '<link rel="stylesheet" href="/styles/site.css">' +
     '<link rel="stylesheet" href="/styles/agency.css">' +
     '<script type="application/ld+json">' + schemaFor(p) + '</script>' +
-    '<script>try{if(sessionStorage.getItem("clinic-visited")||navigator.connection?.saveData||['2g','slow-2g'].includes(navigator.connection?.effectiveType))document.documentElement.classList.add("clinic-has-visited")}catch(e){}</script>' +
+    '<script>try{if(sessionStorage.getItem("clinic-visited")||navigator.connection?.saveData||["2g","slow-2g"].includes(navigator.connection?.effectiveType))document.documentElement.classList.add("clinic-has-visited")}catch(e){}</script>' +
     '<script src="/scripts/site.js" defer></script></head><body>' +
     (noindex ? '' : '<div class="clinic-loader" aria-hidden="true"><div class="clinic-loader__mark"><img class="clinic-loader__layer clinic-loader__layer--one" src="/assets/logo-horizontal-480.webp" width="320" height="110" alt=""><img class="clinic-loader__layer clinic-loader__layer--two" src="/assets/logo-horizontal-480.webp" width="320" height="110" alt=""><img class="clinic-loader__layer clinic-loader__layer--full" src="/assets/logo-horizontal-480.webp" width="320" height="110" alt=""><span class="clinic-loader__line"></span></div></div>') +
     (noindex ? '' : header(p.url)) +
