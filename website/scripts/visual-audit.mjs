@@ -38,6 +38,8 @@ for (const config of configs) {
   const context = await browser.newContext({ viewport: { width: config.width, height: config.height }, deviceScaleFactor: 1, locale: 'ar-YE', colorScheme: 'light' });
   const page = await context.newPage();
   const consoleErrors = [];
+  const externalRequests=[];
+  page.on('request',req=>{try{const u=new URL(req.url());if(/^https?:$/.test(u.protocol)&&u.origin!==new URL(base).origin)externalRequests.push({route:req.url(),type:req.resourceType()})}catch{}});
   page.on('pageerror', e => consoleErrors.push(String(e)));
   for (const route of config.routes) {
     const target = base + route;
@@ -68,6 +70,9 @@ for (const config of configs) {
         missingAlt: [...document.images].filter(x => !x.hasAttribute('alt')).map(x => x.getAttribute('src')),
         includesAgencyCss: [...document.styleSheets].some(x => String(x.href).includes('/styles/agency.css')),
         hasLoader: !!document.querySelector('.clinic-loader'),
+        headerLogoReady: !!(document.querySelector('.header .logo img')?.naturalWidth),
+        cssSheets: [...document.styleSheets].filter(x=>x.href).map(x=>new URL(x.href).pathname),
+        localFonts: [...document.fonts].filter(x=>x.family.includes('IBM')).length,
         hasSimple404: !!document.querySelector('.clinic-notfound'),
         navTiming: (() => { const n=performance.getEntriesByType('navigation')[0];return n ? { responseEndMs:Math.round(n.responseEnd), domContentLoadedMs:Math.round(n.domContentLoadedEventEnd), loadMs:Math.round(n.loadEventEnd), documentTransferKB:Math.round(n.transferSize/1024) }:null })(),
         firstPartyTransferKB: Math.round(performance.getEntriesByType('resource').filter(x=>x.name.startsWith(location.origin)).reduce((total,x)=>total+x.transferSize,0)/1024)
@@ -77,6 +82,9 @@ for (const config of configs) {
       const entry = { width: config.width, route, status: response?.status() ?? null, ...d };
       report.pages.push(entry);
       if (is404 && (!entry.hasSimple404 || entry.hasLoader)) report.errors.push({ width: config.width, route, issue:'Missing simple 404 or loader incorrectly displayed' });
+      if (entry.hasLoader) report.errors.push({width:config.width,route,issue:'Full-screen loader should not block page'});
+      if(!is404&&!entry.headerLogoReady)report.errors.push({width:config.width,route,issue:'Header logo not ready at load'});
+      if(!is404&&entry.cssSheets.filter(x=>x.startsWith('/styles/')).length!==1)report.errors.push({width:config.width,route,issue:'Expected one combined local stylesheet',sheets:entry.cssSheets});
       if (!is404 && entry.status !== 200) report.errors.push({ width: config.width, route, issue: 'HTTP ' + entry.status });
       if (is404 && entry.status !== 404) report.errors.push({ width: config.width, route, issue: '404 status incorrect: ' + entry.status });
       if (entry.h1Count !== 1 || !entry.main || entry.lang !== 'ar' || entry.dir !== 'rtl') report.errors.push({ width: config.width, route, issue: 'Semantic document structure mismatch', entry });
@@ -120,6 +128,7 @@ for (const config of configs) {
       if (await toggle.getAttribute('aria-expanded') !== 'false') report.errors.push({ width: 390, route: '/', issue: 'Mobile menu failed to close on Escape' });
     } catch (err) { report.errors.push({ width: 390, issue: 'Mobile menu test failed: ' + String(err) }); }
   }
+  if (externalRequests.length) report.errors.push({width:config.width,issue:'External network requests were made without clicking a link',requests:externalRequests.slice(0,12)});
   if (consoleErrors.length) report.warnings.push({ width: config.width, errors: consoleErrors });
   await context.close();
 }
