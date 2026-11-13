@@ -115,7 +115,7 @@ function footer() {
  '<nav class="clinic-footer__links" aria-label="روابط سريعة"><h2>روابط سريعة</h2>'+officialLinks.map(([href,label])=>'<a href="'+href+'">'+label+'</a>').join('')+'</nav>'+
  '<nav class="clinic-footer__links" aria-label="الخدمات الطبية"><h2>الخدمات الطبية</h2>'+serviceLinks.map(x=>'<a href="/services/'+x.id+'/">'+x.name+'</a>').join('')+'<a href="/services/#diagnostics">المختبر والفحوصات</a></nav>'+
  '<section class="clinic-footer__brand"><a href="/"><img src="/assets/logo-horizontal-primary.png" alt="'+site.name+'" width="225" height="86" loading="lazy"></a><h2 class="visually-hidden">'+site.short+'</h2><p>رعاية متخصصة لصحة المرأة ومتابعة الحمل وتأخر الإنجاب في ذمار.</p><p class="clinic-footer__hours">الدوام: السبت–الخميس<br>8 صباحًا–1 ظهرًا، 4 عصرًا–8 مساءً</p></section>'+
- '<div class="clinic-footer__meta"><p>جميع الحقوق محفوظة © <span id="year">2026</span> '+site.short+'</p><p><a href="/privacy/">سياسة الخصوصية</a> <span aria-hidden="true">·</span> تطوير <a href="https://www.wasl-tech.com" target="_blank" rel="noopener noreferrer">وصل تك</a></p></div></div></footer>';
+ '<div class="clinic-footer__meta"><p>جميع الحقوق محفوظة © <span id="year">2026</span> '+site.short+'</p><p>تطوير <a href="https://www.wasl-tech.com" target="_blank" rel="noopener noreferrer">وصل تك</a></p></div></div></footer>';
 }
 function cta(title = 'هل تريدين معرفة الخطوة التالية؟') {
   return '<section class="cta clinic-page-cta"><div class="container cta-inner"><div><span class="kicker kicker-light">تواصلي قبل الزيارة</span><h2>' + title + '</h2><p>اسألي عن الخدمة المناسبة، الدوام، أو طريقة الوصول قبل الحضور.</p></div><div class="cta-actions">' + link(site.whatsapp, 'اسألي عبر واتساب', 'white', 'message') + link(site.call, 'اتصلي الآن', 'ghost', 'phone') + '</div></div></section>';
@@ -323,7 +323,7 @@ function contact() {
     "<section class=\"section agency-contact\"><div class=\"container agency-contact__grid\"><div><span class=\"kicker\">اتصال مباشر</span><h2>اختاري طريقة التواصل المناسبة لكِ</h2><p>للأسئلة عن الخدمات وتوفرها وتوقيت المراجعة، اتصلي أو أرسلي رسالة عبر واتساب.</p><div class=\"agency-contact__actions\">",
     link(site.call, 'اتصلي الآن · 785600066', 'solid', 'phone'),
     link(site.whatsapp, 'افتحي محادثة واتساب', 'line', 'message'),
-    "</div><p class=\"agency-contact__privacy\">لا ترسلي صورًا أو معلومات طبية حساسة إلا عبر قناة تنصح بها العيادة.</p></div><aside class=\"agency-contact__hours\"><span class=\"agency-contact__small\">مواعيد العمل</span><strong>السبت إلى الخميس</strong><dl><div><dt>الفترة الصباحية</dt><dd>8:00 ص – 1:00 م</dd></div><div><dt>الفترة المسائية</dt><dd>4:00 م – 8:00 م</dd></div></dl></aside></div></section><section class=\"agency-contact__location\"><div class=\"container agency-contact__location-inner\"><span class=\"agency-contact__place-icon\">",
+    "</div><p class=\"agency-contact__privacy\">لا ترسلي صورًا أو معلومات طبية حساسة إلا عبر قناة تنصح بها العيادة.</p></div><aside class=\"agency-contact__hours\"><div class=\"agency-contact__hours-head\"><span class=\"agency-contact__hours-icon\">'+ico('clock')+'</span><div><span class=\"agency-contact__small\">مواعيد العمل</span><strong>السبت إلى الخميس</strong></div></div><dl><div><dt>الفترة الصباحية</dt><dd><bdi>8:00 ص</bdi> – <bdi>1:00 م</bdi></dd></div><div><dt>الفترة المسائية</dt><dd><bdi>4:00 م</bdi> – <bdi>8:00 م</bdi></dd></div></dl><p class=\"agency-contact__hours-note\">الجمعة إجازة للعيادة. استقبال حالات الولادة متاح 24 ساعة بعد تأكيد مكان الاستقبال بالاتصال.</p></aside></div></section><section class=\"agency-contact__location\"><div class=\"container agency-contact__location-inner\"><span class=\"agency-contact__place-icon\">",
     ico('pin'),
     "</span><div><span class=\"kicker\">العنوان</span><h2>تفضلي بزيارتنا في ذمار</h2><p>ذمار، شارع صنعاء تعز، قبل جولة كمران، أمام بنك الكريمي.</p><small>يُفتح بحث بالعنوان في خرائط Google، وليس دبوساً مؤكداً. اتصلي بالعيادة لتأكيد جهة الوصول.</small></div>",
     link(mapsSearch, 'ابحثي عن العنوان في الخرائط', 'line', 'pin'),
@@ -334,15 +334,6 @@ function contact() {
     "</div></section>"
   ].join('');
 }
-function privacyPage() {
-  return innerHero('الخصوصية','الخصوصية واستخدام الموقع','معلومات واضحة حول تصفح الموقع وروابط الاتصال والخدمات الخارجية.','diagnostics','svg') +
-    '<section class="section agency-privacy"><div class="container agency-privacy__content"><h2>تصفح الموقع</h2><p>الموقع يقدم معلومات عامة عن العيادة وخدماتها. لا يتضمن حالياً حسابات مستخدمين أو نماذج تطلب ملفات صحية أو معلومات مرضى.</p>' +
-    '<h2>بيانات تقنية</h2><p>قد تعالج جهة الاستضافة بيانات تقنية لازمة لتقديم صفحات الموقع وحمايتها، مثل عنوان الإنترنت ومعلومات الطلب. تُحمّل الخطوط المعروضة عبر خدمات Google Fonts، وقد يتصل متصفحك بخوادمها.</p>' +
-    '<h2>روابط الخدمات الخارجية</h2><p>عند اختيار واتساب أو الاتصال أو البحث عن العنوان في خرائط Google، تنتقلين إلى خدمة أخرى تخضع لشروطها وسياسة خصوصيتها. لا ترسلي معلومات صحية حساسة في رسائل عامة دون التأكد من قناة التواصل المناسبة مع العيادة.</p>' +
-    '<h2>المقالات الطبية</h2><p>المقالات للتوعية العامة وليست بديلاً عن زيارة الطبيبة أو التشخيص أو العلاج الفردي.</p>' +
-    '<h2>للاستفسارات</h2><p>لأي سؤال عن موقع العيادة أو وسيلة التواصل المناسبة، يمكنك الاتصال بالعيادة على الرقم <a href="' + site.call + '">' + site.phone + '</a>.</p>' +
-    '<p class="agency-privacy__note">تُراجع هذه المعلومات عند إضافة أدوات قياس أو نماذج إلكترونية أو خدمات جديدة للموقع.</p></div></section>';
-}
 
 const pages = [
   { url: '/', title: 'الرئيسية', desc: 'عيادة الدكتورة فايزة الوصابي في ذمار؛ استشارات النساء والتوليد ومتابعة الحمل وتأخر الإنجاب.', body: home() },
@@ -352,8 +343,7 @@ const pages = [
   { url: '/guides/', title: 'التوعية الصحية', desc: 'مقالات صحية مبسطة عن الحمل وصحة المرأة وتأخر الإنجاب.', body: guides() },
   ...articles.map(a => ({ url: '/guides/' + a.id + '/', title: a.title, desc: a.desc, body: article(a), article: a })),
   { url: '/faq/', title: 'الأسئلة الشائعة', desc: 'إجابات عن دوام العيادة وموقعها وخدماتها وطرق التواصل.', body: faqPage() },
-  { url: '/contact/', title: 'التواصل والموقع', desc: 'رقم واتساب عيادة الدكتورة فايزة وعنوانها ومواعيد الدوام.', body: contact() },
-  { url: '/privacy/', title: 'الخصوصية', desc: 'معلومات عن خصوصية موقع عيادة الدكتورة فايزة وروابط التواصل الخارجية.', body: privacyPage() }
+  { url: '/contact/', title: 'التواصل والموقع', desc: 'رقم واتساب عيادة الدكتورة فايزة وعنوانها ومواعيد الدوام.', body: contact() }
 ];
 
 function schemaFor(p) {
@@ -412,10 +402,12 @@ function html(p) {
     '<link rel="stylesheet" href="/styles/site.css">' +
     '<link rel="stylesheet" href="/styles/agency.css">' +
     '<script type="application/ld+json">' + schemaFor(p) + '</script>' +
+    '<script>try{if(sessionStorage.getItem("clinic-visited"))document.documentElement.classList.add("clinic-has-visited")}catch(e){}</script>' +
     '<script src="/scripts/site.js" defer></script></head><body>' +
-    header(p.url) +
+    (noindex ? '' : '<div class="clinic-loader" aria-hidden="true"><span class="clinic-loader__halo"></span><img src="/assets/symbol-primary.png" alt="" width="72" height="72"><span class="clinic-loader__bar"></span></div>') +
+    (noindex ? '' : header(p.url)) +
     '<main id="main">' + p.body + '</main>' +
-    footer() +
+    (noindex ? '' : footer()) +
     '</body></html>';
 }
 
@@ -424,7 +416,7 @@ fs.mkdirSync(OUT, { recursive: true });
 for (const p of pages) { const file = path.join(OUT, p.url === '/' ? 'index.html' : p.url.slice(1) + 'index.html'); fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, html(p), 'utf8'); }
 for (const [src, dest] of [['styles.css', 'styles/site.css'], ['agency.css', 'styles/agency.css'], ['client.js', 'scripts/site.js']]) { fs.mkdirSync(path.dirname(path.join(OUT, dest)), { recursive: true }); fs.copyFileSync(path.join(ROOT, 'src', src), path.join(OUT, dest)); }
 fs.cpSync(path.join(ROOT, 'assets'), path.join(OUT, 'assets'), { recursive: true });
-fs.writeFileSync(path.join(OUT, '404.html'), html({ url: '/404/', title: 'الصفحة غير موجودة', desc: 'الرابط غير موجود.', body: '<section class="section centered"><div class="container"><span class="kicker">404</span><h1>الصفحة غير موجودة</h1><p>يمكنك العودة إلى الرئيسية أو استعراض الخدمات.</p>' + link('/', 'العودة للرئيسية', 'solid') + '</div></section>' }));
+fs.writeFileSync(path.join(OUT, '404.html'), html({ url: '/404/', title: 'الصفحة غير موجودة', desc: 'الرابط غير موجود.', body: '<section class="clinic-notfound"><div class="clinic-notfound__inner"><img src="/assets/symbol-primary.png" width="72" height="72" alt=""><span class="clinic-notfound__code">404</span><h1>الصفحة غير موجودة</h1>' + link('/', 'العودة للرئيسية', 'solid','arrow') + '</div></section>' }));
 fs.writeFileSync(path.join(OUT, 'robots.txt'), 'User-agent: *\nAllow: /\nSitemap: ' + site.url + '/sitemap.xml\n');
 fs.writeFileSync(path.join(OUT, 'sitemap.xml'), '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + pages.map(p => '<url><loc>' + site.url + p.url + '</loc></url>').join('') + '</urlset>');
 console.log('Built', pages.length, 'routes.');

@@ -14,11 +14,11 @@ const allRoutes = [
   '/services/#diagnostics', '/guides/',
   '/guides/pregnancy-care/', '/guides/womens-visit/',
   '/guides/fertility-consultation/', '/guides/ultrasound-guide/',
-  '/faq/', '/contact/', '/privacy/', '/missing-page-test'
+  '/faq/', '/contact/', '/missing-page-test'
 ];
 const configs = [
   { width: 320, height: 700, routes: ['/', '/about/', '/services/pregnancy/', '/contact/'] },
-  { width: 360, height: 800, routes: ['/', '/contact/', '/privacy/'] },
+  { width: 360, height: 800, routes: ['/', '/contact/'] },
   { width: 390, height: 844, routes: allRoutes },
   { width: 768, height: 1024, routes: ['/', '/about/', '/services/', '/guides/', '/contact/'] },
   { width: 1280, height: 800, routes: ['/', '/about/'] },
@@ -66,12 +66,18 @@ for (const config of configs) {
         brokenImages: [...document.images].filter(x => x.complete && x.naturalWidth === 0).map(x => x.getAttribute('src')),
         viewportMeta: document.querySelector('meta[name="viewport"]')?.content,
         missingAlt: [...document.images].filter(x => !x.hasAttribute('alt')).map(x => x.getAttribute('src')),
-        includesAgencyCss: [...document.styleSheets].some(x => String(x.href).includes('/styles/agency.css'))
+        includesAgencyCss: [...document.styleSheets].some(x => String(x.href).includes('/styles/agency.css')),
+        hasLoader: !!document.querySelector('.clinic-loader'),
+        hasSimple404: !!document.querySelector('.clinic-notfound'),
+        navTiming: (() => { const n=performance.getEntriesByType('navigation')[0];return n ? { responseEndMs:Math.round(n.responseEnd), domContentLoadedMs:Math.round(n.domContentLoadedEventEnd), loadMs:Math.round(n.loadEventEnd), documentTransferKB:Math.round(n.transferSize/1024) }:null })(),
+        firstPartyTransferKB: Math.round(performance.getEntriesByType('resource').filter(x=>x.name.startsWith(location.origin)).reduce((total,x)=>total+x.transferSize,0)/1024)
       }));
       const f = [config.width, safeName(route)].join('__');
       if (!is404) await page.screenshot({ path: path.join(out, f + '.png'), fullPage: true, animations: 'disabled' });
       const entry = { width: config.width, route, status: response?.status() ?? null, ...d };
       report.pages.push(entry);
+      if (is404 && (!entry.hasSimple404 || entry.hasLoader)) report.errors.push({ width: config.width, route, issue:'Missing simple 404 or loader incorrectly displayed' });
+      if (!is404 && !entry.hasLoader) report.errors.push({ width: config.width, route, issue:'Clinic logo loader missing' });
       if (!is404 && entry.status !== 200) report.errors.push({ width: config.width, route, issue: 'HTTP ' + entry.status });
       if (is404 && entry.status !== 404) report.errors.push({ width: config.width, route, issue: '404 status incorrect: ' + entry.status });
       if (entry.h1Count !== 1 || !entry.main || entry.lang !== 'ar' || entry.dir !== 'rtl') report.errors.push({ width: config.width, route, issue: 'Semantic document structure mismatch', entry });
@@ -86,7 +92,7 @@ for (const config of configs) {
           report.errors.push({ width: config.width, route, issue: 'Unusable narrow related service cards', relatedCardWidths });
         }
       }
-      if ([390, 1440].includes(config.width) && ['/', '/about/', '/services/', '/contact/', '/guides/pregnancy-care/', '/privacy/'].includes(route)) {
+      if ([390, 1440].includes(config.width) && ['/', '/about/', '/services/', '/contact/', '/guides/pregnancy-care/'].includes(route)) {
         const axe = await new AxeBuilder({ page })
           .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
           .analyze();
@@ -119,6 +125,9 @@ for (const config of configs) {
   await context.close();
 }
 await browser.close();
+const performanceSamples=report.pages.filter(p=>['/','/contact/','/services/'].includes(p.route)&&[390,1440].includes(p.width)).map(p=>({width:p.width,route:p.route,...p.navTiming,firstPartyTransferKB:p.firstPartyTransferKB}));
+fs.writeFileSync(path.join(out,'performance-samples.json'),JSON.stringify({note:'Chromium navigation timing samples, not Lighthouse scores or mobile field Core Web Vitals; measured on the GitHub runner.',samples:performanceSamples},null,2));
+console.log('Navigation samples (ms/KB): '+JSON.stringify(performanceSamples));
 fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify(report, null, 2));
 const summary = {
   pages: report.pages.length, screenshots: report.pages.filter(p => p.route !== '/missing-page-test').length, errors: report.errors.length, warnings: report.warnings.length
