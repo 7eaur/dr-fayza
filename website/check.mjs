@@ -1,4 +1,4 @@
-import fs from 'node:fs';import path from 'node:path';const root=path.join(process.cwd(),'dist');const files=[];function scan(dir){for(const x of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,x.name);if(x.isDirectory())scan(p);else files.push(path.relative(root,p).replaceAll('\\','/'));}}scan(root);const pages=files.filter(p=>p.endsWith('index.html'));const issues=[];if(pages.length!==20)issues.push('Expected 20 HTML pages; got '+pages.length);for(const p of pages){const html=fs.readFileSync(path.join(root,p),'utf8');const title=html.match(/<title>(.*?)<\/title>/)?.[1];if(!title)issues.push('Missing title: '+p);if(!html.includes('name="description"'))issues.push('Missing description: '+p);if(!html.includes('<main id="main">'))issues.push('Missing main: '+p);for(const m of html.matchAll(/(?:href|src)="(\/[^"#?]*)/g)){let u=m[1];if(u==='/')u='index.html';else if(u.endsWith('/'))u+='index.html';else u=u.slice(1);if(u.startsWith('/'))u=u.slice(1);if(!files.includes(u))issues.push(p+' => missing '+m[1]);}if((html.match(/<h1\b/g)||[]).length!==1)issues.push('Expected one h1: '+p);}if(issues.length){console.error(issues.join('\n'));process.exit(1);}console.log('Verified '+pages.length+' static pages and '+files.length+' total output files.');
+import fs from 'node:fs';import path from 'node:path';const root=path.join(process.cwd(),'dist');const files=[];function scan(dir){for(const x of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,x.name);if(x.isDirectory())scan(p);else files.push(path.relative(root,p).replaceAll('\\','/'));}}scan(root);const pages=files.filter(p=>p.endsWith('index.html'));const issues=[];if(pages.length!==19)issues.push('Expected 19 HTML pages; got '+pages.length);for(const p of pages){const html=fs.readFileSync(path.join(root,p),'utf8');const title=html.match(/<title>(.*?)<\/title>/)?.[1];if(!title)issues.push('Missing title: '+p);if(!html.includes('name="description"'))issues.push('Missing description: '+p);if(!html.includes('<main id="main">'))issues.push('Missing main: '+p);for(const m of html.matchAll(/(?:href|src)="(\/[^"#?]*)/g)){let u=m[1];if(u==='/')u='index.html';else if(u.endsWith('/'))u+='index.html';else u=u.slice(1);if(u.startsWith('/'))u=u.slice(1);if(!files.includes(u))issues.push(p+' => missing '+m[1]);}if((html.match(/<h1\b/g)||[]).length!==1)issues.push('Expected one h1: '+p);}if(issues.length){console.error(issues.join('\n'));process.exit(1);}console.log('Verified '+pages.length+' static pages and '+files.length+' total output files.');
 
 
 // Agency redesign acceptance gates. These are static checks, not a visual-browser audit.
@@ -58,8 +58,6 @@ if(!agencyCssMobile.includes('.section .cards:not(.agency-services__cards)')) is
 if(issues.length){console.error(issues.join('\n'));process.exit(1);}
 console.log('Agency mobile UX and content coverage gates passed.');
 
-const privacyHtml=fs.readFileSync(path.join(root,'privacy/index.html'),'utf8');
-if(!privacyHtml.includes('الخصوصية واستخدام الموقع')) issues.push('Privacy page missing');
 if(!homeHtml.includes('https://www.google.com/maps/search/')) issues.push('Map search link missing');
 if(!aboutHtml.includes('رؤيتنا ورسالتنا')) issues.push('Clinic story missing');
 if(!homeHtml.includes('OpeningHoursSpecification')) issues.push('Opening hours missing from structured data');
@@ -79,3 +77,14 @@ if(!index.includes('clinic-hours__sessions') || !index.includes('clinic-visit__l
 if(index.includes('الدوام الاعتيادي')) issues.push('Retired ordinary-hours label on homepage');
 if(issues.length){console.error(issues.join('\\n'));process.exit(1);}
 console.log('Visit section, schedule and diagnostics cleanup verified.');
+
+// Release gates: remove privacy, simple 404, motion and usable contrast.
+if(files.includes('privacy/index.html')) issues.push('Privacy page must not be built');
+if(homeHtml.includes('href="/privacy/"')) issues.push('Privacy link still visible');
+const errorHtml=fs.readFileSync(path.join(root,'404.html'),'utf8');
+if(!errorHtml.includes('clinic-notfound') || !errorHtml.includes('href="/"')) issues.push('Simple 404 missing');
+const contactHtml=fs.readFileSync(path.join(root,'contact/index.html'),'utf8');
+if(!contactHtml.includes('agency-contact__hours-head')) issues.push('Contact schedule missing');
+if(!agencyCss.includes('prefers-reduced-motion')) issues.push('Motion reduced preference missing');
+if(issues.length){console.error(issues.join('\\n'));process.exit(1);}
+console.log('Privacy removal, error-page and motion checks passed.');
