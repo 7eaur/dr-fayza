@@ -88,7 +88,7 @@ const articles = [
 const icons = { menu: 'M4 6h16M4 12h16M4 18h16', close: 'M5 5l14 14M19 5 5 19', heart: 'M20.8 4.6a5.6 5.6 0 0 0-7.9 0L12 5.5l-.9-.9a5.6 5.6 0 0 0-7.9 7.9L12 21l8.8-8.5a5.6 5.6 0 0 0 0-7.9Z', clock: 'M12 7v5l4 2', pin: 'M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z', phone: 'M21 16v4a2 2 0 0 1-2 2C10 21 3 14 2 5a2 2 0 0 1 2-2h4l2 5-2 2a15 15 0 0 0 6 6l2-2Z', message: 'M21 12a9 9 0 0 1-9 9 9 9 0 0 1-4-.9L3 21l1.5-4.3A9 9 0 1 1 21 12Z', arrow: 'M19 12H5m6-6-6 6 6 6', check: 'm4 12 5 5L20 6', scan: 'M3 4h18v15H3Zm5 12c3-8 7-8 10 0', baby: 'M9 4a3 3 0 0 1 6 0M12 7c-6 0-9 4-9 8s4 7 9 7 9-3 9-7-3-8-9-8Z', flower: 'M12 12C7 11 4 6 6 2c4 0 6 4 6 10Zm0 0c5-1 8-6 6-10-4 0-6 4-6 6 10Zm0 0v10', sparkles: 'm12 2 2 7 7 2-7 2-2 7-2-7-7-2 7-2 2-7Z', shield: 'M12 2 21 6v6c0 5-3 8-9 10-6-2-9-5-9-10V6Zm-4 10 3 3 5-6', file: 'M5 2h9l5 5v15H5Z M14 2v6h5 M9 13h6m-6 4h6', info: 'M12 11v6m0-10h.01' };
 const ico = (key) => '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="' + (icons[key] || icons.heart) + '"/>' + (key === 'clock' ? '<circle cx="12" cy="12" r="9"/>' : '') + (key === 'pin' ? '<circle cx="12" cy="10" r="2.5"/>' : '') + (key === 'info' ? '<circle cx="12" cy="12" r="9"/>' : '') + '</svg>';
 const link = (href, label, type = 'solid', icon = 'arrow') => '<a class="button button--' + type + '" href="' + href + '"' + (href.startsWith('https:') ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' + label + ico(icon) + '</a>';
-const nav = [['/', 'الرئيسية'], ['/about/', 'عن الدكتورة'], ['/services/', 'الخدمات'], ['/services/#diagnostics', 'الفحوصات'], ['/guides/', 'التوعية الصحية'], ['/faq/', 'الأسئلة الشائعة'], ['/contact/', 'التواصل']];
+const nav = [['/', 'الرئيسية'], ['/about/', 'عن الدكتورة'], ['/services/', 'الخدمات'], ['/guides/', 'التوعية الصحية'], ['/faq/', 'الأسئلة الشائعة'], ['/contact/', 'التواصل']];
 const heading = (kicker, title, sub = '') => '<div class="heading"><span class="kicker">' + kicker + '</span><h2>' + title + '</h2>' + (sub ? '<p>' + sub + '</p>' : '') + '</div>';
 const serviceShowcase = () =>
  '<section class="section clinic-service-showcase" aria-label="دليل الخدمات الطبية"><div class="container">'+
@@ -232,12 +232,17 @@ function home() {
     "</a></div><div class=\"tiles\">",
     articles.slice(0,3).map(articleTile).join(''),
     "</div></div></section>",
-    "<section class=\"section agency-visit\" aria-labelledby=\"agency-visit-title\"><div class=\"container agency-visit__grid\"><div class=\"agency-visit__address\"><span class=\"kicker\">زيارة العيادة</span><h2 id=\"agency-visit-title\">ننتظركِ في ذمار</h2><p>ذمار، شارع صنعاء تعز، قبل جولة كمران، أمام بنك الكريمي.</p><div class=\"agency-visit__detail\"><span>",
-    ico('clock'),
-    "</span><div><strong>الدوام الاعتيادي</strong><p>السبت إلى الخميس، 8 ص–1 م و4 م–8 م.</p></div></div><div class=\"agency-visit__actions\">",
-    link(site.call, 'اتصلي بالعيادة', 'solid', 'phone'),
-    link(mapsSearch, 'ابحثي عن العنوان في الخرائط', 'line', 'pin'),
-    "</div></div></div></section>"
+    '<section class="section agency-visit clinic-visit" aria-labelledby="agency-visit-title"><div class="container clinic-visit__layout">'+
+    '<div class="clinic-visit__location"><span class="kicker">موقع العيادة</span><h2 id="agency-visit-title">ننتظركِ في ذمار</h2><p class="clinic-visit__intro">يسعدنا استقبال استفساراتكِ ومساعدتكِ على الوصول إلى العيادة بكل سهولة.</p>'+
+    '<div class="clinic-visit__address"><span class="clinic-visit__address-icon">'+ico('pin')+'</span><div><strong>عنوان العيادة</strong><p>ذمار، شارع صنعاء تعز، قبل جولة كمران، أمام بنك الكريمي.</p></div></div>'+
+    '<div class="clinic-visit__actions">'+link(mapsSearch,'الاطلاع على الموقع في الخرائط','line','pin')+link(site.call,'اتصلي بالعيادة','solid','phone')+'</div>'+
+    '<small class="clinic-visit__map-note">رابط الخرائط يبحث عن العنوان، ويُرجى الاتصال لتأكيد جهة الوصول.</small></div>'+
+    '<aside class="clinic-hours" aria-label="مواعيد عمل العيادة"><div class="clinic-hours__top"><span class="clinic-hours__icon">'+ico('clock')+'</span><span class="clinic-hours__eyebrow">مواعيد العمل</span></div>'+
+    '<h3>أوقات استقبال المراجعات</h3><div class="clinic-hours__days"><span>'+ico('calendar')+' أيام العمل</span><strong>السبت – الخميس</strong></div>'+
+    '<div class="clinic-hours__sessions"><div class="clinic-hours__session"><span class="clinic-hours__session-name">الفترة الصباحية</span><strong><bdi>8:00 ص</bdi> <span>—</span> <bdi>1:00 م</bdi></strong></div>'+
+    '<div class="clinic-hours__session"><span class="clinic-hours__session-name">الفترة المسائية</span><strong><bdi>4:00 م</bdi> <span>—</span> <bdi>8:00 م</bdi></strong></div></div>'+
+    '<p class="clinic-hours__footnote">يوم الجمعة خارج مواعيد عمل العيادة. لاستقبال حالات الولادة على مدار 24 ساعة، يرجى الاتصال لتأكيد موقع الاستقبال.</p></aside>'+
+    '</div></section>"
 
   ].join('');
 }
@@ -255,7 +260,7 @@ function servicesPage() {
  return [
  innerHero('الخدمات الطبية','رعاية تناسب مراحل مختلفة من حياتكِ','استكشفي مجالات النساء والتوليد والحمل والخصوبة، وتعرّفي على تفاصيل كل خدمة والأسئلة المناسبة قبل الزيارة.','pregnancy-care.webp'),
  serviceShowcase(),
- diagnostics(),
+ diagnosticsSection(),
  editorialSection('كيف تختارين الخدمة؟','ثلاثة أمور تساعدك على البدء','لا تحتاجين إلى معرفة اسم الفحص أو تشخيص الحالة قبل التواصل؛ ابدئي بوصف ما تحتاجينه.',[['حددي سبب الزيارة','هل لديك عرض جديد، أم متابعة سابقة، أم سؤال عن الحمل أو الإنجاب؟'],['جهزي ما لديك','التحاليل والتقارير والأدوية السابقة تساعد على تجنب تكرار التفاصيل.'],['اسألي عن الخطوة التالية','يمكنك الاستفسار عن توفر الخدمة والتحضير والتوقيت المناسب قبل الحضور.']]),
  
  cta('لستِ متأكدة من نوع الاستشارة؟')
@@ -273,7 +278,7 @@ function detail(s) {
  '<section class="section clinic-related"><div class="container"><div class="clinic-related__title">'+heading('استكشفي أيضًا','خدمات أخرى قد تهمكِ')+'</div><div class="clinic-related__links">'+related+'</div></div></section>';
 }
 
-function diagnostics() {
+function diagnosticsSection() {
  const lab=[
  ['متى تُطلب التحاليل؟','تُحدد الفحوصات بحسب الأعراض والتاريخ الطبي وما تحتاجه متابعة الحالة، وليس كل تحليل ضروريًا لكل مراجعة.'],
  ['الاستعداد للفحص','قد تتطلب بعض التحاليل صيامًا أو توقيتًا مناسبًا؛ تحققي من التعليمات والتوفر قبل الحضور.'],
