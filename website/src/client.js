@@ -12,7 +12,7 @@
    else {loader.addEventListener('animationend',e=>{if(e.target===loader)dismiss()},{once:true});}
  }
  if(reduced||dataSaver||!('IntersectionObserver' in window))return;
- const targets=[...document.querySelectorAll('main .section > .container, main .clinic-hero__shell, main .clinic-inner-hero__grid, main .clinic-birth .container')];
+ const targets=[...document.querySelectorAll('main .clinic-hero__shell, main .clinic-inner-hero__grid, main .clinic-visit__layout')];
  const watcher=new IntersectionObserver((entries,observer)=>{
    for(const entry of entries){
      if(!entry.isIntersecting)continue;
