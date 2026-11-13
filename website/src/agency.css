@@ -619,3 +619,147 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
 
 /* Preserve readable breadcrumb category labels on editorial page heroes. */
 .clinic-inner-hero__copy .breadcrumbs, .clinic-inner-hero__copy .breadcrumbs span, .clinic-inner-hero__copy .breadcrumbs a { color:#355b60; opacity:1; }
+
+
+/* 2026-11-14 — Signature warm-sand supporting palette.
+   Petrol and teal remain the clinical identity. Sand is a restrained
+   editorial surface/accent, not a replacement for the core brand. */
+:root {
+  --clinic-sand: #CDA982;
+  --clinic-sand-deep: #8B603D;
+  --clinic-sand-soft: #FBF4EA;
+  --clinic-sand-faint: #FFFCF7;
+  --clinic-sand-border: #EBDACA;
+}
+body { background:var(--clinic-sand-faint); }
+.header { background:rgba(255,255,255,.97); border-bottom-color:#dfebe6; }
+.clinic-hero,.agency-services,.agency-visit,.clinic-inner-hero { background:var(--clinic-sand-faint); }
+.clinic-hero__shell {
+  background:radial-gradient(ellipse at 18% 24%,rgba(205,169,130,.18),transparent 42%),
+             radial-gradient(ellipse at 84% 76%,rgba(69,161,142,.08),transparent 48%),
+             linear-gradient(120deg,#fff 15%,#FBF4EA 100%);
+  border-color:var(--clinic-sand-border);
+}
+.clinic-hero__visual { background:#f7ebdd; }
+.clinic-hero__kicker { color:var(--clinic-sand-deep); }
+.clinic-hero__features { border-top-color:#e8d9c8; }
+.clinic-hero__features .ico { color:#8B603D; }
+.clinic-inner-hero__visual { background:#f4e8d9; }
+.clinic-inner-hero__copy .kicker {
+  background:#F3E7D8;
+  color:#714829;
+}
+.agency-doctor { background:linear-gradient(145deg,#f9f2e9,#f3f9f5); }
+.agency-doctor__credentials,.agency-profile__credentials {
+  background:#fff;
+  border-color:#e8daca;
+}
+.agency-doctor__label { color:#805633; }
+.agency-doctor__credentials li { border-bottom-color:#ecded0; }
+.agency-doctor__symbol { opacity:.12; }
+.agency-services__cards .card,
+.section .cards:not(.agency-services__cards) .card {
+  background: #fff;
+  border-color:#e7ded3;
+  box-shadow: 0 3px 14px rgba(77,61,45,.035);
+  transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+.agency-services__cards .card:hover,
+.section .cards:not(.agency-services__cards) .card:hover {
+  border-color:#d3b28f;
+  box-shadow:0 12px 25px rgba(83,65,46,.09);
+  transform:translateY(-2px);
+}
+.agency-services__cards .card:nth-child(3n+2) .card-ic,
+.section .cards:not(.agency-services__cards) .card:nth-child(3n+2) .card-ic {
+  background:#F5EADB;
+  color:#865833;
+}
+.agency-services__diagnostics {
+  background:linear-gradient(110deg,#f9f0e5,#f0f7f2);
+  border-color:#e7d7c4;
+}
+.agency-services__diagnostics:hover { background:#f4e9da; }
+.agency-guides,.agency-mission,.editorial-block:nth-of-type(even) { background:var(--clinic-sand-soft); }
+.agency-guides .tile,.editorial-item,.agency-mission__grid article {
+  border-color:#eadfd1;
+  background:#fff;
+}
+.editorial-block:nth-of-type(odd) { background:#fff; }
+.editorial-number,.agency-mission__grid article>span { color:#865833; }
+.editorial-item:nth-child(3n+2) { background:#FCF7F0; }
+.agency-mission__grid article:nth-child(2) { background:#f7fbf8; }
+.agency-first-visit.clinic-process { background:linear-gradient(180deg,#fffdf9,#fbf5ed); }
+.clinic-process__icon { background:#0c495c; }
+.clinic-process__timeline li:nth-child(even) .clinic-process__icon { background:#8B603D; }
+.agency-article-index { background:#fffaf5; }
+.agency-article-index .tile { border-color:#eadfd1; background:white; }
+.agency-article-index .tile-body small { color:#805633; }
+.agency-faq-page,.agency-contact,.agency-privacy { background:#fffdf9; }
+.agency-faq-page .faq-list,.agency-services-page .agency-services__cards {
+  background:#fcf5ec;
+  border-color:#ebdccb;
+}
+.agency-contact__hours,.agency-faq-page__contact {
+  background:linear-gradient(140deg,#fdf7ee,#f3f9f6);
+  border-color:#e7ddce;
+}
+.clinic-page-cta .cta-inner {
+  background:linear-gradient(115deg,#093e4f 0%,#0f5960 72%,#29756b 100%);
+  box-shadow:0 11px 25px rgba(12,73,92,.12);
+}
+.clinic-page-cta .kicker { color:#f5d5aa; }
+
+/* Footer: contrasting deep-petrol signature section, distinct from content. */
+.clinic-footer {
+  position:relative;
+  margin-top:20px;
+  border-top:4px solid var(--clinic-sand);
+  background:linear-gradient(145deg,#083A49 0%,#0C495C 58%,#0C554E 100%);
+  color:#fff;
+}
+.clinic-footer::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:radial-gradient(ellipse at 88% 0%,rgba(205,169,130,.13),transparent 48%);
+}
+.clinic-footer__grid { position:relative; }
+.clinic-footer__grid h2 { color:#fff; }
+.clinic-footer__links a,
+.clinic-footer__contact>a,
+.clinic-footer__contact>.clinic-footer__item,
+.clinic-footer__brand p { color:#D7E9E7; }
+.clinic-footer__links a:hover,
+.clinic-footer__contact a:hover { color:#F8DEBD; }
+.clinic-footer__contact .ico { color:#F4CFA5; }
+.clinic-footer__brand img { filter:brightness(0) invert(1); opacity:.96; }
+.clinic-footer__brand p { color:#D7E9E7; }
+.clinic-footer__hours { color:#EBDAC6!important; }
+.clinic-footer__meta {
+  border-top-color:rgba(232,243,239,.25);
+}
+.clinic-footer__meta p,
+.clinic-footer__meta a,
+.clinic-footer__meta span { color:#D7E9E7; }
+.clinic-footer__meta a:hover { color:#F8DEBD; }
+.clinic-footer a:focus-visible { outline-color:#F4CFA5; }
+@media(min-width:681px) {
+  .clinic-inner-hero__grid {
+    background:linear-gradient(125deg,#fbf3e8,#f7faf7 73%);
+    border-color:#ecddcd;
+  }
+}
+@media(max-width:680px) {
+  .clinic-hero__shell { background:linear-gradient(180deg,#fff,#fbf4ea); }
+  .clinic-footer { margin-top:12px; }
+  .clinic-footer__grid { gap:19px 15px; padding-block:29px 18px; }
+  .clinic-footer__brand img { width:170px; }
+  .clinic-footer__meta { gap:6px; }
+  .agency-services__cards .card:hover { transform:none; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .agency-services__cards .card,
+  .section .cards:not(.agency-services__cards) .card { transition:none; }
+}
