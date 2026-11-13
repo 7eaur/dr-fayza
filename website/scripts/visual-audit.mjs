@@ -134,7 +134,8 @@ for (const config of configs) {
 }
 // Simulated cold 4G samples provide a more useful mobile check than unthrottled CI localhost-style timings.
 const throttledSamples=[];
-for (const route of ['/', '/contact/']) {
+for (const scenario of [{route:'/',latency:150,throughput:200000,profile:'1.6 Mbps'}, {route:'/contact/',latency:150,throughput:200000,profile:'1.6 Mbps'}, {route:'/',latency:350,throughput:50000,profile:'400 Kbps weak connection'}]) {
+ const {route}=scenario;
  const mobileContext=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:1,locale:'ar-YE'});
  const mobile=await mobileContext.newPage();
  try {
@@ -145,7 +146,7 @@ for (const route of ['/', '/contact/']) {
   const cdp=await mobileContext.newCDPSession(mobile);
   await cdp.send('Network.enable');
   await cdp.send('Network.setCacheDisabled',{cacheDisabled:true});
-  await cdp.send('Network.emulateNetworkConditions',{offline:false,latency:150,downloadThroughput:200000,uploadThroughput:75000});
+  await cdp.send('Network.emulateNetworkConditions',{offline:false,latency:scenario.latency,downloadThroughput:scenario.throughput,uploadThroughput:scenario.throughput/3});
   await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});
   const response=await mobile.goto(base+route,{waitUntil:'load',timeout:60000});
   await mobile.waitForTimeout(1000);
@@ -156,13 +157,13 @@ for (const route of ['/', '/contact/']) {
     loadMs:Math.round(nav?.loadEventEnd||0),fcpMs:Math.round(paint?.startTime||0),lcpMs:Math.round(window.__lastLCP||0),
     firstPartyTransferKB:Math.round(performance.getEntriesByType('resource').filter(x=>x.name.startsWith(location.origin)).reduce((a,x)=>a+x.transferSize,0)/1024)};
   });
-  throttledSamples.push({route,width:390,network:'simulated 1.6 Mbps, 150ms latency, 4x CPU slowdown',status:response?.status(),...sample});
+  throttledSamples.push({route,width:390,network:'simulated '+scenario.profile+', '+scenario.latency+'ms latency, 4x CPU slowdown',status:response?.status(),...sample});
  }catch(err){report.warnings.push({route,issue:'Mobile throttled sample unavailable: '+String(err)})}
  finally{await mobileContext.close()}
 }
 await browser.close();
 const performanceSamples=report.pages.filter(p=>['/','/contact/','/services/'].includes(p.route)&&[390,1440].includes(p.width)).map(p=>({width:p.width,route:p.route,...p.navTiming,firstPartyTransferKB:p.firstPartyTransferKB}));
-fs.writeFileSync(path.join(out,'performance-samples.json'),JSON.stringify({note:'Automated Chrome lab timings, not Lighthouse scores or real-user field Core Web Vitals. Throttled samples emulate 1.6 Mbps/150ms/4x CPU slowdown.',samples:performanceSamples,throttledSamples},null,2));
+fs.writeFileSync(path.join(out,'performance-samples.json'),JSON.stringify({note:'Automated Chrome lab timings, not Lighthouse scores or real-user field Core Web Vitals. Throttled samples emulate 1.6 Mbps and weak 400 Kbps connections with 4x CPU slowdown.',samples:performanceSamples,throttledSamples},null,2));
 console.log('Navigation samples (ms/KB): '+JSON.stringify(performanceSamples));
 console.log('Throttled mobile (ms/KB): '+JSON.stringify(throttledSamples));
 fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify(report, null, 2));
