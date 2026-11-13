@@ -29,17 +29,5 @@
         }
       ]
     }
-  ],
-  "redirects": [
-    {
-      "source": "/diagnostics",
-      "destination": "/services/#diagnostics",
-      "permanent": true
-    },
-    {
-      "source": "/diagnostics/",
-      "destination": "/services/#diagnostics",
-      "permanent": true
-    }
   ]
 }
