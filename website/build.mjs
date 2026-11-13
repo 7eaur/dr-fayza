@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
+import { transform } from 'esbuild';
 
 const ROOT = process.cwd();
 const OUT = path.join(ROOT, 'dist');
@@ -104,7 +105,7 @@ const faq = (items) => '<div class="faq-list">' + items.map(([q, a], i) => '<det
 const articleTile = (a) => '<article class="tile"><div class="tile-visual"><img src="/assets/generated/' + a.image + '" alt="صورة تحريرية عن ' + a.category + '" width="960" height="720" loading="lazy"></div><div class="tile-body"><small>' + a.category + '</small><h3>' + a.title + '</h3><p>' + a.desc + '</p><a href="/guides/' + a.id + '/">اقرئي المقال ' + ico('arrow') + '</a></div></article>';
 
 function header(url) {
- return '<a class="skip" href="#main">تخطي إلى المحتوى</a><header class="header"><div class="container header-inner"><a class="logo" href="/" aria-label="الرئيسية"><img src="/assets/logo-horizontal-primary.png" alt="'+site.name+'" width="225" height="86"></a><nav class="nav" id="primary-nav" aria-label="القائمة الرئيسية">'+nav.map(([href,label])=>'<a href="'+href+'" '+(url===href?'aria-current="page"':'')+'>'+label+'</a>').join('')+'</nav><div class="header-actions"><a class="header-wa" aria-label="تواصلي عبر واتساب" href="'+site.whatsapp+'" target="_blank" rel="noopener noreferrer">'+ico('message')+'<span>اسألي عبر واتساب</span></a><button class="menu-toggle" id="menu-button" aria-expanded="false" aria-controls="primary-nav" aria-label="فتح القائمة">'+ico('menu')+'</button></div></div></header>';
+ return '<a class="skip" href="#main">تخطي إلى المحتوى</a><header class="header"><div class="container header-inner"><a class="logo" href="/" aria-label="الرئيسية"><img src="/assets/logo-horizontal-primary.png" alt="'+site.name+'" width="225" height="86" loading="eager" fetchpriority="high" decoding="sync"></a><nav class="nav" id="primary-nav" aria-label="القائمة الرئيسية">'+nav.map(([href,label])=>'<a href="'+href+'" '+(url===href?'aria-current="page"':'')+'>'+label+'</a>').join('')+'</nav><div class="header-actions"><a class="header-wa" aria-label="تواصلي عبر واتساب" href="'+site.whatsapp+'" target="_blank" rel="noopener noreferrer">'+ico('message')+'<span>اسألي عبر واتساب</span></a><button class="menu-toggle" id="menu-button" aria-expanded="false" aria-controls="primary-nav" aria-label="فتح القائمة">'+ico('menu')+'</button></div></div></header>';
 }
 function footer() {
  const officialLinks = [
@@ -397,15 +398,10 @@ function html(p) {
     '<meta name="twitter:card" content="summary_large_image">' +
     '<link rel="icon" href="/assets/symbol-primary.png">' +
     (p.url === '/' ? '<link rel="preload" as="image" href="/assets/generated/hero-mother-care-960.webp" imagesrcset="/assets/generated/hero-mother-care-480.webp 480w, /assets/generated/hero-mother-care-960.webp 960w, /assets/generated/hero-mother-care.webp 2560w" imagesizes="(max-width: 680px) 100vw, 1100px">' : '') +
-    '<link rel="preconnect" href="https://fonts.googleapis.com">' +
-    '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' +
-    '<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media=\'all\'">' +
-    '<link rel="stylesheet" href="/styles/site.css">' +
+    (noindex ? '' : '<link rel="preload" as="image" href="/assets/logo-horizontal-480.webp" fetchpriority="high">') +
     '<link rel="stylesheet" href="/styles/agency.css">' +
     '<script type="application/ld+json">' + schemaFor(p) + '</script>' +
-    '<script>try{if(sessionStorage.getItem("clinic-visited")||navigator.connection?.saveData||["2g","slow-2g"].includes(navigator.connection?.effectiveType))document.documentElement.classList.add("clinic-has-visited")}catch(e){}</script>' +
     '<script src="/scripts/site.js" defer></script></head><body>' +
-    (noindex ? '' : '<div class="clinic-loader" aria-hidden="true"><div class="clinic-loader__mark"><img class="clinic-loader__layer clinic-loader__layer--one" src="/assets/logo-horizontal-480.webp" width="320" height="110" alt=""><img class="clinic-loader__layer clinic-loader__layer--two" src="/assets/logo-horizontal-480.webp" width="320" height="110" alt=""><img class="clinic-loader__layer clinic-loader__layer--full" src="/assets/logo-horizontal-480.webp" width="320" height="110" alt=""><span class="clinic-loader__line"></span></div></div>') +
     (noindex ? '' : header(p.url)) +
     '<main id="main">' + p.body + '</main>' +
     (noindex ? '' : footer()) +
@@ -415,7 +411,14 @@ function html(p) {
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 for (const p of pages) { const file = path.join(OUT, p.url === '/' ? 'index.html' : p.url.slice(1) + 'index.html'); fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, html(p), 'utf8'); }
-for (const [src, dest] of [['styles.css', 'styles/site.css'], ['agency.css', 'styles/agency.css'], ['client.js', 'scripts/site.js']]) { fs.mkdirSync(path.dirname(path.join(OUT, dest)), { recursive: true }); fs.copyFileSync(path.join(ROOT, 'src', src), path.join(OUT, dest)); }
+const fullCss=fs.readFileSync(path.join(ROOT,'src','styles.css'),'utf8')+'\n'+fs.readFileSync(path.join(ROOT,'src','agency.css'),'utf8');
+const optimizedCss=(await transform(fullCss,{loader:'css',minify:true,target:'es2020'})).code;
+const optimizedJs=(await transform(fs.readFileSync(path.join(ROOT,'src','client.js'),'utf8'),{loader:'js',minify:true,target:'es2019'})).code;
+fs.mkdirSync(path.join(OUT,'styles'),{recursive:true});
+fs.mkdirSync(path.join(OUT,'scripts'),{recursive:true});
+fs.writeFileSync(path.join(OUT,'styles','agency.css'),optimizedCss,'utf8');
+fs.writeFileSync(path.join(OUT,'scripts','site.js'),optimizedJs,'utf8');
+console.log('Asset bundling (CSS combined/minified, JS minified):',JSON.stringify({cssBeforeBytes:Buffer.byteLength(fullCss),cssAfterBytes:Buffer.byteLength(optimizedCss),jsAfterBytes:Buffer.byteLength(optimizedJs)}));
 fs.cpSync(path.join(ROOT, 'assets'), path.join(OUT, 'assets'), { recursive: true });
 fs.writeFileSync(path.join(OUT, '404.html'), html({ url: '/404/', title: 'الصفحة غير موجودة', desc: 'الرابط غير موجود.', body: '<section class="clinic-notfound"><div class="clinic-notfound__inner"><img src="/assets/symbol-primary.png" width="72" height="72" alt=""><span class="clinic-notfound__code">404</span><h1>الصفحة غير موجودة</h1>' + link('/', 'العودة للرئيسية', 'solid','arrow') + '</div></section>' }));
 /* Images are transformed at build time, never in the visitor's browser. */

@@ -8,6 +8,7 @@
     "check": "node --check build.mjs && node --check check.mjs"
   },
   "dependencies": {
-    "sharp": "0.35.5"
+    "sharp": "0.35.5",
+    "esbuild": "0.25.12"
   }
 }

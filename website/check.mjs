@@ -14,9 +14,8 @@ for(const p of pages){
  }
 }
 const agencyCss=fs.readFileSync(path.join(root,'styles/agency.css'),'utf8');
-for(const token of ['--ink: #0c495c','@media (max-width: 600px)','prefers-reduced-motion']){
- if(!agencyCss.includes(token))issues.push('Design token or responsive gate missing: '+token);
-}
+const cssChecks=[['brand-token',/--ink\s*:\s*#0c495c/i],['mobile',/@media\s*\(max-width:\s*600px\)/],['reduced-motion',/prefers-reduced-motion/]];
+for(const [name,regex] of cssChecks){if(!regex.test(agencyCss))issues.push('Design token or responsive gate missing: '+name);}
 if(issues.length){console.error(issues.join('\n'));process.exit(1);}
 console.log('Agency design checks passed: Arabic RTL, imagery, SEO, tokens and CSS.');
 
@@ -54,7 +53,7 @@ if(!homeHtml.includes('agency-services__diagnostics')) issues.push('Missing diag
 if(!aboutHtml.includes('agency-mission__grid')) issues.push('Missing clinic vision and mission');
 if(!faqHtml.includes('كيف أستعد لزيارتي الأولى؟')) issues.push('Missing first-visit FAQ');
 const agencyCssMobile=fs.readFileSync(path.join(root,'styles/agency.css'),'utf8');
-if(!agencyCssMobile.includes('.section .cards:not(.agency-services__cards)')) issues.push('Mobile related service layout regression');
+if(!/\.section\s+\.cards:not\(\.agency-services__cards\)/.test(agencyCssMobile)) issues.push('Mobile related service layout regression');
 if(issues.length){console.error(issues.join('\n'));process.exit(1);}
 console.log('Agency mobile UX and content coverage gates passed.');
 
@@ -96,6 +95,19 @@ for(const file of ['assets/logo-horizontal-480.webp','assets/symbol-128.webp','a
 const finalHome=fs.readFileSync(path.join(root,'index.html'),'utf8');
 if(!finalHome.includes('srcset="/assets/generated/')) issues.push('Responsive image srcset missing');
 if(finalHome.includes('src="/assets/logo-horizontal-primary.png"')) issues.push('Heavy PNG logo still used for display');
-if(!finalHome.includes('clinic-loader__layer--one')) issues.push('Animated split-logo missing');
+if(finalHome.includes('class="clinic-loader"')) issues.push('Blocking logo overlay must not ship');
+if(!finalHome.includes('fetchpriority="high"')) issues.push('Header logo priority missing');
+for(const page of pages){
+ const content=fs.readFileSync(path.join(root,page),'utf8');
+ if(/fonts\.(googleapis|gstatic)\.com/.test(content))issues.push('External font link in '+page);
+ if(/<link\s+rel="(?:stylesheet|preconnect|modulepreload)"[^>]*href="https?:\/\//i.test(content)||/<script\b[^>]*src="https?:\/\//i.test(content))issues.push('External render dependency in '+page);
+}
+for(const asset of ['assets/fonts/ibm-plex-sans-arabic-400.woff2','assets/fonts/ibm-plex-sans-arabic-700.woff2','assets/fonts/OFL.txt']){
+ if(!files.includes(asset))issues.push('Self-hosted font missing: '+asset);
+ else if(asset.endsWith('woff2')&&fs.readFileSync(path.join(root,asset)).subarray(0,4).toString()!=='wOF2')issues.push('Invalid WOFF2 signature: '+asset);
+}
+if(/fonts\.(googleapis|gstatic)\.com/.test(agencyCss))issues.push('External font found in CSS');
+if(!agencyCss.includes('/assets/fonts/ibm-plex-sans-arabic-400.woff2'))issues.push('Local font-face missing');
+if(files.includes('styles/site.css'))issues.push('Unused second stylesheet still emitted');
 if(issues.length){console.error(issues.join('\n'));process.exit(1);}
 console.log('Optimized image and logo source checks passed.');
