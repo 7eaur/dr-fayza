@@ -90,6 +90,14 @@ const ico = (key) => '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><p
 const link = (href, label, type = 'solid', icon = 'arrow') => '<a class="button button--' + type + '" href="' + href + '"' + (href.startsWith('https:') ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' + label + ico(icon) + '</a>';
 const nav = [['/', 'الرئيسية'], ['/about/', 'عن الدكتورة'], ['/services/', 'الخدمات'], ['/diagnostics/', 'الفحوصات'], ['/guides/', 'التوعية الصحية'], ['/faq/', 'الأسئلة الشائعة'], ['/contact/', 'التواصل']];
 const heading = (kicker, title, sub = '') => '<div class="heading"><span class="kicker">' + kicker + '</span><h2>' + title + '</h2>' + (sub ? '<p>' + sub + '</p>' : '') + '</div>';
+const serviceShowcase = () =>
+ '<section class="section clinic-service-showcase" aria-label="دليل الخدمات الطبية"><div class="container">'+
+ '<div class="clinic-service-showcase__lead"><span class="kicker">مجالات الاستشارة</span><h2>اختاري المجال الذي يناسب سؤالكِ</h2><p>رتبنا الخدمات بحيث تظهر المجالات الأساسية بوضوح، ثم بقية الاستشارات في قائمة سهلة التصفح.</p></div>'+
+ '<div class="clinic-service-showcase__featured">'+
+ [services[0],services[1]].map((item,i)=>'<a class="clinic-service-feature clinic-service-feature--'+(i+1)+'" href="/services/'+item.id+'/"><span class="clinic-service-feature__icon">'+ico(item.icon)+'</span><span class="clinic-service-feature__content"><small>0'+(i+1)+' / استشارات متخصصة</small><strong>'+item.name+'</strong><span>'+item.desc+'</span><em>تفاصيل الخدمة '+ico('arrow')+'</em></span></a>').join('')+
+ '</div><div class="clinic-service-showcase__index">'+services.slice(2).map((item,i)=>'<a class="clinic-service-row" href="/services/'+item.id+'/"><span class="clinic-service-row__index">0'+(i+3)+'</span><span class="clinic-service-row__symbol">'+ico(item.icon)+'</span><span class="clinic-service-row__content"><strong>'+item.name+'</strong><small>'+item.desc+'</small></span><span class="clinic-service-row__arrow">'+ico('arrow')+'</span></a>').join('')+'</div>'+
+ '<a class="clinic-diagnostics-feature" href="/diagnostics/"><span class="clinic-diagnostics-feature__visual">'+ico('scan')+'</span><span class="clinic-diagnostics-feature__body"><small>خدمات تشخيصية مساندة</small><strong>المختبر والفحوصات الطبية</strong><span>تعرفي على الفحوصات المخبرية ودور السونار في دعم تقييم الحالة، وكيفية الاستعداد للفحص.</span></span><span class="clinic-diagnostics-feature__action">تعرفي على التفاصيل '+ico('arrow')+'</span></a>'+
+ '</div></section>';
 const card = (s) => '<a class="card" href="/services/' + s.id + '/"><span class="card-ic">' + ico(s.icon) + '</span><h3>' + s.name + '</h3><p>' + s.desc + '</p><span class="more">اعرفي التفاصيل ' + ico('arrow') + '</span></a>';
 const faq = (items) => '<div class="faq-list">' + items.map(([q, a], i) => '<details ' + (i === 0 ? 'open' : '') + '><summary>' + q + ico('arrow') + '</summary><p>' + a + '</p></details>').join('') + '</div>';
 const articleTile = (a) => '<article class="tile"><div class="tile-visual"><img src="/assets/generated/' + a.image + '" alt="صورة تحريرية عن ' + a.category + '" width="960" height="720" loading="lazy"></div><div class="tile-body"><small>' + a.category + '</small><h3>' + a.title + '</h3><p>' + a.desc + '</p><a href="/guides/' + a.id + '/">اقرئي المقال ' + ico('arrow') + '</a></div></article>';
@@ -204,7 +212,7 @@ function home() {
     "<section class=\"section agency-services\" aria-labelledby=\"agency-services-title\"><div class=\"container\"><div class=\"agency-section-head\"><div><span class=\"kicker\">الخدمات الطبية</span><h2 id=\"agency-services-title\">لكل مرحلة من صحتكِ، استشارة تناسب احتياجكِ</h2><p>تعرّفي على مجالات الاستشارة، وتواصلي للتأكد من تفاصيل الخدمة قبل الحضور.</p></div><a class=\"agency-text-link\" href=\"/services/\">جميع الخدمات ",
     ico('arrow'),
     "</a></div><div class=\"cards agency-services__cards\">",
-    services.map(card).join(''),
+    services.slice(0,4).map(card).join(''),
     "</div><a class=\"agency-services__diagnostics\" href=\"/diagnostics/\"><span class=\"agency-services__diagnostics-symbol\" aria-hidden=\"true\">",
     ico('scan'),
     "</span><span><strong>المختبر والفحوصات والسونار</strong><small>استفسري عن التحاليل والفحوصات والتصوير المتاح وفق حالتكِ قبل الزيارة.</small></span>",
@@ -246,29 +254,42 @@ function about() {
 function servicesPage() {
  return [
  innerHero('الخدمات الطبية','رعاية تناسب مراحل مختلفة من حياتكِ','استكشفي مجالات النساء والتوليد والحمل والخصوبة، وتعرّفي على تفاصيل كل خدمة والأسئلة المناسبة قبل الزيارة.','pregnancy-care.webp'),
- '<section class="section agency-services-page"><div class="container"><div class="cards agency-services__cards">'+services.map(card).join('')+'</div></div></section>',
+ serviceShowcase(),
  editorialSection('كيف تختارين الخدمة؟','ثلاثة أمور تساعدك على البدء','لا تحتاجين إلى معرفة اسم الفحص أو تشخيص الحالة قبل التواصل؛ ابدئي بوصف ما تحتاجينه.',[['حددي سبب الزيارة','هل لديك عرض جديد، أم متابعة سابقة، أم سؤال عن الحمل أو الإنجاب؟'],['جهزي ما لديك','التحاليل والتقارير والأدوية السابقة تساعد على تجنب تكرار التفاصيل.'],['اسألي عن الخطوة التالية','يمكنك الاستفسار عن توفر الخدمة والتحضير والتوقيت المناسب قبل الحضور.']]),
- '<section class="section alt"><div class="container">'+heading('خدمات مساندة','المختبر والسونار','الفحوصات تدعم القرار الطبي عندما تدعو الحاجة إليها؛ تابعي صفحة الفحوصات لمعرفة دورها وما الذي ينبغي سؤاله قبل إجرائها.')+link('/diagnostics/','تفاصيل الفحوصات والمختبر','line','arrow')+'</div></section>',
+ 
  cta('لستِ متأكدة من نوع الاستشارة؟')
  ].join('');
 }
 
 function detail(s) {
- const extra = careTopics[s.id];
+ const extra=careTopics[s.id];
+ const questions=extra.questions.map((q,i)=>'<li><span>0'+(i+1)+'</span><p>'+q+'</p></li>').join('');
+ const related=services.filter(x=>x.id!==s.id).slice(0,3).map((item,i)=>'<a href="/services/'+item.id+'/"><span>0'+(i+1)+'</span><strong>'+item.name+'</strong>'+ico('arrow')+'</a>').join('');
  return pageHead('خدمات العيادة',s.name,s.desc,s.art,'compact')+
- '<section class="section"><div class="container detail"><article class="prose"><span class="kicker">عن هذا المجال</span><h2>ما الذي تعنيه هذه الخدمة؟</h2><p>'+extra.opening+'</p><p>'+s.intro+'</p><h2>موضوعات يمكن مناقشتها</h2><ul class="feature-list">'+s.benefits.map(x=>'<li>'+ico('check')+x+'</li>').join('')+'</ul><h2>لمن قد تناسب؟</h2><p>'+s.who+'</p></article><aside><div class="panel"><span class="kicker">استفسار مخصص</span><h2>اسألي عن '+s.name+'</h2><p>يمكنك التأكد من التفاصيل العملية وتوقيت المراجعة مع العيادة مباشرة.</p>'+link(whatsappFor(s.name),'تواصلي عبر واتساب','solid','message')+link(site.call,'اتصلي بالعيادة','line','phone')+'</div><div class="panel pale"><h3>معلومة قبل الزيارة</h3><p>'+s.tip+'</p></div></aside></div></section>'+
- editorialSection('داخل رحلة الرعاية','تفاصيل تهمكِ في '+s.name,'تختلف الخطة الطبية باختلاف التاريخ الصحي والفحص والنتائج، وهذه أبرز المحاور العامة التي تفيدك في فهم المجال.',extra.sections)+
- '<section class="section alt"><div class="container"><div class="heading"><span class="kicker">استعدي للاستشارة</span><h2>أسئلة مفيدة لطرحها</h2><p>احتفظي بالأسئلة التي تهمك وناقشيها أثناء الزيارة.</p></div><ul class="feature-list editorial-questions">'+extra.questions.map(q=>'<li>'+ico('check')+q+'</li>').join('')+'</ul></div></section>'+
- '<section class="section"><div class="container">'+heading('اقرئي أيضًا','مجالات أخرى قد تهمكِ')+'<div class="cards">'+services.filter(x=>x.id!==s.id).slice(0,2).map(card).join('')+'</div></div></section>';
+ '<section class="section clinic-detail-overview"><div class="container clinic-detail-overview__layout"><article class="clinic-detail-overview__story"><span class="kicker">فهم الخدمة</span><h2>رعاية تبدأ بفهم احتياجكِ</h2><p class="clinic-detail-overview__opening">'+extra.opening+'</p><p>'+s.intro+'</p><h3>ما الذي يمكن مناقشته؟</h3><ul class="clinic-detail-overview__benefits">'+s.benefits.map(x=>'<li>'+ico('check')+'<span>'+x+'</span></li>').join('')+'</ul><div class="clinic-detail-overview__audience"><span>لمن قد تناسب هذه الاستشارة؟</span><p>'+s.who+'</p></div></article><aside class="clinic-detail-contact"><span class="clinic-detail-contact__icon">'+ico(s.icon)+'</span><span class="kicker">تواصلي مع العيادة</span><h2>استفسري عن '+s.name+'</h2><p>تأكدي من توفر الخدمة وموعد الزيارة المناسب مباشرة مع العيادة.</p>'+link(whatsappFor(s.name),'اسألي عبر واتساب','solid','message')+link(site.call,'اتصلي بالعيادة','line','phone')+'<div class="clinic-detail-contact__tip"><strong>قبل الزيارة</strong><p>'+s.tip+'</p></div></aside></div></section>'+
+ '<section class="section clinic-care-path"><div class="container"><div class="clinic-care-path__heading"><span class="kicker">مسار الرعاية</span><h2>كيف ننظر إلى هذا المجال؟</h2><p>التقييم والخطوات المناسبة يختلفان حسب الحالة الطبية، وهذه محاور عامة تساعدك في فهم الاستشارة.</p></div><ol class="clinic-care-path__list">'+extra.sections.map(([h,p],i)=>'<li><span class="clinic-care-path__number">0'+(i+1)+'</span><div><h3>'+h+'</h3><p>'+p+'</p></div></li>').join('')+'</ol></div></section>'+
+ '<section class="section clinic-questions"><div class="container"><span class="kicker">قبل المراجعة</span><h2>أسئلة تستحق أن تطرحيها</h2><p>احفظي الأسئلة التي تهمك، وناقشيها مع الطبيبة بحسب حالتكِ.</p><ol class="clinic-questions__list">'+questions+'</ol></div></section>'+
+ '<section class="section clinic-related"><div class="container"><div class="clinic-related__title">'+heading('استكشفي أيضًا','خدمات أخرى قد تهمكِ')+'</div><div class="clinic-related__links">'+related+'</div></div></section>';
 }
 
 function diagnostics() {
- return pageHead('الفحوصات المساندة','المختبر والسونار','الفحص المناسب يجيب عن سؤال طبي محدد؛ وتفسير النتيجة جزء من الاستشارة وليس مجرد رقم أو صورة.','diagnostics')+
- editorialSection('مختبر العيادة','ما الدور الذي تؤديه التحاليل؟','يوجد مختبر ضمن خدمات العيادة، ويمكن السؤال عن أنواع الفحوصات المتاحة وتعليمات التحضير وساعات استقبال العينات قبل الزيارة.',[['تحديد الحاجة إلى التحليل','قد تساعد بعض التحاليل على فهم أعراض نسائية أو متابعة جوانب من الحمل، لكن اختيارها يعتمد على تقييم الطبيبة.'],['التحضير وأخذ العينة','يختلف التحضير بحسب نوع الفحص؛ وقد يتطلب بعضها توقيتًا محددًا أو تعليمات مسبقة ينبغي التأكد منها.'],['فهم النتيجة','لا تكفي قراءة الرقم وحده؛ تُفسر النتائج بالرجوع إلى الأعراض والعمر والتاريخ الطبي والنتائج السابقة عند الحاجة.']])+
- editorialSection('التصوير بالموجات فوق الصوتية','السونار جزء من الصورة الطبية','قد يدعم السونار تقييم الحمل وأعضاء الحوض، لكن نوع الفحص وموعده يحددان وفق الهدف من إجرائه.',[['أثناء الحمل','يُستخدم التصوير للمساعدة في تقييم جوانب من الحمل بحسب مرحلته وما تتطلبه المتابعة.'],['في الحالات النسائية','قد يفيد تصوير الرحم والمبيضين ضمن تقييم بعض الأعراض، ويُناقش التقرير مع بقية المعلومات السريرية.'],['بعد الفحص','اسألي عن معنى النتيجة وموعد المراجعة، وما إذا كانت هناك حاجة إلى تقييم إضافي.']])+
- '<section class="section alt"><div class="container">'+heading('قبل إجراء الفحوصات','أشياء تستحق السؤال عنها','التأكد من التفاصيل مسبقًا يجعل زيارتك أكثر تنظيمًا.')+'<ul class="feature-list editorial-questions"><li>'+ico('check')+'هل الفحص متاح اليوم وما ساعات استقبال العينات؟</li><li>'+ico('check')+'هل توجد تعليمات صيام أو تحضير أو موعد محدد؟</li><li>'+ico('check')+'متى تُستلم النتيجة وكيف تناقشها الطبيبة؟</li></ul>'+link(site.whatsapp,'اسألي عن الفحوصات المتاحة','solid','message')+'</div></section>';
+ const lab=[
+ ['متى تُطلب التحاليل؟','تُحدد الفحوصات بحسب الأعراض والتاريخ الطبي وما تحتاجه متابعة الحالة، وليس كل تحليل ضروريًا لكل مراجعة.'],
+ ['الاستعداد للفحص','قد تتطلب بعض التحاليل صيامًا أو توقيتًا مناسبًا؛ تحققي من التعليمات والتوفر قبل الحضور.'],
+ ['قراءة النتائج','تُناقش النتيجة ضمن السياق الصحي الكامل، ولا يكفي تفسير الرقم بمفرده.']
+ ];
+ const scan=[
+ ['متابعة الحمل','قد تساعد الموجات فوق الصوتية في تقييم جوانب من الحمل وفق عمره وسبب الفحص.'],
+ ['الصحة النسائية','يُستخدم التصوير عند الحاجة لدعم تقييم بعض الأعراض المتعلقة بأعضاء الحوض.'],
+ ['ما بعد التصوير','اسألي عن معنى التقرير وما إذا كانت هناك حاجة إلى مراجعة أو فحص إضافي.']
+ ];
+ const renderTopics=(items)=>items.map(([h,p],i)=>'<li><span>0'+(i+1)+'</span><div><h3>'+h+'</h3><p>'+p+'</p></div></li>').join('');
+ return innerHero('الفحوصات الطبية','المختبر والسونار','الفحوصات أدوات مساعدة لفهم الحالة، وتبقى الاستشارة الطبية أساس اختيارها وتفسير نتائجها.','diagnostics','svg')+
+ '<section class="section clinic-diagnostic-intro"><div class="container clinic-diagnostic-intro__layout"><div><span class="kicker">الخدمات التشخيصية</span><h2>التحليل والصورة الطبية، كلٌ منهما له دوره</h2><p>قد تحتاج بعض الحالات إلى تحاليل مخبرية، وأخرى إلى التصوير بالموجات فوق الصوتية، أو إلى الجمع بينهما وفق التقييم. هدفنا أن تكون الخطوة المطلوبة مفهومة قبل إجرائها.</p></div><div class="clinic-diagnostic-intro__mark">'+ico('scan')+'<span>فحوصات داعمة لتقييم الحالة</span></div></div></section>'+
+ '<section class="section clinic-diagnostic-feature clinic-diagnostic-feature--lab"><div class="container clinic-diagnostic-feature__grid"><div class="clinic-diagnostic-feature__heading"><span class="clinic-diagnostic-feature__tag">01 / المختبر</span><h2>فحوصات مخبرية تدعم التقييم</h2><p>يوجد مختبر ضمن خدمات العيادة. يمكنك التأكد من الفحوصات المتاحة، وأوقات استقبال العينات، وتعليمات التحضير قبل الزيارة.</p><a href="'+site.whatsapp+'" class="clinic-diagnostic-feature__link">اسألي عن توفر التحاليل '+ico('arrow')+'</a></div><ol class="clinic-diagnostic-feature__steps">'+renderTopics(lab)+'</ol></div></section>'+
+ '<section class="section clinic-diagnostic-feature clinic-diagnostic-feature--scan"><div class="container clinic-diagnostic-feature__grid"><div class="clinic-diagnostic-feature__heading"><span class="clinic-diagnostic-feature__tag">02 / السونار</span><h2>التصوير الطبي عندما يلزم</h2><p>السونار وسيلة للتقييم والمتابعة، ويختلف نوعه وتوقيته بحسب عمر الحمل أو الأعراض والحالة الصحية.</p><a href="/services/ultrasound/" class="clinic-diagnostic-feature__link">تفاصيل السونار '+ico('arrow')+'</a></div><ol class="clinic-diagnostic-feature__steps">'+renderTopics(scan)+'</ol></div></section>'+
+ '<section class="section clinic-diagnostic-prepare"><div class="container clinic-diagnostic-prepare__layout"><div><span class="kicker">قبل الحضور</span><h2>ثلاثة أسئلة تختصر عليكِ الكثير</h2></div><ul><li>'+ico('check')+'هل الفحص متاح في اليوم المطلوب؟</li><li>'+ico('check')+'هل يتطلب صيامًا أو تحضيرًا خاصًا؟</li><li>'+ico('check')+'متى تصدر النتيجة وكيف تتم مراجعتها؟</li></ul></div></section>';
 }
-
 function guides() {
   return [
     innerHero('التوعية الصحية','معلومات تساعدكِ على فهم صحتكِ','مقالات مبسطة عن الحمل وصحة المرأة وتأخر الإنجاب، لتجهيزي أسئلتك قبل الاستشارة.','fertility-support.webp'),

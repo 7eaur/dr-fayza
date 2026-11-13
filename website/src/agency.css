@@ -763,3 +763,223 @@ body { background:var(--clinic-sand-faint); }
   .agency-services__cards .card,
   .section .cards:not(.agency-services__cards) .card { transition:none; }
 }
+
+
+/* White-first redesign — warm sand is a minimal secondary accent only. */
+:root{
+ --clinic-sand:#D9C4AB;
+ --clinic-sand-deep:#795B40;
+ --clinic-sand-soft:#FBF9F6;
+ --clinic-sand-faint:#fff;
+ --clinic-sand-border:#EAE3D9;
+}
+body,.clinic-hero,.agency-services,.agency-visit,.clinic-inner-hero,
+.agency-doctor,.agency-guides,.agency-mission,.agency-faq-page,.agency-contact,
+.agency-article-index,.agency-privacy,.clinic-process.agency-first-visit,
+.editorial-block,.editorial-block:nth-of-type(even),.editorial-block:nth-of-type(odd){
+ background:#fff;
+}
+.clinic-hero__shell{
+ background:radial-gradient(ellipse at 15% 16%,rgba(69,161,142,.075),transparent 45%),linear-gradient(125deg,#fff,#fafcfb);
+ border-color:#e3ebe7;
+}
+.clinic-hero__kicker{color:#24695f}
+.clinic-hero__features{border-top-color:#e0e9e5}
+.clinic-hero__features .ico{color:#12685d}
+.clinic-hero__visual,.clinic-inner-hero__visual{background:#edf5f1}
+.clinic-inner-hero__copy .kicker{background:#e9f5f0;color:#12685d}
+.clinic-inner-hero__grid{background:#fff!important;border-color:#e3eae6!important}
+.agency-doctor__credentials,.agency-profile__credentials{border-color:#dceae4}
+.agency-doctor__label,.editorial-number{color:#12685d}
+.agency-services__cards .card,.section .cards:not(.agency-services__cards) .card{
+ border-color:#e0e9e5;box-shadow:none;background:#fff;
+}
+.agency-services__cards .card:nth-child(3n+2) .card-ic,
+.section .cards:not(.agency-services__cards) .card:nth-child(3n+2) .card-ic{
+ background:#eaf5f1;color:#12685d;
+}
+.agency-services__diagnostics{background:#f3f9f6;border-color:#dceae4}
+.agency-services__diagnostics:hover{background:#eaf5f0}
+.agency-guides .tile,.editorial-item,.agency-mission__grid article{
+ border-color:#e0e9e5;
+}
+.agency-mission__grid article:nth-child(2),.editorial-item:nth-child(3n+2){background:#f5faf7}
+.agency-mission__grid article>span{color:#12685d}
+.agency-faq-page .faq-list,.agency-services-page .agency-services__cards{background:#f5faf7;border-color:#e0ebe5}
+.agency-contact__hours,.agency-faq-page__contact{background:#f5faf7;border-color:#dceae4}
+.clinic-process__timeline li:nth-child(even) .clinic-process__icon{background:#0c495c}
+.clinic-process__timeline::before{background:#d4e4de}
+.clinic-footer{border-top:2px solid #D9C4AB}
+/* A distinct directory — two editorial hero cards, compact service rows, diagnostic feature. */
+.clinic-service-showcase{padding-block:clamp(24px,4vw,60px);background:#fff}
+.clinic-service-showcase__lead{max-width:760px;margin-bottom:22px}
+.clinic-service-showcase__lead h2{font-size:clamp(25px,3.4vw,40px);line-height:1.32;color:#0c495c;margin:0 0 8px}
+.clinic-service-showcase__lead p{font-size:15px;color:#526b71;margin:0}
+.clinic-service-showcase__featured{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.clinic-service-feature{position:relative;display:grid;grid-template-columns:60px 1fr;align-items:start;gap:18px;padding:clamp(20px,3vw,32px);border:1px solid #dceae4;border-radius:23px;background:linear-gradient(145deg,#f2faf6,#fff);overflow:hidden;min-height:216px;transition:transform .2s,border-color .2s}
+.clinic-service-feature--2{background:linear-gradient(145deg,#eff7f9,#fff);border-radius:23px 23px 57px 23px}
+.clinic-service-feature::after{content:"";position:absolute;width:160px;height:160px;border-radius:50%;background:rgba(69,161,142,.07);left:-48px;bottom:-78px;pointer-events:none}
+.clinic-service-feature:hover{transform:translateY(-3px);border-color:#a6cfc3}
+.clinic-service-feature__icon{width:58px;height:58px;border-radius:17px;background:#dbeee6;color:#0c495c;display:grid;place-items:center}
+.clinic-service-feature__icon .ico{width:28px;height:28px}
+.clinic-service-feature__content{display:flex;flex-direction:column;min-width:0}
+.clinic-service-feature__content small{font-size:12px;color:#3a7b6d;font-weight:700}
+.clinic-service-feature__content strong{font-size:clamp(19px,2.1vw,26px);line-height:1.35;color:#0c495c;margin:8px 0}
+.clinic-service-feature__content>span{font-size:14px;color:#506c71;line-height:1.75}
+.clinic-service-feature__content em{display:flex;align-items:center;gap:5px;margin-top:17px;font-size:13px;font-weight:700;font-style:normal;color:#12685d}
+.clinic-service-feature__content em .ico{width:16px;height:16px}
+.clinic-service-showcase__index{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 21px;margin:21px 0}
+.clinic-service-row{display:grid;grid-template-columns:26px 42px minmax(0,1fr) 20px;align-items:center;gap:13px;padding:20px 4px;border-bottom:1px solid #e4ebe7;transition:background .2s}
+.clinic-service-row:hover{background:#f8fbf9}
+.clinic-service-row__index{color:#7c9690;font-size:12px;font-weight:800}
+.clinic-service-row__symbol{width:42px;height:42px;border-radius:50%;background:#edf6f2;color:#12685d;display:grid;place-items:center}
+.clinic-service-row__symbol .ico{width:19px;height:19px}
+.clinic-service-row__content{min-width:0}
+.clinic-service-row__content strong{display:block;color:#0c495c;font-size:17px;line-height:1.5}
+.clinic-service-row__content small{display:block;color:#526b71;font-size:12px;line-height:1.65;margin-top:2px}
+.clinic-service-row__arrow{color:#12685d}
+.clinic-service-row__arrow .ico{width:18px;height:18px}
+.clinic-diagnostics-feature{position:relative;display:grid;grid-template-columns:80px 1fr auto;align-items:center;gap:20px;padding:24px 26px;background:#0c495c;color:#fff;border-radius:17px;overflow:hidden}
+.clinic-diagnostics-feature::after{content:"";position:absolute;left:-40px;top:-70px;border-radius:50%;width:210px;height:210px;border:1px solid rgba(255,255,255,.15);pointer-events:none}
+.clinic-diagnostics-feature__visual{width:76px;height:76px;border-radius:18px;background:rgba(255,255,255,.12);display:grid;place-items:center}
+.clinic-diagnostics-feature__visual .ico{width:37px;height:37px;color:#e9f7f1}
+.clinic-diagnostics-feature__body{display:flex;flex-direction:column;gap:5px;min-width:0}
+.clinic-diagnostics-feature__body small{font-size:12px;color:#c6e5d9;font-weight:700}
+.clinic-diagnostics-feature__body strong{font-size:clamp(20px,2.5vw,29px);color:#fff;line-height:1.4}
+.clinic-diagnostics-feature__body>span{font-size:13px;line-height:1.75;color:#e3f1ee;max-width:63ch}
+.clinic-diagnostics-feature__action{display:flex;align-items:center;gap:5px;padding:11px 13px;border-radius:10px;background:#fff;color:#0c495c;font-size:12px;font-weight:800;white-space:nowrap}
+.clinic-diagnostics-feature__action .ico{width:17px;height:17px}
+/* Detail pages are editorial, with a sticky contact sidebar, not stacked cards. */
+.clinic-detail-overview{padding-block:clamp(20px,4vw,55px)}
+.clinic-detail-overview__layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(275px,.7fr);align-items:start;gap:clamp(22px,6vw,78px)}
+.clinic-detail-overview__story h2{color:#0c495c;font-size:clamp(25px,3.4vw,41px);margin:3px 0 14px}
+.clinic-detail-overview__story h3{color:#0c495c;font-size:clamp(19px,2.2vw,25px);margin:25px 0 10px}
+.clinic-detail-overview__story>p{font-size:15px;color:#526b71;line-height:1.95}
+.clinic-detail-overview__opening{font-size:17px!important;color:#304e53!important;border-inline-start:3px solid #45a18e;padding-inline-start:16px}
+.clinic-detail-overview__benefits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 22px;list-style:none;padding:0;margin:0}
+.clinic-detail-overview__benefits li{display:flex;align-items:flex-start;gap:9px;padding:11px 0;border-bottom:1px solid #e2eae6;font-size:14px;color:#35585d}
+.clinic-detail-overview__benefits .ico{width:17px;height:17px;color:#16806d;margin-top:4px}
+.clinic-detail-overview__audience{margin-top:27px;padding:19px 23px;border-inline-start:3px solid #D9C4AB;background:#fafbfa}
+.clinic-detail-overview__audience span{color:#0c495c;font-weight:800;font-size:14px}
+.clinic-detail-overview__audience p{margin:7px 0 0;color:#526b71;font-size:14px}
+.clinic-detail-contact{position:sticky;top:104px;padding:27px 24px;border-radius:19px;background:#f3f8f6;border:1px solid #dce9e4}
+.clinic-detail-contact__icon{display:grid;place-items:center;background:#e1f0e9;border-radius:15px;color:#0c495c;width:54px;height:54px;margin-bottom:13px}
+.clinic-detail-contact h2{font-size:clamp(19px,2vw,25px);color:#0c495c;line-height:1.4;margin:0 0 8px}
+.clinic-detail-contact>p{font-size:13px;color:#526b71;line-height:1.8}
+.clinic-detail-contact>.button{display:flex;justify-content:center;width:100%;margin-top:9px;min-height:42px;font-size:13px}
+.clinic-detail-contact__tip{padding-top:17px;margin-top:19px;border-top:1px solid #d4e4de}
+.clinic-detail-contact__tip strong{font-size:13px;color:#0c495c}
+.clinic-detail-contact__tip p{margin:6px 0 0;font-size:12px;line-height:1.8;color:#526b71}
+.clinic-care-path{background:#f6faf8!important}
+.clinic-care-path__heading{max-width:710px;margin-bottom:22px}
+.clinic-care-path__heading h2,.clinic-questions h2{font-size:clamp(25px,3vw,38px);color:#0c495c;margin:0 0 7px}
+.clinic-care-path__heading p,.clinic-questions>div>p{font-size:14px;color:#526b71}
+.clinic-care-path__list{padding:0;margin:0;list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+.clinic-care-path__list li{position:relative;padding:8px 26px 10px;border-inline-start:1px solid #b8d6ca}
+.clinic-care-path__list li:first-child{padding-inline-start:0;border:0}
+.clinic-care-path__number{display:block;color:#23776b;font-size:13px;font-weight:800;margin-bottom:15px}
+.clinic-care-path__list h3{font-size:19px;line-height:1.45;color:#0c495c;margin:0 0 9px}
+.clinic-care-path__list p{font-size:14px;color:#526b71;line-height:1.85;margin:0}
+.clinic-questions{background:#fff}
+.clinic-questions__list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;list-style:none;padding:0;margin:24px 0 0}
+.clinic-questions__list li{padding:17px 18px 19px;border-radius:13px 13px 31px 13px;background:#f4f9f6;min-width:0}
+.clinic-questions__list li:nth-child(2){background:#f1f7f9}
+.clinic-questions__list li:nth-child(3){background:#fbf9f6}
+.clinic-questions__list span{display:block;color:#26776b;font-size:12px;font-weight:800}
+.clinic-questions__list p{font-size:15px;line-height:1.7;color:#173f4b;margin:9px 0 0}
+.clinic-related{background:#fff}
+.clinic-related__links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.clinic-related__links a{display:flex;align-items:center;gap:12px;border-block-start:2px solid #dce9e3;padding:18px 5px;color:#0c495c}
+.clinic-related__links a:hover{border-color:#45a18e}
+.clinic-related__links span{font-size:12px;color:#6b9690}
+.clinic-related__links strong{font-size:15px;flex:1}
+.clinic-related__links .ico{width:18px;height:18px;color:#12685d}
+/* Editorial content rhythm: alternating asymmetric layouts, no repeated uniform squares. */
+.editorial-grid{gap:13px;align-items:stretch}
+.editorial-item{border:0;border-block-start:3px solid #b8dace;border-radius:0 0 14px 14px;background:#f6faf8;padding:22px 23px}
+.editorial-item:nth-child(2){background:#fff;border:1px solid #d9e9e2;border-block-start:3px solid #45a18e}
+.editorial-item:nth-child(3){background:#f6f9fa;border-block-start-color:#90b6bf}
+.agency-mission__grid article{border:0;border-inline-start:3px solid #45a18e;border-radius:0 16px 16px 0;background:#f6faf8}
+.agency-mission__grid article:nth-child(2){border-inline-start-color:#a8c1b4;background:#fff}
+.agency-guides .tile{border:1px solid #e2ebe6;border-radius:13px 13px 30px 13px;overflow:hidden}
+.agency-guides .tile:nth-child(2){border-radius:30px 13px 13px 13px}
+@media(max-width:900px){
+ .clinic-detail-overview__layout{grid-template-columns:minmax(0,1fr) minmax(240px,.75fr);gap:25px}
+ .clinic-service-feature{grid-template-columns:1fr;gap:12px}
+ .clinic-diagnostics-feature{grid-template-columns:65px minmax(0,1fr);gap:15px}
+ .clinic-diagnostics-feature__action{grid-column:2;justify-self:start}
+}
+@media(max-width:680px){
+ .clinic-service-showcase__featured{grid-template-columns:1fr;gap:10px}
+ .clinic-service-feature{grid-template-columns:48px 1fr;min-height:0;padding:18px;border-radius:17px}
+ .clinic-service-feature--2{border-radius:17px 17px 37px 17px}
+ .clinic-service-feature__icon{width:46px;height:46px;border-radius:12px}
+ .clinic-service-feature__icon .ico{width:24px;height:24px}
+ .clinic-service-feature__content strong{font-size:19px;margin:5px 0}
+ .clinic-service-feature__content>span{font-size:13px}
+ .clinic-service-feature__content em{margin-top:10px}
+ .clinic-service-showcase__index{grid-template-columns:1fr;margin:15px 0}
+ .clinic-service-row{grid-template-columns:20px 38px minmax(0,1fr) 17px;gap:9px;padding:13px 2px}
+ .clinic-service-row__symbol{width:37px;height:37px}
+ .clinic-service-row__content strong{font-size:15px}
+ .clinic-service-row__content small{font-size:12px}
+ .clinic-diagnostics-feature{grid-template-columns:43px minmax(0,1fr);gap:10px;padding:17px 14px;border-radius:14px}
+ .clinic-diagnostics-feature__visual{width:42px;height:42px;border-radius:12px}
+ .clinic-diagnostics-feature__visual .ico{width:24px;height:24px}
+ .clinic-diagnostics-feature__body strong{font-size:19px}
+ .clinic-diagnostics-feature__body>span{font-size:12px}
+ .clinic-diagnostics-feature__action{font-size:12px;padding:9px 11px}
+ .clinic-detail-overview__layout{grid-template-columns:1fr;gap:24px}
+ .clinic-detail-overview__benefits{grid-template-columns:1fr}
+ .clinic-detail-contact{position:static;padding:20px}
+ .clinic-care-path__list{grid-template-columns:1fr}
+ .clinic-care-path__list li,.clinic-care-path__list li:first-child{padding:14px 0 14px 22px;border:0;border-inline-start:2px solid #b8d6ca;margin-inline-start:9px}
+ .clinic-care-path__list li:first-child{padding-top:0}
+ .clinic-care-path__number{margin-bottom:5px}
+ .clinic-care-path__list h3{font-size:17px}
+ .clinic-care-path__list p{font-size:13px}
+ .clinic-questions__list{grid-template-columns:1fr;gap:8px;margin-top:15px}
+ .clinic-questions__list li{padding:14px 16px;border-radius:10px 10px 21px 10px}
+ .clinic-questions__list p{font-size:14px}
+ .clinic-related__links{grid-template-columns:1fr;gap:0}
+ .clinic-related__links a{padding:15px 3px}
+}
+
+/* Diagnostics: editorial split sections instead of repeated generic tiles. */
+.clinic-diagnostic-intro{padding-block:clamp(25px,4vw,55px)}
+.clinic-diagnostic-intro__layout{display:grid;grid-template-columns:minmax(0,1.4fr) .6fr;align-items:center;gap:45px}
+.clinic-diagnostic-intro h2{font-size:clamp(27px,3.5vw,43px);line-height:1.3;color:#0c495c;margin:5px 0 14px;max-width:22ch}
+.clinic-diagnostic-intro p{font-size:16px;color:#526b71;line-height:1.9;max-width:65ch}
+.clinic-diagnostic-intro__mark{display:flex;align-items:center;gap:14px;padding:24px;border-inline-start:3px solid #45a18e;background:#f5faf8;color:#0c495c;font-weight:800}
+.clinic-diagnostic-intro__mark .ico{width:34px;height:34px;color:#12685d}
+.clinic-diagnostic-feature{padding-block:clamp(35px,5vw,72px);background:#f5faf8!important}
+.clinic-diagnostic-feature--scan{background:#fff!important}
+.clinic-diagnostic-feature__grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(22px,6vw,85px)}
+.clinic-diagnostic-feature--scan .clinic-diagnostic-feature__heading{grid-column:2;grid-row:1}
+.clinic-diagnostic-feature--scan .clinic-diagnostic-feature__steps{grid-column:1;grid-row:1}
+.clinic-diagnostic-feature__tag{display:inline-block;color:#237669;font-size:13px;font-weight:800;border-bottom:1px solid #9bc5b7;padding-bottom:5px}
+.clinic-diagnostic-feature h2{font-size:clamp(26px,3vw,39px);line-height:1.33;color:#0c495c;margin:15px 0}
+.clinic-diagnostic-feature__heading p{font-size:15px;color:#526b71;line-height:1.9}
+.clinic-diagnostic-feature__link{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:800;color:#12685d;border-bottom:1px solid #b3d6c8;padding:8px 0}
+.clinic-diagnostic-feature__link .ico{width:18px;height:18px}
+.clinic-diagnostic-feature__steps{list-style:none;padding:0;margin:0}
+.clinic-diagnostic-feature__steps li{display:grid;grid-template-columns:38px 1fr;gap:13px;padding:15px 0;border-bottom:1px solid #dbe9e2}
+.clinic-diagnostic-feature__steps li:last-child{border:0}
+.clinic-diagnostic-feature__steps li>span{width:35px;height:35px;border:1px solid #bddbd0;border-radius:50%;display:grid;place-items:center;color:#12685d;font-size:12px;font-weight:800}
+.clinic-diagnostic-feature__steps h3{font-size:18px;color:#0c495c;margin:0 0 4px}
+.clinic-diagnostic-feature__steps p{font-size:14px;color:#526b71;line-height:1.8;margin:0}
+.clinic-diagnostic-prepare{padding-block:clamp(30px,4vw,60px)}
+.clinic-diagnostic-prepare__layout{display:grid;grid-template-columns:1fr 1.2fr;gap:45px;align-items:center;padding-block:23px;border-block:1px solid #dce9e4}
+.clinic-diagnostic-prepare h2{color:#0c495c;font-size:clamp(22px,2.7vw,33px)}
+.clinic-diagnostic-prepare ul{list-style:none;padding:0;margin:0}
+.clinic-diagnostic-prepare li{display:flex;align-items:center;gap:9px;padding:9px 0;font-size:14px;color:#35585d}
+.clinic-diagnostic-prepare li .ico{color:#12685d;width:17px;height:17px}
+@media(max-width:680px){
+ .clinic-diagnostic-intro__layout,.clinic-diagnostic-feature__grid,.clinic-diagnostic-prepare__layout{grid-template-columns:1fr;gap:16px}
+ .clinic-diagnostic-intro__mark{padding:14px}
+ .clinic-diagnostic-feature--scan .clinic-diagnostic-feature__heading,.clinic-diagnostic-feature--scan .clinic-diagnostic-feature__steps{grid-column:1;grid-row:auto}
+ .clinic-diagnostic-feature__steps li{gap:10px;padding:13px 0}
+ .clinic-diagnostic-feature__steps h3{font-size:16px}
+ .clinic-diagnostic-feature__steps p{font-size:13px}
+ .clinic-diagnostic-prepare__layout{gap:5px}
+}
