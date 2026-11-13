@@ -1104,3 +1104,62 @@ button,.button,a.card,a.tile,.clinic-service-feature,.clinic-service-row,.clinic
 }
 @media(prefers-reduced-motion:reduce){.header .logo::after{animation:none;display:none}}
 @media(hover:none){.clinic-service-feature:hover,.agency-services__cards .card:hover{transform:none}}
+
+
+/* Contact-only hero: authentic building photograph, typography over the open sky.
+   These rules intentionally do not change other inner-page heroes. */
+.clinic-contact-hero{padding:12px 0 0;background:#fff}
+.clinic-contact-hero__stage{position:relative;isolation:isolate;overflow:hidden;min-height:clamp(350px,41vw,510px);border-radius:20px;background:#cae6f3}
+.clinic-contact-hero__image{position:absolute;z-index:0;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center 15%}
+.clinic-contact-hero__stage::after{content:"";position:absolute;z-index:1;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(250,253,254,.96) 0%,rgba(250,253,254,.85) 27%,rgba(250,253,254,.42) 43%,rgba(250,253,254,0) 67%)}
+.clinic-contact-hero__copy{position:relative;z-index:2;display:flex;min-height:inherit;flex-direction:column;justify-content:center;align-items:flex-start;box-sizing:border-box;width:min(46%,510px);margin-left:clamp(22px,5vw,65px);margin-right:auto;padding:33px 0;direction:rtl;text-align:right}
+.clinic-contact-hero__copy .breadcrumbs{align-self:flex-start;display:flex;gap:8px;align-items:center;max-width:100%;margin-bottom:15px;font-size:12px;color:#294f59}
+.clinic-contact-hero__copy .breadcrumbs a,.clinic-contact-hero__copy .breadcrumbs span{color:#294f59;opacity:1}
+.clinic-contact-hero__copy .kicker{background:rgba(255,255,255,.83);color:#0c665d;border:1px solid #d4e9e2;border-radius:100px;padding:4px 12px;font-size:12px}
+.clinic-contact-hero h1{font-size:clamp(29px,3.45vw,47px);line-height:1.35;letter-spacing:-.025em;font-weight:700;color:#0c495c;max-width:17ch;margin:15px 0 12px;text-wrap:balance}
+.clinic-contact-hero__copy>p{font-size:clamp(13px,1.2vw,16px);max-width:40ch;line-height:1.9;margin:0;color:#345963;text-wrap:pretty}
+
+/* Contact address card: show the user's own directions diagram uncropped. */
+.agency-contact__location{padding-block:clamp(22px,3.5vw,42px);background:#f7faf8;border:0}
+.clinic-address-card{overflow:hidden;border:1px solid #dce9e4;border-radius:20px;background:#fff;box-shadow:0 12px 34px rgba(12,73,92,.045)}
+.clinic-address-card__header{display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:clamp(18px,3vw,31px)}
+.clinic-address-card__heading{display:flex;align-items:flex-start;gap:13px;min-width:0;flex:1 1 370px}
+.clinic-address-card__icon{display:grid;place-items:center;flex:none;width:47px;height:47px;border-radius:14px;background:#e8f4ef;color:#12685d}
+.clinic-address-card__icon .ico{width:23px;height:23px}
+.clinic-address-card__heading .kicker{color:#23786a;font-size:12px}
+.clinic-address-card h2{font-size:clamp(22px,2.7vw,32px);line-height:1.4;color:#0c495c;margin:4px 0 8px}
+.clinic-address-card__heading p{font-size:14px;line-height:1.85;color:#506e71;margin:0}
+.clinic-address-card__header>.button{flex:none;max-width:100%;min-height:45px;font-size:13px;white-space:normal}
+.clinic-address-card__figure{margin:0;padding:0 clamp(12px,2.5vw,28px) clamp(17px,2.5vw,27px)}
+.clinic-address-card__diagram{overflow:auto;overscroll-behavior-inline:contain;border:1px solid #e2eee8;border-radius:13px;background:#fff}
+.clinic-address-card__diagram img{display:block;width:100%;height:auto;object-fit:contain}
+.clinic-address-card__figure figcaption{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px;color:#587276;font-size:12px;line-height:1.8}
+.clinic-address-card__scroll-hint{display:none;font-weight:700;color:#176b61}
+@media(max-width:680px){
+ .clinic-contact-hero{padding:8px 0 0}
+ .clinic-contact-hero__stage{min-height:420px;border-radius:15px}
+ .clinic-contact-hero__image{object-position:48% center}
+ .clinic-contact-hero__stage::after{background:linear-gradient(90deg,rgba(250,253,254,.97) 0%,rgba(250,253,254,.89) 35%,rgba(250,253,254,.58) 57%,rgba(250,253,254,0) 88%)}
+ .clinic-contact-hero__copy{width:min(67%,260px);margin-left:16px;margin-right:auto;padding:22px 0}
+ .clinic-contact-hero__copy .breadcrumbs{font-size:10px;margin-bottom:13px}
+ .clinic-contact-hero__copy .kicker{font-size:11px;padding:3px 9px}
+ .clinic-contact-hero h1{font-size:clamp(24px,6.4vw,31px);line-height:1.4;margin:13px 0 11px}
+ .clinic-contact-hero__copy>p{font-size:12px;line-height:1.85}
+ .clinic-address-card{border-radius:16px}
+ .clinic-address-card__header{align-items:stretch;gap:15px;padding:19px 16px 14px}
+ .clinic-address-card__heading{flex-basis:100%;gap:10px}
+ .clinic-address-card__icon{width:39px;height:39px;border-radius:11px}
+ .clinic-address-card h2{font-size:22px}
+ .clinic-address-card__heading p{font-size:13px}
+ .clinic-address-card__header>.button{width:100%;justify-content:center}
+ .clinic-address-card__figure{padding:0 10px 14px}
+ .clinic-address-card__diagram img{min-width:690px}
+ .clinic-address-card__figure figcaption{font-size:11px;margin:10px 5px 0}
+ .clinic-address-card__scroll-hint{display:block}
+}
+@media(max-width:360px){
+ .clinic-contact-hero__stage{min-height:420px}
+ .clinic-contact-hero__copy{width:67%;margin-left:13px}
+ .clinic-contact-hero h1{font-size:23px}
+}
+@media(prefers-reduced-motion:reduce){.clinic-address-card__diagram{scroll-behavior:auto}}

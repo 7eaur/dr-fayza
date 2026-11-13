@@ -319,21 +319,78 @@ function faqPage() {
     "</aside></div></section>"
   ].join('');
 }
+
+/* A dedicated contact hero leaves the building sign visible, with copy over the sky. */
+function contactHero() {
+  return `<section class="clinic-contact-hero" aria-labelledby="clinic-contact-hero-title">
+    <div class="container"><div class="clinic-contact-hero__stage">
+      <img class="clinic-contact-hero__image" src="/assets/clinic-contact-hero.webp"
+           srcset="/assets/clinic-contact-hero-720.webp 720w, /assets/clinic-contact-hero.webp 1440w"
+           sizes="(max-width: 680px) 100vw, 1100px" width="1440" height="810"
+           loading="eager" fetchpriority="high" decoding="async"
+           alt="لوحة عيادة الدكتورة فايزة الوصابي على واجهة المبنى">
+      <div class="clinic-contact-hero__copy" dir="rtl">
+        <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><span>التواصل</span></nav>
+        <span class="kicker">تواصلي معنا</span>
+        <h1 id="clinic-contact-hero-title">نساعدكِ على الوصول والاستفسار</h1>
+        <p>تواصلي عبر الهاتف أو واتساب لمعرفة الوقت المناسب، أو اطلعي على العنوان وساعات الدوام.</p>
+      </div>
+    </div></div>
+  </section>`;
+}
+
+/* The supplied direction diagram is illustrative; do not present it as a verified Google pin. */
+function contactAddressCard() {
+  return `<section class="agency-contact__location" aria-labelledby="contact-address-title">
+    <div class="container"><article class="clinic-address-card">
+      <div class="clinic-address-card__header">
+        <div class="clinic-address-card__heading">
+          <span class="clinic-address-card__icon" aria-hidden="true">${ico('pin')}</span>
+          <div><span class="kicker">موقع العيادة</span><h2 id="contact-address-title">تفضلي بزيارتنا في ذمار</h2>
+          <p>شارع صنعاء تعز، قبل جولة كمران، أمام بنك الكريمي.</p></div>
+        </div>
+        ${link(mapsSearch, 'ابحثي في خرائط Google', 'line', 'pin')}
+      </div>
+      <figure class="clinic-address-card__figure">
+        <div class="clinic-address-card__diagram" role="region" aria-label="مخطط إرشادي للعنوان، يمكن تمريره أفقيًا على الهاتف" tabindex="0">
+          <img src="/assets/clinic-address-map.webp" width="1672" height="765"
+               alt="مخطط إرشادي على شارع صنعاء تعز بين جولة رداع وجولة كمران، يوضح العيادة قرب بنك الكريمي وعمارة الأوقاف"
+               loading="lazy" decoding="async">
+        </div>
+        <figcaption>مخطط إرشادي للتعرف على معالم الطريق، وليس موقعًا مثبتًا في الخرائط. يُرجى الاتصال لتأكيد جهة الوصول.
+        <span class="clinic-address-card__scroll-hint">مرّري المخطط يمينًا ويسارًا لرؤية التفاصيل.</span></figcaption>
+      </figure>
+    </article></div>
+  </section>`;
+}
+
 function contact() {
   return [
-    innerHero('تواصلي معنا','نساعدكِ على الوصول والاستفسار','تواصلي عبر الهاتف أو واتساب لمعرفة الوقت المناسب، أو اطلعي على العنوان وساعات الدوام.','motherhood','svg'),
-    "<section class=\"section agency-contact\"><div class=\"container agency-contact__grid\"><div><span class=\"kicker\">اتصال مباشر</span><h2>اختاري طريقة التواصل المناسبة لكِ</h2><p>للأسئلة عن الخدمات وتوفرها وتوقيت المراجعة، اتصلي أو أرسلي رسالة عبر واتساب.</p><div class=\"agency-contact__actions\">",
+    contactHero(),
+    `<section class="section agency-contact"><div class="container agency-contact__grid"><div>
+       <span class="kicker">اتصال مباشر</span><h2>اختاري طريقة التواصل المناسبة لكِ</h2>
+       <p>للأسئلة عن الخدمات وتوفرها وتوقيت المراجعة، اتصلي أو أرسلي رسالة عبر واتساب.</p>
+       <div class="agency-contact__actions">`,
     link(site.call, 'اتصلي الآن · 785600066', 'solid', 'phone'),
     link(site.whatsapp, 'افتحي محادثة واتساب', 'line', 'message'),
-    "</div><p class=\"agency-contact__privacy\">لا ترسلي صورًا أو معلومات طبية حساسة إلا عبر قناة تنصح بها العيادة.</p></div><aside class=\"agency-contact__hours\"><div class=\"agency-contact__hours-head\"><span class=\"agency-contact__hours-icon\">'+ico('clock')+'</span><div><span class=\"agency-contact__small\">مواعيد العمل</span><strong>السبت إلى الخميس</strong></div></div><dl><div><dt>الفترة الصباحية</dt><dd><bdi>8:00 ص</bdi> – <bdi>1:00 م</bdi></dd></div><div><dt>الفترة المسائية</dt><dd><bdi>4:00 م</bdi> – <bdi>8:00 م</bdi></dd></div></dl><p class=\"agency-contact__hours-note\">الجمعة إجازة للعيادة. استقبال حالات الولادة متاح 24 ساعة بعد تأكيد مكان الاستقبال بالاتصال.</p></aside></div></section><section class=\"agency-contact__location\"><div class=\"container agency-contact__location-inner\"><span class=\"agency-contact__place-icon\">",
-    ico('pin'),
-    "</span><div><span class=\"kicker\">العنوان</span><h2>تفضلي بزيارتنا في ذمار</h2><p>ذمار، شارع صنعاء تعز، قبل جولة كمران، أمام بنك الكريمي.</p><small>يُفتح بحث بالعنوان في خرائط Google، وليس دبوساً مؤكداً. اتصلي بالعيادة لتأكيد جهة الوصول.</small></div>",
-    link(mapsSearch, 'ابحثي عن العنوان في الخرائط', 'line', 'pin'),
-    "</div></section><section class=\"agency-birth clinic-birth\"><div class=\"container agency-birth__inner\"><span class=\"agency-birth__icon\">",
-    ico('clock'),
-    "</span><div><span class=\"agency-birth__kicker\">استقبال حالات الولادة</span><h2>الاستقبال على مدار 24 ساعة</h2><p>تحت إشراف كادر طبي متخصص؛ يرجى الاتصال لتأكيد مكان الاستقبال. لا يعني ذلك توفر بقية خدمات العيادة طوال اليوم.</p></div>",
+    `</div><p class="agency-contact__privacy">لا ترسلي صورًا أو معلومات طبية حساسة إلا عبر قناة تنصح بها العيادة.</p>
+     </div><aside class="agency-contact__hours">
+       <div class="agency-contact__hours-head"><span class="agency-contact__hours-icon">${ico('clock')}</span>
+         <div><span class="agency-contact__small">مواعيد العمل</span><strong>السبت إلى الخميس</strong></div>
+       </div>
+       <dl><div><dt>الفترة الصباحية</dt><dd><bdi>8:00 ص</bdi> – <bdi>1:00 م</bdi></dd></div>
+           <div><dt>الفترة المسائية</dt><dd><bdi>4:00 م</bdi> – <bdi>8:00 م</bdi></dd></div></dl>
+       <p class="agency-contact__hours-note">الجمعة إجازة للعيادة. استقبال حالات الولادة متاح 24 ساعة بعد تأكيد مكان الاستقبال بالاتصال.</p>
+     </aside></div></section>`,
+    contactAddressCard(),
+    `<section class="agency-birth clinic-birth"><div class="container agency-birth__inner">
+        <span class="agency-birth__icon">${ico('clock')}</span>
+        <div><span class="agency-birth__kicker">استقبال حالات الولادة</span>
+          <h2>الاستقبال على مدار 24 ساعة</h2>
+          <p>تحت إشراف كادر طبي متخصص؛ يرجى الاتصال لتأكيد مكان الاستقبال. لا يعني ذلك توفر بقية خدمات العيادة طوال اليوم.</p>
+        </div>`,
     link(site.call, 'اتصلي للتأكيد', 'white', 'phone'),
-    "</div></section>"
+    `</div></section>`
   ].join('');
 }
 
@@ -435,6 +492,8 @@ const convert=async(input,output,width,quality=76)=>{
 await convert(rawLogo,path.join(assetsOut,'logo-horizontal-480.webp'),480,78);
 await convert(rawSymbol,path.join(assetsOut,'symbol-128.webp'),128,80);
 await sharp(rawSymbol).resize({width:64,height:64,fit:'contain',background:{r:255,g:255,b:255,alpha:0}}).png({compressionLevel:9}).toFile(path.join(assetsOut,'favicon-64.png'));
+// Contact-only imagery stays local. The small hero variant avoids a large download on phones.
+await convert(path.join(assetsOut,'clinic-contact-hero.webp'),path.join(assetsOut,'clinic-contact-hero-720.webp'),720,68);
 const responsive=new Map();
 const photosDir=path.join(assetsOut,'generated');
 for(const filename of fs.readdirSync(photosDir).filter(n=>n.endsWith('.webp')&&!/-\d+\.webp$/.test(n))){

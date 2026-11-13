@@ -84,12 +84,15 @@ const errorHtml=fs.readFileSync(path.join(root,'404.html'),'utf8');
 if(!errorHtml.includes('clinic-notfound') || !errorHtml.includes('href="/"')) issues.push('Simple 404 missing');
 const contactHtml=fs.readFileSync(path.join(root,'contact/index.html'),'utf8');
 if(!contactHtml.includes('agency-contact__hours-head')) issues.push('Contact schedule missing');
+if(!contactHtml.includes('clinic-contact-hero__image') || !contactHtml.includes('clinic-contact-hero-720.webp')) issues.push('Contact photo hero not built');
+if(!contactHtml.includes('clinic-address-card__diagram') || !contactHtml.includes('clinic-address-map.webp')) issues.push('Contact address diagram not built');
+if(!contactHtml.includes('tabindex="0"')) issues.push('Mobile diagram keyboard access missing');
 if(!agencyCss.includes('prefers-reduced-motion')) issues.push('Motion reduced preference missing');
 if(issues.length){console.error(issues.join('\\n'));process.exit(1);}
 console.log('Privacy removal, error-page and motion checks passed.');
 
 // Optimized files and responsive media are required after the build transform.
-for(const file of ['assets/logo-horizontal-480.webp','assets/symbol-128.webp','assets/favicon-64.png','assets/generated/hero-mother-care-960.webp']){
+for(const file of ['assets/logo-horizontal-480.webp','assets/symbol-128.webp','assets/favicon-64.png','assets/generated/hero-mother-care-960.webp','assets/clinic-contact-hero.webp','assets/clinic-contact-hero-720.webp','assets/clinic-address-map.webp']){
  if(!files.includes(file)) issues.push('Optimized media missing: '+file);
 }
 const finalHome=fs.readFileSync(path.join(root,'index.html'),'utf8');
