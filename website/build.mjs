@@ -434,13 +434,13 @@ await convert(rawSymbol,path.join(assetsOut,'symbol-128.webp'),128,80);
 await sharp(rawSymbol).resize({width:64,height:64,fit:'contain',background:{r:255,g:255,b:255,alpha:0}}).png({compressionLevel:9}).toFile(path.join(assetsOut,'favicon-64.png'));
 const responsive=new Map();
 const photosDir=path.join(assetsOut,'generated');
-for(const filename of fs.readdirSync(photosDir).filter(n=>n.endsWith('.webp')&&!/-\\d+\\.webp$/.test(n))){
+for(const filename of fs.readdirSync(photosDir).filter(n=>n.endsWith('.webp')&&!/-\d+\.webp$/.test(n))){
  const input=path.join(photosDir,filename);
  const info=await sharp(input).metadata();
  const formats=[];
  for(const width of [480,960]){
   if(info.width <= width)continue;
-  const name=filename.replace(/\\.webp$/,`-${width}.webp`);
+  const name=filename.replace(/\.webp$/,`-${width}.webp`);
   await convert(input,path.join(photosDir,name),width,70);
   formats.push({name,width});
  }
