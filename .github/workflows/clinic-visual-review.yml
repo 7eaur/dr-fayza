@@ -4,6 +4,7 @@ on:
     branches:
       - release/clinic-unified-20261112
       - main
+      - fix/clinic-logo-single-source-reveal-20261114
   workflow_dispatch:
 
 permissions:
