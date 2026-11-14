@@ -55,7 +55,9 @@ for (const config of configs) {
           new Promise(resolve => setTimeout(resolve, 15000))
         ]);
       });
-      await page.waitForTimeout(250);
+      // Let the first-visit intro finish before capturing actual page layout.
+      await page.waitForFunction(() => !document.querySelector('[data-clinic-brand-intro]'), null, { timeout: 4500 }).catch(() => {});
+      await page.waitForTimeout(100);
       const d = await page.evaluate(() => ({
         title: document.title,
         h1Count: document.querySelectorAll('h1').length,
