@@ -483,6 +483,18 @@ function schemaFor(p) {
   if (p.article) graph.push({ '@type': 'Article', headline: p.article.title, description: p.article.desc, image: site.url + '/assets/generated/' + p.article.image, publisher: { '@id': site.url + '/#clinic' }, mainEntityOfPage: site.url + p.url });
   return JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
 }
+
+/* First-visit signature reveal, using the unchanged official clinic logo. */
+function logoIntro() {
+ return '<div class="clinic-brand-intro" data-clinic-brand-intro aria-hidden="true">'+
+ '<div class="clinic-brand-intro__mark">'+
+ '<img class="clinic-brand-intro__layer clinic-brand-intro__layer--symbol" src="/assets/logo-horizontal-480.webp" width="480" height="143" alt="" decoding="async">'+
+ '<img class="clinic-brand-intro__layer clinic-brand-intro__layer--name" src="/assets/logo-horizontal-480.webp" width="480" height="143" alt="" decoding="async">'+
+ '<img class="clinic-brand-intro__layer clinic-brand-intro__layer--finished" src="/assets/logo-horizontal-480.webp" width="480" height="143" alt="" decoding="async">'+
+ '<span class="clinic-brand-intro__line" aria-hidden="true"></span>'+
+ '</div></div>';
+}
+
 function html(p) {
   const title = p.title + ' | ' + site.short;
   const noindex = p.url === '/404/';
@@ -496,6 +508,7 @@ function html(p) {
   const ogImageAlt = p.article
     ? 'صورة توضيحية لمقال توعوي'
     : 'الشعار الرسمي لعيادة الدكتورة فايزة';
+  const introBootstrap = noindex ? '' : '<script>(()=>{try{if(localStorage.getItem("dr-fayza-intro-v1")==="seen")return;}catch(e){}if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;const net=navigator.connection||navigator.mozConnection||navigator.webkitConnection;if(net&&(net.saveData||["slow-2g","2g"].includes(net.effectiveType)))return;document.documentElement.classList.add("clinic-intro-pending");})();</script>';
   return '<!doctype html><html lang="ar" dir="rtl"><head>' +
     '<meta charset="utf-8">' +
     '<meta name="viewport" content="width=device-width, initial-scale=1">' +
@@ -514,9 +527,11 @@ function html(p) {
     '<link rel="icon" href="/assets/symbol-primary.png">' +
     (p.url === '/' ? '<link rel="preload" as="image" href="/assets/generated/hero-mother-care-960.webp" imagesrcset="/assets/generated/hero-mother-care-480.webp 480w, /assets/generated/hero-mother-care-960.webp 960w, /assets/generated/hero-mother-care.webp 2560w" imagesizes="(max-width: 680px) 100vw, 1100px">' : '') +
     (noindex ? '' : '<link rel="preload" as="image" href="/assets/logo-horizontal-480.webp" fetchpriority="high">') +
+    introBootstrap +
     '<link rel="stylesheet" href="/styles/agency.css">' +
     '<script type="application/ld+json">' + schemaFor(p) + '</script>' +
     '<script src="/scripts/site.js" defer></script></head><body>' +
+    (noindex ? '' : logoIntro()) +
     (noindex ? '' : header(p.url)) +
     '<main id="main">' + p.body + '</main>' +
     (noindex ? '' : footer()) +

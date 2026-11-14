@@ -55,7 +55,9 @@ for (const config of configs) {
           new Promise(resolve => setTimeout(resolve, 15000))
         ]);
       });
-      await page.waitForTimeout(250);
+      // Let the first-visit intro finish before capturing actual page layout.
+      await page.waitForFunction(() => !document.querySelector('[data-clinic-brand-intro]'), null, { timeout: 4500 }).catch(() => {});
+      await page.waitForTimeout(100);
       const d = await page.evaluate(() => ({
         title: document.title,
         h1Count: document.querySelectorAll('h1').length,
@@ -132,6 +134,38 @@ for (const config of configs) {
   if (consoleErrors.length) report.warnings.push({ width: config.width, errors: consoleErrors });
   await context.close();
 }
+
+// One-time signature reveal: observe first landing, final logo, and skipped repeats.
+const introCheck=async(width)=>{
+ const ctx=await browser.newContext({viewport:{width,height:844},deviceScaleFactor:1,locale:'ar-YE',colorScheme:'light'});
+ const page=await ctx.newPage();
+ try{
+  await page.goto(base+'/contact/',{waitUntil:'domcontentloaded',timeout:30000});
+  await page.waitForFunction(()=>document.documentElement.classList.contains('clinic-intro-active'),null,{timeout:3500});
+  await page.waitForTimeout(380);
+  await page.screenshot({path:path.join(out,width+'__logo-intro.png'),animations:'allow'});
+  await page.waitForTimeout(740);
+  await page.screenshot({path:path.join(out,width+'__logo-finished.png'),animations:'allow'});
+  await page.waitForFunction(()=>!document.querySelector('[data-clinic-brand-intro]'),null,{timeout:3500});
+  const seen=await page.evaluate(()=>localStorage.getItem('dr-fayza-intro-v1'));
+  if(seen!=='seen')report.errors.push({width,issue:'Brand intro completion is not persisted'});
+  await page.goto(base+'/services/',{waitUntil:'domcontentloaded',timeout:30000});
+  const repeated=await page.locator('[data-clinic-brand-intro]').count();
+  if(repeated!==0)report.errors.push({width,issue:'Intro repeated on subsequent navigation'});
+ }catch(error){report.errors.push({width,issue:'Brand intro browser test failed: '+String(error)})}
+ finally{await ctx.close()}
+};
+await introCheck(390);
+await introCheck(1280);
+const noMotionContext=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
+const noMotionPage=await noMotionContext.newPage();
+try{
+ await noMotionPage.goto(base+'/',{waitUntil:'domcontentloaded'});
+ const present=await noMotionPage.locator('[data-clinic-brand-intro]').count();
+ if(present)report.errors.push({width:390,issue:'Brand intro shown despite reduced-motion setting'});
+}catch(error){report.errors.push({issue:'Reduced-motion brand check failed: '+String(error)})}
+finally{await noMotionContext.close()}
+
 // Simulated cold 4G samples provide a more useful mobile check than unthrottled CI localhost-style timings.
 const throttledSamples=[];
 for (const scenario of [{route:'/',latency:150,throughput:200000,profile:'1.6 Mbps'}, {route:'/contact/',latency:150,throughput:200000,profile:'1.6 Mbps'}, {route:'/',latency:350,throughput:50000,profile:'400 Kbps weak connection'}]) {
