@@ -29,16 +29,16 @@ const services = [
   { id: 'fertility', name: 'تأخر الحمل والعقم', icon: 'sparkles', art: 'fertility', desc: 'تقييم أسباب تأخر الإنجاب ومراجعة الفحوصات وخيارات المتابعة.', intro: 'تأخر الحمل قد يرتبط بعوامل متعددة لدى أحد الزوجين أو كليهما. تبدأ الزيارة بمراجعة التاريخ الصحي والإنجابي دون افتراض سبب مسبق.', benefits: ['مراجعة مدة محاولة الحمل والتاريخ الصحي', 'قراءة الفحوصات السابقة عند توفرها', 'مناقشة خطوات التقييم المناسبة', 'شرح خيارات الرعاية أو الإحالة عند الحاجة'], who: 'للأزواج الراغبين في فهم الخطوة الأولى عند تأخر الحمل.', tip: 'من المفيد حضور الزوجين أو إحضار المعلومات والفحوصات المتاحة.' },
   { id: 'ultrasound', name: 'السونار والتصوير الطبي', icon: 'scan', art: 'diagnostics', desc: 'التصوير بالموجات فوق الصوتية دعمًا لتقييم الحمل وبعض الحالات النسائية.', intro: 'السونار وسيلة مساعدة في التقييم، ويحدد الطبيب نوع الفحص وتوقيته بحسب الأعراض والمرحلة والحالة.', benefits: ['التصوير بحسب التوصية الطبية', 'دعم متابعة الحمل', 'مراجعة التقارير السابقة', 'توضيح معنى النتائج والخطوة التالية'], who: 'لمن توصي الطبيبة لها بفحص تصويري ضمن خطة التقييم.', tip: 'اسألي عن نوع الفحص المتاح وتعليمات التحضير قبل الحضور.' },
   { id: 'maternity', name: 'استقبال حالات الولادة', icon: 'clock', art: 'motherhood', desc: 'استقبال حالات الولادة على مدار 24 ساعة تحت إشراف كادر طبي متخصص.', intro: 'استقبال حالات الولادة على مدار 24 ساعة منفصل عن مواعيد عمل العيادة. اتصلي قبل الحضور لتأكيد مكان الاستقبال وطريقة الوصول.', benefits: ['استقبال حالات الولادة على مدار 24 ساعة', 'إشراف كادر طبي متخصص', 'تأكيد مكان استقبال الحالة بالاتصال', 'توجيه الحالة بحسب وضعها الطبي'], who: 'للاستفسار عن استقبال حالات الولادة وطريقة الوصول.', tip: 'في الحالة الطارئة توجهي إلى أقرب طوارئ قادرة على تقديم الرعاية، واتصلي لتأكيد جهة الاستقبال.' },
-  { id: 'cosmetic', name: 'الاستشارات التجميلية النسائية', icon: 'flower', art: 'womens', desc: 'استشارة وتقييم الاحتياجات المرتبطة بالتجميل النسائي قبل اتخاذ أي إجراء.', intro: 'تبدأ الاستشارة بفهم الاحتياج ومناقشة الملاءمة الطبية والتوقعات والبدائل والمخاطر المحتملة.', benefits: ['تقييم الاحتياج بشكل فردي', 'مناقشة الخيارات والبدائل', 'توضيح التوقعات الواقعية', 'تحديد المتابعة المناسبة'], who: 'لمن ترغب في مناقشة احتياج تجميلي نسائي مع الطبيبة.', tip: 'توفر بعض الإجراءات والتقنيات يحتاج إلى تأكيد مباشر قبل الحضور.' }
+  { id: 'cosmetic', name: 'الاستشارات التجميلية النسائية', icon: 'flower', art: 'womens', desc: 'استشارة وتقييم الاحتياجات المرتبطة بالتجميل النسائي قبل اتخاذ أي إجراء.', intro: 'تبدأ الاستشارة بفهم الاحتياج ومناقشة الملاءمة الطبية والتوقعات والبدائل والمخاطر المحتملة.', benefits: ['تقييم الاحتياج بشكل فردي', 'مناقشة الخيارات والبدائل', 'توضيح التوقعات الواقعية', 'تحديد المتابعة المناسبة'], who: 'لمن ترغب في مناقشة احتياج تجميلي نسائي مع الطبيبة.', tip: 'اكتبي أسئلتكِ عن الخيارات المناسبة والتحضير والمتابعة لمناقشتها خلال الاستشارة.' }
 ];
 
 const faqs = [
   ['ما أوقات دوام العيادة؟', site.hours],
-  ['هل استقبال حالات الولادة متاح 24 ساعة؟', 'نعم، استقبال حالات الولادة مُعلن عنه على مدار 24 ساعة تحت إشراف كادر طبي متخصص. اتصلي لتأكيد مكان الاستقبال قبل الحضور.'],
+  ['هل استقبال حالات الولادة متاح 24 ساعة؟', 'نعم، نستقبل حالات الولادة على مدار 24 ساعة تحت إشراف كادر طبي متخصص. اتصلي لمعرفة مكان الاستقبال وطريقة الوصول.'],
   ['أين تقع العيادة؟', site.address + ' يُرجى الاتصال عند الحاجة إلى إرشادات دقيقة للوصول.'],
   ['كيف أستفسر عن موعد أو خدمة؟', 'يمكنك الاتصال أو مراسلة واتساب على الرقم ' + site.phone + '. وللتأكد من الموعد، يُرجى التواصل مباشرة مع العيادة.'],
   ['هل يمكن إحضار فحوصات سابقة؟', 'نعم، إحضار التقارير والتحاليل السابقة وقائمة الأدوية يساعد على جعل الاستشارة أكثر وضوحًا.'],
-  ['هل كل الخدمات متاحة طوال اليوم؟', 'لا. استقبال حالات الولادة فقط مُعلن عنه 24 ساعة، أما بقية خدمات العيادة فتحتاج إلى الالتزام بالساعات أو التأكيد بالاتصال.'],
+  ['هل كل الخدمات متاحة طوال اليوم؟', 'استقبال حالات الولادة متاح على مدار 24 ساعة. للاستشارات وبقية الخدمات، نرحب بكِ من السبت إلى الخميس، 8 صباحًا–1 ظهرًا و4 عصرًا–8 مساءً.'],
   ['هل تقدم المقالات تشخيصًا للحالة؟', 'لا. المقالات للتثقيف العام ولا تغني عن الفحص أو الاستشارة الطبية المناسبة للحالة.'],
   ['كيف أستعد لزيارتي الأولى؟', 'دوّني أسئلتك والأعراض ومدتها، وأحضري الفحوصات والتقارير السابقة وأسماء الأدوية إن وجدت. قد تختلف التحضيرات بحسب نوع الخدمة.'],
   ['هل أستطيع السؤال عن الفحوصات المخبرية أو السونار؟', 'نعم، يمكنك التواصل للتأكد من نوع الفحص وتوفره وتعليمات التحضير ومكان إجرائه قبل الحضور.']
@@ -80,12 +80,12 @@ const articles = [
     ['ابدؤوا بالمعلومات لا باللوم', 'تأخر الحمل قد يرتبط بعوامل مختلفة لدى المرأة أو الرجل أو كليهما. يبدأ التقييم الجيد بالاستماع إلى التاريخ الصحي والإنجابي للزوجين، لا بافتراض أن المسؤولية تقع على طرف واحد.'],
     ['ما المعلومات التي تفيد؟', 'مدة محاولة الحمل، انتظام الدورة، أي حمل سابق، عمليات أو التهابات سابقة، الأدوية، والفحوصات السابقة. كل معلومة تساعد على اختيار الخطوة المناسبة بدل تكرار فحوصات غير ضرورية.'],
     ['الفحوصات ليست متشابهة للجميع', 'تحدد الطبيبة الحاجة إلى الفحوصات ونوعها وفق القصة الصحية والفحص. قد تحتاج الخطة إلى مراجعة نتائج سابقة أو استكمال تقييم أحد الزوجين أو كليهما.'],
-    ['توقعي خطة واقعية', 'لا يمكن ضمان نتيجة أو تحديد سبب نهائي من رسالة قصيرة. الفائدة من الزيارة هي فهم الاحتمالات، معرفة ما يلزم، والاتفاق على خطوة متابعة واضحة.']
+    ['توقعي خطة واقعية', 'تساعدكِ الزيارة على فهم الاحتمالات ومراجعة الفحوصات، ثم الاتفاق مع الطبيبة على خطوة متابعة تناسب حالتكِ.']
   ] },
-  { id: 'ultrasound-guide', title: 'السونار أثناء الحمل: ما الذي يساعد على توضيحه؟', category: 'الفحوصات', image: 'hero-mother-care.webp', desc: 'معلومات عامة عن دور التصوير بالموجات فوق الصوتية وحدوده.', parts: [
+  { id: 'ultrasound-guide', title: 'السونار أثناء الحمل: ما الذي يساعد على توضيحه؟', category: 'الفحوصات', image: 'hero-mother-care.webp', desc: 'تعرّفي على دور السونار في متابعة الحمل وفهم النتائج والاستعداد للفحص.', parts: [
     ['السونار وسيلة مساعدة', 'يستخدم التصوير بالموجات فوق الصوتية لدعم تقييم الحمل وبعض الحالات النسائية. نوع الفحص وتوقيته يعتمدان على المرحلة والأعراض وما تراه الطبيبة مناسبًا.'],
     ['النتيجة تحتاج إلى سياق', 'لا تُفسر صورة أو قياس منفردًا بعيدًا عن عمر الحمل والتاريخ الصحي والفحص السريري. اسألي الطبيبة عن معنى النتيجة وما إذا كانت تحتاج إلى متابعة.'],
-    ['قبل الحضور', 'تأكدي من نوع الفحص المطلوب وتعليمات التحضير وتوفره في الموعد. بعض التقنيات أو الأجهزة تحتاج إلى تأكيد مباشر قبل الحضور.']
+    ['قبل الحضور', 'اسألي عن نوع الفحص المناسب وتعليمات التحضير والموعد قبل زيارتكِ.']
   ] }
 ];
 
@@ -117,7 +117,7 @@ function servicesHero(){
  '<span class="kicker">رعاية طبية متخصصة في ذمار</span><h1 id="clinic-services-hero-title">خدمات واضحة لصحة المرأة والحمل</h1>'+
  '<p>تعرّفي على مجالات الاستشارة والمتابعة والتدخلات النسائية والفحوصات المساندة، واستفسري عن توفر الإجراء المناسب قبل الزيارة.</p>'+
  '<nav class="clinic-services-hero__links" aria-label="الانتقال لأقسام الخدمات"><a href="#services-list">الخدمات الرئيسية</a><a href="#surgical-care">التدخلات النسائية</a><a href="#diagnostics">المختبر والسونار</a></nav></div>'+
- '<div class="clinic-services-hero__image"><img data-image-slot="services" src="/assets/generated/pregnancy-care.webp" width="960" height="720" alt="صورة توضيحية عامة للرعاية الطبية النسائية، وليست تصويرًا للعيادة" decoding="async" fetchpriority="high"><small class="clinic-image-note">صورة توضيحية</small></div>'+
+ '<div class="clinic-services-hero__image"><img data-image-slot="services" src="/assets/generated/pregnancy-care.webp" width="960" height="720" alt="رعاية صحة المرأة ومتابعة الحمل" decoding="async" fetchpriority="high"></div>'+
  '</div></section>';
 }
 const surgicalTopics = [
@@ -131,7 +131,7 @@ const surgicalTopics = [
 function surgerySection(){
  return '<section class="section clinic-surgery" id="surgical-care" aria-labelledby="clinic-surgery-title"><div class="container clinic-surgery__layout">'+
  '<div class="clinic-surgery__intro"><span class="kicker">التدخلات النسائية</span><h2 id="clinic-surgery-title">الجراحة النسائية وإجراءاتها</h2>'+
- '<p>هذه مجالات واردة في المواد التعريفية للعيادة. نوع العملية ومدى ملاءمتها ومكان إجرائها يحدده التقييم الطبي، ويجب التأكد من توفرها مباشرة مع العيادة.</p>'+
+ '<p>استشارة متخصصة لفهم الخيارات الجراحية المناسبة لحالتكِ، ومناقشة خطوات الإجراء والتعافي والمتابعة. استفسري عن توفر الإجراء ومكان تقديمه عند التواصل.</p>'+
  link(whatsappFor('الاستشارات والتدخلات الجراحية النسائية'),'استفسري عن إجراء جراحي','line','message')+'</div>'+
  '<ul class="clinic-surgery__list">'+surgicalTopics.map(x=>'<li>'+ico('check')+'<span>'+x+'</span></li>').join('')+'</ul>'+
  '</div></section>';
@@ -142,7 +142,7 @@ const faq = (items) => '<div class="faq-list">' + items.map(([q, a], i) => '<det
 const articleTile = (a) => {
  const artwork={ 'pregnancy-care':'pregnancy', 'womens-visit':'womens', 'fertility-consultation':'fertility', 'ultrasound-guide':'diagnostics' }[a.id];
  const source=artwork?'/assets/illustrations/'+artwork+'.svg':'/assets/generated/'+a.image;
- return '<article class="tile"><div class="tile-visual"><img src="'+source+'" alt="رسم أو صورة توضيحية عن '+a.category+'" width="960" height="720" loading="lazy" decoding="async"></div><div class="tile-body"><small>'+a.category+'</small><h3>'+a.title+'</h3><p>'+a.desc+'</p><a href="/guides/'+a.id+'/">اقرئي المقال '+ico('arrow')+'</a></div></article>';
+ return '<article class="tile"><div class="tile-visual"><img src="'+source+'" alt="'+a.category+'" width="960" height="720" loading="lazy" decoding="async"></div><div class="tile-body"><small>'+a.category+'</small><h3>'+a.title+'</h3><p>'+a.desc+'</p><a href="/guides/'+a.id+'/">اقرئي المقال '+ico('arrow')+'</a></div></article>';
 };
 
 function header(url) {
@@ -163,10 +163,17 @@ function footer() {
 function cta(title = 'هل تريدين معرفة الخطوة التالية؟') {
   return '<section class="cta clinic-page-cta"><div class="container cta-inner"><div><span class="kicker kicker-light">تواصلي قبل الزيارة</span><h2>' + title + '</h2><p>اسألي عن الخدمة المناسبة، الدوام، أو طريقة الوصول قبل الحضور.</p></div><div class="cta-actions">' + link(site.whatsapp, 'اسألي عبر واتساب', 'white', 'message') + link(site.call, 'اتصلي الآن', 'ghost', 'phone') + '</div></div></section>';
 }
+const innerBreadcrumb = (kicker,title) => {
+ const parent = services.some(s=>s.name===title) ? ['/services/','الخدمات الطبية']
+  : articles.some(a=>a.title===title) ? ['/guides/','التوعية الصحية'] : null;
+ return '<nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span>'+
+  (parent?'<a href="'+parent[0]+'">'+parent[1]+'</a><span aria-hidden="true">/</span>':'')+
+  '<span aria-current="page">'+(parent?title:kicker)+'</span></nav>';
+};
 const innerHero = (kicker,title,desc,asset='hero-mother-care.webp',mode='image') =>
- '<section class="clinic-inner-hero'+(mode==='text'?' clinic-inner-hero--text':'')+'"><div class="container clinic-inner-hero__grid">'+
- '<div class="clinic-inner-hero__copy"><nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><span>'+kicker+'</span></nav><h1>'+title+'</h1><p>'+desc+'</p></div>'+
- (mode==='text'?'':'<div class="clinic-inner-hero__visual"><img data-image-slot="inner" src="'+(mode==='svg'?'/assets/illustrations/'+asset+'.svg':'/assets/generated/'+asset)+'" alt="'+(mode==='svg'?'رسم توضيحي':'صورة تحريرية توضيحية عامة، وليست صورة لمقر العيادة أو الطبيبة')+'" width="960" height="540" loading="eager" fetchpriority="high" decoding="async">'+(mode==='svg'?'':'<small class="clinic-image-note">صورة توضيحية</small>')+'</div>')+
+ '<section class="clinic-inner-hero'+(mode==='text'?' clinic-inner-hero--text':mode==='clinic'?' clinic-inner-hero--clinic':'')+'"><div class="container clinic-inner-hero__grid">'+
+ '<div class="clinic-inner-hero__copy">'+innerBreadcrumb(kicker,title)+'<h1>'+title+'</h1><p>'+desc+'</p></div>'+
+ (mode==='text'?'':'<div class="clinic-inner-hero__visual"><img data-image-slot="inner" src="'+(mode==='clinic'?'/assets/'+asset:mode==='svg'?'/assets/illustrations/'+asset+'.svg':'/assets/generated/'+asset)+'" alt="'+(mode==='clinic'?'شعار واسم الدكتورة فايزة الوصابي على جدار العيادة':kicker)+'" width="960" height="540" loading="eager" fetchpriority="high" decoding="async"></div>')+
  '</div></section>';
 function pageHead(kicker,title,sub,art='motherhood',variant='') {
  const assets={motherhood:'hero-mother-care.webp',pregnancy:'pregnancy-care.webp',womens:'womens-consultation.webp',fertility:'fertility-support.webp',diagnostics:'diagnostics'};
@@ -174,7 +181,7 @@ function pageHead(kicker,title,sub,art='motherhood',variant='') {
  return innerHero(kicker,title,sub,asset,art==='diagnostics'?'svg':'image');
 }
 function values() {
-  return '<section class="section values-section"><div class="container"><div class="heading"><span class="kicker">طريقة الرعاية</span><h2>معلومات أوضح، وقرار أهدأ</h2><p>نشرح ما نعرفه، نوضح ما يحتاج إلى تقييم، ولا نستبدل الاستشارة الطبية بتخمينات عامة.</p></div><div class="values-grid"><article class="value-item"><span class="value-icon">' + ico('message') + '</span><div><h3>نستمع أولًا</h3><p>وصفك للأعراض وتاريخك الصحي جزء أساسي من فهم الحالة.</p></div></article><article class="value-item"><span class="value-icon">' + ico('shield') + '</span><div><h3>نحترم الخصوصية</h3><p>نحافظ على لغة محترمة ومعلومات مسؤولة دون مبالغة أو وعود.</p></div></article><article class="value-item"><span class="value-icon">' + ico('arrow') + '</span><div><h3>نوضح الخطوة التالية</h3><p>تخرجين من الزيارة وأنت تعرفين ما يلزم متابعته أو السؤال عنه.</p></div></article></div></div></section>';
+  return '<section class="section values-section"><div class="container"><div class="heading"><span class="kicker">طريقة الرعاية</span><h2>معلومات أوضح، وقرار أهدأ</h2><p>نستمع إلى أسئلتكِ، ونشرح خيارات الفحص والمتابعة بلغة واضحة تناسب احتياجاتكِ.</p></div><div class="values-grid"><article class="value-item"><span class="value-icon">' + ico('message') + '</span><div><h3>نستمع أولًا</h3><p>وصفك للأعراض وتاريخك الصحي جزء أساسي من فهم الحالة.</p></div></article><article class="value-item"><span class="value-icon">' + ico('shield') + '</span><div><h3>نحترم الخصوصية</h3><p>نمنحكِ مساحة لطرح أسئلتكِ ومناقشة احتياجاتكِ بخصوصية واحترام.</p></div></article><article class="value-item"><span class="value-icon">' + ico('arrow') + '</span><div><h3>نوضح الخطوة التالية</h3><p>تخرجين من الزيارة وأنت تعرفين ما يلزم متابعته أو السؤال عنه.</p></div></article></div></div></section>';
 }
 function firstVisit() {
  const steps=[
@@ -227,7 +234,7 @@ const careTopics = {
     sections: [
       ['قبل موعد الولادة', 'ناقشي خطة الولادة مع الطبيبة أثناء المتابعة، خصوصًا إذا كانت هناك ولادة قيصرية سابقة أو حمل عالي الخطورة أو توصيات خاصة.'],
       ['عند بدء العلامات', 'قد تكون الانقباضات المنتظمة أو نزول السائل أو النزف من العلامات التي تستدعي تقييمًا. عند وجود نزف شديد أو ألم غير محتمل أو انخفاض واضح في حركة الجنين، اطلبي الرعاية العاجلة فورًا.'],
-      ['الوصول والاستقبال', 'استقبال حالات الولادة معلن على مدار اليوم، لكن من المهم الاتصال مسبقًا لتأكيد مكان الاستقبال والاستعدادات العملية، وعدم تأخير الطوارئ في انتظار رد على رسالة.']
+      ['الوصول والاستقبال', 'استقبال حالات الولادة على مدار اليوم تحت إشراف كادر طبي متخصص. اتصلي لمعرفة مكان الاستقبال والتحضير للحضور، وتوجهي مباشرة للرعاية العاجلة عند وجود علامات طارئة.']
     ],
     questions: ['إلى أين أتوجه عند بدء المخاض؟', 'ما الأوراق والتقارير التي أحضرها؟', 'ما العلامات التي تستدعي الذهاب فورًا؟']
   },
@@ -236,7 +243,7 @@ const careTopics = {
     sections: [
       ['التقييم أولًا', 'تُراجع الشكوى والتاريخ الطبي، ويُناقش ما إذا كان المطلوب علاج عرض وظيفي، أو تقييم تغير بعد الولادة، أو استفسارًا تجميليًا بحتًا.'],
       ['الخيارات والمخاطر', 'لا يناسب كل إجراء كل حالة؛ وقد تكون بعض التقنيات محدودة الأدلة أو تتطلب متابعة خاصة. لذلك يجب توضيح الفوائد المحتملة والمخاطر والبدائل وتكلفة الإجراء قبل الموافقة.'],
-      ['قرار دون استعجال', 'يمكنك طلب وقت للتفكير، وفهم خطة التعافي والمتابعة، وطرح أي سؤال يتعلق بالخصوصية أو التوقعات الواقعية. وتوفر الإجراء نفسه يحتاج إلى تأكيد مع العيادة.']
+      ['قرار دون استعجال', 'يمكنك طلب وقت للتفكير، وفهم خطة التعافي والمتابعة، وطرح أي سؤال يتعلق بالخصوصية أو التوقعات الواقعية. واستفسري عن تفاصيل الإجراء وخطوات التحضير قبل الزيارة.']
     ],
     questions: ['هل أحتاج إجراءً فعلًا أم توجد بدائل؟', 'ما المخاطر وفترة التعافي المتوقعة؟', 'هل هذا الإجراء متوفر وكيف تتم متابعته؟']
   }
@@ -248,7 +255,7 @@ function home() {
   return [
     '<section class="agency-hero clinic-hero" aria-labelledby="agency-hero-title"><div class="container clinic-hero__shell">'+
     '<div class="clinic-hero__copy"><span class="clinic-hero__kicker">عيادة الدكتورة فايزة الوصابي · ذمار</span><h1 id="agency-hero-title">رعاية متخصصة لصحة المرأة <span>والحمل وتأخر الإنجاب</span></h1><p>استشارات متخصصة في أمراض النساء والتوليد والخصوبة، مع اهتمام بفهم احتياج كل مراجعة وتوضيح خطوات الرعاية المناسبة لها.</p></div>'+
-    '<div class="clinic-hero__visual"><img data-image-slot="home" src="/assets/generated/hero-mother-care.webp" alt="صورة تحريرية توضيحية للرعاية النسائية وليست صورة للطبيبة أو المقر" width="1600" height="900" fetchpriority="high" decoding="async"><small class="clinic-image-note">صورة توضيحية، وليست صورة مقر العيادة</small></div>'+
+    '<div class="clinic-hero__visual"><img data-image-slot="home" src="/assets/generated/hero-mother-care.webp" alt="رعاية الأم وصحة المرأة" width="1600" height="900" fetchpriority="high" decoding="async"></div>'+
     '<div class="clinic-hero__actions">'+link(site.whatsapp,'تواصلي عبر واتساب','solid','message')+link("/services/","استكشفي الخدمات","line","arrow")+'</div>'+
     '<ul class="clinic-hero__features"><li>'+ico('check')+'صحة المرأة</li><li>'+ico('check')+'متابعة الحمل</li><li>'+ico('check')+'الخصوبة والإنجاب</li></ul>'+
     '</div></section>',
@@ -279,7 +286,7 @@ function home() {
     '<div class="clinic-visit__location"><span class="kicker">موقع العيادة</span><h2 id="agency-visit-title">ننتظركِ في ذمار</h2><p class="clinic-visit__intro">يسعدنا استقبال استفساراتكِ ومساعدتكِ على الوصول إلى العيادة بكل سهولة.</p>'+
     '<div class="clinic-visit__address"><span class="clinic-visit__address-icon">'+ico('pin')+'</span><div><strong>عنوان العيادة</strong><p>ذمار، شارع صنعاء تعز، قبل جولة كمران، أمام بنك الكريمي.</p></div></div>'+
     '<div class="clinic-visit__actions">'+link(mapsSearch,'الاطلاع على الموقع في الخرائط','line','pin')+link(site.call,'اتصلي بالعيادة','solid','phone')+'</div>'+
-    '<small class="clinic-visit__map-note">رابط الخرائط يبحث عن العنوان، ويُرجى الاتصال لتأكيد جهة الوصول.</small></div>'+
+    '<small class="clinic-visit__map-note">للمساعدة في الوصول، اتصلي بنا وسنوضح لكِ معالم الطريق.</small></div>'+
     '<aside class="clinic-hours" aria-label="مواعيد عمل العيادة"><div class="clinic-hours__top"><span class="clinic-hours__icon">'+ico('clock')+'</span><span class="clinic-hours__eyebrow">مواعيد العمل</span></div>'+
     '<h3>أوقات استقبال المراجعات</h3><div class="clinic-hours__days"><span>'+ico('calendar')+' أيام العمل</span><strong>السبت – الخميس</strong></div>'+
     '<div class="clinic-hours__sessions"><div class="clinic-hours__session"><span class="clinic-hours__session-name">الفترة الصباحية</span><strong><bdi>8:00 ص</bdi> <span>—</span> <bdi>1:00 م</bdi></strong></div>'+
@@ -291,9 +298,9 @@ function home() {
 }
 function about() {
   return [
-    innerHero('عن الدكتورة','الدكتورة فايزة علي ناصر الوصابي','استشارية أمراض وجراحة النساء والتوليد والعقم؛ رعاية تشمل صحة المرأة ومتابعة الحمل والخصوبة، مع اهتمام بالتقييم الواضح لكل حالة.','womens-consultation.webp'),
+    innerHero('عن الدكتورة','الدكتورة فايزة علي ناصر الوصابي','استشارية أمراض وجراحة النساء والتوليد والعقم في ذمار؛ رعاية لصحة المرأة ومتابعة الحمل والخصوبة، تبدأ بالإنصات وتقييم احتياجات كل حالة.','clinic-about-hero.webp','clinic'),
     '<section class="section"><div class="container agency-profile__grid"><article class="agency-profile__story"><span class="kicker">النهج المهني</span><h2>الاهتمام بالتفاصيل يصنع فرقًا في فهم الحالة</h2><p>لكل مراجعة تاريخ صحي وظروف مختلفة. تبدأ الاستشارة بفهم الشكوى وأهداف الزيارة، ثم ربط الأعراض والتقارير المتاحة بخيارات الفحص والمتابعة. وتبقى الأسئلة جزءًا طبيعيًا من الحوار الطبي، سواء كانت الزيارة لأول مرة أو ضمن متابعة مستمرة.</p><p>تشمل مجالات الاهتمام صحة المرأة والحمل والولادة وتأخر الإنجاب والاستشارات النسائية التجميلية، مع توجيه كل حالة إلى التقييم المناسب بدل افتراض أن الحل واحد للجميع.</p></article><aside class="agency-profile__credentials"><span class="kicker">التأهيل المهني</span><h2>المؤهلات</h2><ul class="check-list"><li>'+ico('check')+'دكتوراه زمالة عربية (الأردن)</li><li>'+ico('check')+'دكتوراه زمالة يمنية</li><li>'+ico('check')+'دبلوم تجميل نسائي</li><li>'+ico('check')+'دبلوم طب الإنجاب والإخصاب المساعد (IVF)</li></ul></aside></div></section>',
-    '<section class="agency-mission" aria-labelledby="agency-mission-title"><div class="container"><div class="agency-section-head"><div><span class="kicker">ما نطمح إليه</span><h2 id="agency-mission-title">رؤيتنا ورسالتنا</h2><p>توجه تحريري للعيادة يضع احتياجات المرأة وفهمها للخيارات الطبية في المقدمة.</p></div></div><div class="agency-mission__grid"><article><span>01 / الرؤية</span><h3>رعاية نسائية أقرب إلى احتياجات كل امرأة</h3><p>أن تكون العيادة وجهة معروفة في ذمار للاستشارة النسائية المتخصصة، حيث تجد المرأة مساحة لطرح أسئلتها، وفهم خياراتها، ومتابعة صحتها بوعي في كل مرحلة من حياتها.</p></article><article><span>02 / الرسالة</span><h3>الجمع بين التخصص والوضوح والاحترام</h3><p>نسعى إلى تقديم رعاية واستشارات في أمراض النساء والولادة والخصوبة، تقوم على الإنصات والتقييم المناسب وتوضيح خطوات المتابعة، مع احترام الخصوصية والاختلافات الفردية بين المراجعات.</p></article></div></div></section>',
+    '<section class="agency-mission" aria-labelledby="agency-mission-title"><div class="container"><div class="agency-section-head"><div><span class="kicker">ما نطمح إليه</span><h2 id="agency-mission-title">رؤيتنا ورسالتنا</h2><p>رعاية تنطلق من احتياجاتكِ، وتمنحكِ مساحة لفهم صحتكِ ومناقشة خياراتكِ بثقة.</p></div></div><div class="agency-mission__grid"><article><span>01 / الرؤية</span><h3>رعاية نسائية أقرب إلى احتياجات كل امرأة</h3><p>أن تكون العيادة وجهة معروفة في ذمار للاستشارة النسائية المتخصصة، حيث تجد المرأة مساحة لطرح أسئلتها، وفهم خياراتها، ومتابعة صحتها بوعي في كل مرحلة من حياتها.</p></article><article><span>02 / الرسالة</span><h3>الجمع بين التخصص والوضوح والاحترام</h3><p>نسعى إلى تقديم رعاية واستشارات في أمراض النساء والولادة والخصوبة، تقوم على الإنصات والتقييم المناسب وتوضيح خطوات المتابعة، مع احترام الخصوصية والاختلافات الفردية بين المراجعات.</p></article></div></div></section>',
     editorialSection('مراحل من حياة المرأة','احتياجات تتغير ورعاية تتطور','تختلف الأسئلة الصحية من سن إلى آخر، ولهذا لا تُختصر صحة المرأة في الحمل والولادة فقط.',[['الصحة النسائية اليومية','متابعة اضطرابات الدورة وآلام الحوض والأسئلة المتعلقة بالهرمونات وتنظيم الأسرة.'],['الحمل والأمومة','مراجعات الحمل والاستعداد للولادة، ومناقشة ما يتغير قبل الحمل وبعده.'],['الخصوبة والقرارات الشخصية','فهم أسباب تأخر الإنجاب أو مناقشة خيارات نسائية أخرى وفق الأهداف والحالة الصحية.']]),
     cta('هل ترغبين في معرفة الخدمة التي تناسب استفساركِ؟')
   ].join('');
@@ -314,9 +321,9 @@ const serviceScope = {
  pregnancy: ['متابعة الحمل الطبيعي والحمل عالي الخطورة بحسب الحالة','تقييم العلامات التي تستدعي متابعة إضافية','الاستعداد للولادة ومراجعة التقارير'],
  'womens-health': ['اضطرابات الهرمونات وتنظيم الدورة الشهرية','الكشف المبكر عن أورام النساء ومسحة عنق الرحم وفق التقييم','تركيب وإزالة وسائل منع الحمل بعد الاستشارة'],
  fertility: ['تشخيص أسباب تأخر الإنجاب والعقم','مراجعة فحوصات الزوجين وخيارات المتابعة','تحديد الخطوات العلاجية المناسبة أو الإحالة عند الحاجة'],
- ultrasound: ['سونار متابعة الحمل والحوض بحسب التوصية الطبية','التصوير رباعي الأبعاد 4D مذكور في مواد العيادة، ويحتاج تأكيد توفر الجهاز قبل الحضور'],
+ ultrasound: ['سونار متابعة الحمل والحوض بحسب التوصية الطبية','شرح نتائج التصوير وخطوات المتابعة المناسبة لحالتكِ'],
  maternity: ['الاستفسار عن الولادة الطبيعية والولادة القيصرية وفق الحالة','استقبال حالات الولادة على مدار 24 ساعة فقط، مع تأكيد جهة الاستقبال مسبقًا'],
- cosmetic: ['تقييم احتياجات التجميل النسائي وآثار الولادة','مناقشة علاج سلس البول الإجهادي والخيارات المناسبة','تقنيات الليزر وPRP مذكورة في مواد العيادة السابقة، وتحتاج لتأكيد التوفر والملاءمة قبل الحضور']
+ cosmetic: ['تقييم احتياجات التجميل النسائي وآثار الولادة','مناقشة علاج سلس البول الإجهادي والخيارات المناسبة','مناقشة الخيارات المناسبة وآلية التحضير والتعافي والمتابعة']
 };
 
 
@@ -338,10 +345,10 @@ function detail(s) {
  '<section class="section clinic-detail-overview"><div class="container clinic-detail-overview__layout"><article class="clinic-detail-overview__story">'+
  '<span class="kicker">عن الخدمة</span><h2>'+serviceIntroHeadings[s.id]+'</h2><p class="clinic-detail-overview__opening">'+extra.opening+'</p>'+
  '<div class="clinic-detail-overview__topics"><h3>ما الذي تشملُه الاستشارة؟</h3><ul class="clinic-detail-overview__benefits">'+s.benefits.map(x=>'<li>'+ico('check')+'<span>'+x+'</span></li>').join('')+'</ul></div>'+
- '<div class="clinic-detail-overview__topics clinic-detail-overview__topics--scope"><h3>موضوعات وخدمات مرتبطة</h3><ul class="clinic-detail-overview__scope">'+highlights+'</ul><p class="clinic-detail-overview__scope-note">إجراء الفحوصات أو العمليات وتوفر التقنيات ومكان تقديمها يحدَّد بعد التقييم ويُؤكَّد مباشرة مع العيادة.</p></div>'+
+ '<div class="clinic-detail-overview__topics clinic-detail-overview__topics--scope"><h3>موضوعات وخدمات مرتبطة</h3><ul class="clinic-detail-overview__scope">'+highlights+'</ul><p class="clinic-detail-overview__scope-note">تساعدكِ الاستشارة على فهم الخيارات المناسبة لحالتكِ والتحضير للخطوة التالية.</p></div>'+
  '<div class="clinic-detail-overview__audience"><strong>لمن قد تناسب؟</strong><p>'+s.who+'</p></div></article>'+
  '<aside class="clinic-detail-contact"><span class="clinic-detail-contact__icon">'+ico(s.icon)+'</span><span class="kicker">التواصل المباشر</span><h2>هل لديكِ استفسار عن '+s.name+'؟</h2>'+
- '<p>اسألي عن توفر الخدمة وموعد الزيارة المناسب دون إرسال معلومات طبية حساسة.</p>'+
+ '<p>تواصلي لمعرفة تفاصيل الخدمة والوقت المناسب لزيارتكِ.</p>'+
  link(whatsappFor(s.name),'استفسري عبر واتساب','solid','message')+link(site.call,'اتصلي بالعيادة','line','phone')+
  '<div class="clinic-detail-contact__tip"><strong>قبل الزيارة</strong><p>'+s.tip+'</p></div></aside></div></section>'+
  '<section class="section clinic-care-path"><div class="container"><div class="clinic-care-path__heading"><span class="kicker">خطوات الرعاية</span><h2>ماذا تتوقعين خلال المتابعة؟</h2></div>'+
@@ -356,7 +363,7 @@ function diagnosticsSection() {
  '<div class="clinic-diagnostics__grid">'+
  '<article class="clinic-diagnostics__card"><span class="clinic-diagnostics__icon">'+ico('file')+'</span><h3>فحوصات مخبرية تدعم التقييم</h3><p>يوجد مختبر ضمن خدمات العيادة. اسألي عن التحاليل المتاحة، والتوقيت المناسب لأخذ العينات، وموعد ظهور النتائج.</p>'+
  '<a href="'+whatsappFor('الفحوصات المخبرية')+'">الاستفسار عن التحاليل '+ico('arrow')+'</a></article>'+
- '<article class="clinic-diagnostics__card"><span class="clinic-diagnostics__icon">'+ico('scan')+'</span><h3>التصوير الطبي عندما يلزم</h3><p>السونار لدعم متابعة الحمل وبعض حالات أمراض النساء. جهاز 4D مذكور في المواد التعريفية، ويُرجى تأكيد توفره عند التواصل.</p>'+
+ '<article class="clinic-diagnostics__card"><span class="clinic-diagnostics__icon">'+ico('scan')+'</span><h3>التصوير الطبي عندما يلزم</h3><p>السونار لدعم متابعة الحمل وبعض حالات أمراض النساء. اسألي عن نوع الفحص وتعليمات التحضير المناسبة قبل زيارتكِ.</p>'+
  '<a href="/services/ultrasound/">تفاصيل السونار '+ico('arrow')+'</a></article>'+
  '</div><p class="clinic-diagnostics__note">'+ico('check')+' اسألي: هل الفحص متاح؟ هل يحتاج تحضيرًا؟ وكيف تستلمين النتيجة؟</p>'+
  '</div></section>';
@@ -418,7 +425,7 @@ function contactAddressCard() {
                alt="مخطط إرشادي على شارع صنعاء تعز بين جولة رداع وجولة كمران، يوضح العيادة قرب بنك الكريمي وعمارة الأوقاف"
                loading="lazy" decoding="async">
         </div>
-        <figcaption>مخطط إرشادي للتعرف على معالم الطريق، وليس موقعًا مثبتًا في الخرائط. يُرجى الاتصال لتأكيد جهة الوصول.
+        <figcaption>تعرّفي على معالم الطريق إلى العيادة من خلال مخطط الوصول.
         <a class="clinic-address-card__zoom" href="/assets/clinic-address-map.webp" target="_blank" rel="noopener noreferrer" aria-label="افتحي مخطط الوصول بالحجم الكامل في تبويب جديد">تكبير المخطط</a></figcaption>
       </figure>
     </article></div>
@@ -434,7 +441,7 @@ function contact() {
        <div class="agency-contact__actions">`,
     link(site.call, 'اتصلي الآن · 785600066', 'solid', 'phone'),
     link(site.whatsapp, 'افتحي محادثة واتساب', 'line', 'message'),
-    `</div><p class="agency-contact__privacy">لا ترسلي صورًا أو معلومات طبية حساسة إلا عبر قناة تنصح بها العيادة.</p>
+    `</div><p class="agency-contact__privacy">لخصوصيتكِ، اسألي فريق العيادة عن الطريقة المناسبة لمشاركة التقارير الطبية.</p>
      </div><aside class="agency-contact__hours">
        <div class="agency-contact__hours-head"><span class="agency-contact__hours-icon">${ico('clock')}</span>
          <div><span class="agency-contact__small">مواعيد العمل</span><strong>السبت إلى الخميس</strong></div>
@@ -448,7 +455,7 @@ function contact() {
         <span class="agency-birth__icon">${ico('clock')}</span>
         <div><span class="agency-birth__kicker">استقبال حالات الولادة</span>
           <h2>الاستقبال على مدار 24 ساعة</h2>
-          <p>تحت إشراف كادر طبي متخصص؛ يرجى الاتصال لتأكيد مكان الاستقبال. لا يعني ذلك توفر بقية خدمات العيادة طوال اليوم.</p>
+          <p>تحت إشراف كادر طبي متخصص. اتصلي بنا لمعرفة مكان الاستقبال وطريقة الوصول.</p>
         </div>`,
     link(site.call, 'اتصلي للتأكيد', 'white', 'phone'),
     `</div></section>`
@@ -456,20 +463,33 @@ function contact() {
 }
 
 const pages = [
-  { url: '/', title: 'الرئيسية', desc: 'عيادة الدكتورة فايزة الوصابي في ذمار؛ استشارات النساء والتوليد ومتابعة الحمل وتأخر الإنجاب.', body: home() },
-  { url: '/about/', title: 'عن الدكتورة', desc: 'تعرفي على الدكتورة فايزة الوصابي وتخصصها ومجالات الاستشارة.', body: about() },
-  { url: '/services/', title: 'الخدمات الطبية', desc: 'خدمات النساء والتوليد ومتابعة الحمل وصحة المرأة وتأخر الإنجاب والسونار.', body: servicesPage() },
-  ...services.map(s => ({ url: '/services/' + s.id + '/', title: s.name, desc: s.desc, body: detail(s) })),
+  { url: '/', title: 'الرئيسية', seoTitle: 'الدكتورة فايزة الوصابي | استشارية نساء وتوليد وعقم في ذمار', desc: 'عيادة الدكتورة فايزة علي ناصر الوصابي في ذمار؛ استشارية أمراض وجراحة النساء والتوليد والعقم. تعرّفي على خدمات متابعة الحمل وصحة المرأة والمواعيد وطرق التواصل.', body: home() },
+  { url: '/about/', title: 'عن الدكتورة', seoTitle: 'عن الدكتورة فايزة علي ناصر الوصابي | ذمار', desc: 'تعرّفي على الدكتورة فايزة علي ناصر الوصابي، استشارية أمراض وجراحة النساء والتوليد والعقم في ذمار، ومؤهلاتها ونهجها في رعاية صحة المرأة والحمل والخصوبة.', body: about() },
+  { url: '/services/', title: 'الخدمات الطبية', desc: 'استشارات النساء والتوليد في عيادة الدكتورة فايزة الوصابي بذمار: متابعة الحمل، صحة المرأة، تأخر الإنجاب، السونار والفحوصات المساندة. تعرّفي على تفاصيل كل خدمة.', body: servicesPage() },
+  ...services.map(s => ({ url: '/services/' + s.id + '/', title: s.name, desc: s.desc + ' في عيادة الدكتورة فايزة الوصابي بذمار. تعرّفي على خطوات الاستشارة والتحضير للزيارة وطرق التواصل.', body: detail(s), service: s })),
   { url: '/guides/', title: 'التوعية الصحية', desc: 'مقالات صحية مبسطة عن الحمل وصحة المرأة وتأخر الإنجاب.', body: guides() },
   ...articles.map(a => ({ url: '/guides/' + a.id + '/', title: a.title, desc: a.desc, body: article(a), article: a })),
   { url: '/faq/', title: 'الأسئلة الشائعة', desc: 'إجابات عن دوام العيادة وموقعها وخدماتها وطرق التواصل.', body: faqPage() },
-  { url: '/contact/', title: 'التواصل والموقع', desc: 'رقم واتساب عيادة الدكتورة فايزة وعنوانها ومواعيد الدوام.', body: contact() }
+  { url: '/contact/', title: 'التواصل والموقع', desc: 'تواصلي مع عيادة الدكتورة فايزة الوصابي على 785600066. ذمار، شارع صنعاء تعز، قبل جولة كمران، أمام بنك الكريمي. الدوام السبت–الخميس صباحًا ومساءً.', body: contact() }
+];
+
+const pageTitle = p => p.seoTitle || p.title + ' | ' + site.short + ' في ذمار';
+const socialImage = p => p.url === '/about/' ? '/assets/clinic-about-hero.webp'
+  : p.url === '/contact/' ? '/assets/clinic-contact-hero.webp'
+  : p.article ? '/assets/generated/' + p.article.image : '/assets/logo-horizontal-primary.png';
+const pageTrail = p => [
+  { name: 'الرئيسية', url: '/' },
+  ...(p.service ? [{ name: 'الخدمات الطبية', url: '/services/' }] : p.article ? [{ name: 'التوعية الصحية', url: '/guides/' }] : []),
+  { name: p.title, url: p.url }
 ];
 
 function schemaFor(p) {
   const graph = [
     { '@type': 'MedicalClinic', '@id': site.url + '/#clinic', name: site.name,
       url: site.url, telephone: '+967785600066',
+      description: 'استشارات أمراض وجراحة النساء والتوليد والعقم في ذمار.',
+      logo: site.url + '/assets/logo-horizontal-primary.png',
+      image: site.url + '/assets/clinic-about-hero.webp',
       address: { '@type': 'PostalAddress', addressCountry: 'YE', addressLocality: 'ذمار', streetAddress: site.address },
       medicalSpecialty: ['Obstetric', 'Gynecologic'],
       openingHoursSpecification: [
@@ -479,27 +499,25 @@ function schemaFor(p) {
     },
     { '@type': 'Person', '@id': site.url + '/#doctor', name: 'الدكتورة فايزة علي ناصر الوصابي', jobTitle: 'استشارية أمراض وجراحة النساء والتوليد والعقم', worksFor: { '@id': site.url + '/#clinic' } },
     { '@type': 'WebSite', '@id': site.url + '/#website', name: site.short, url: site.url, inLanguage: 'ar', publisher: { '@id': site.url + '/#clinic' } },
-    { '@type': 'WebPage', '@id': site.url + p.url + '#webpage', url: site.url + p.url, name: p.title + ' | ' + site.short, isPartOf: { '@id': site.url + '/#website' }, about: { '@id': site.url + '/#clinic' }, inLanguage: 'ar' }
+    { '@type': p.url === '/about/' ? 'AboutPage' : p.url === '/contact/' ? 'ContactPage' : p.url === '/faq/' ? 'FAQPage' : 'WebPage', '@id': site.url + p.url + '#webpage', url: site.url + p.url, name: pageTitle(p), description: p.desc, isPartOf: { '@id': site.url + '/#website' }, about: { '@id': site.url + (p.url === '/about/' ? '/#doctor' : '/#clinic') }, inLanguage: 'ar', ...(p.url !== '/' ? { breadcrumb: { '@id': site.url + p.url + '#breadcrumb' } } : {}), ...(p.url === '/faq/' ? { mainEntity: faqs.map(([q,a]) => ({ '@type': 'Question', name:q, acceptedAnswer:{ '@type':'Answer', text:a } })) } : {}) }
   ];
-  if (p.url !== '/') graph.push({ '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'الرئيسية', item: site.url }, { '@type': 'ListItem', position: 2, name: p.title, item: site.url + p.url }] });
-  if (p.url === '/faq/') graph.push({ '@type': 'FAQPage', mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) });
+  if (p.url !== '/') graph.push({ '@type': 'BreadcrumbList', '@id': site.url + p.url + '#breadcrumb', itemListElement: pageTrail(p).map((item,i) => ({ '@type':'ListItem', position:i+1, name:item.name, item:site.url+item.url })) });
+  if (p.service) graph.push({ '@type': 'Service', '@id': site.url + p.url + '#service', name: p.service.name, description: p.service.desc, url: site.url + p.url, provider: { '@id': site.url + '/#clinic' }, areaServed: { '@type': 'City', name: 'ذمار' }, mainEntityOfPage: { '@id': site.url + p.url + '#webpage' } });
   if (p.article) graph.push({ '@type': 'Article', headline: p.article.title, description: p.article.desc, image: site.url + '/assets/generated/' + p.article.image, publisher: { '@id': site.url + '/#clinic' }, mainEntityOfPage: site.url + p.url });
   return JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
 }
 
 function html(p) {
-  const title = p.title + ' | ' + site.short;
+  const title = pageTitle(p);
   const noindex = p.url === '/404/';
   const canonical = noindex
     ? '<meta name="robots" content="noindex,follow">'
-    : '<link rel="canonical" href="' + site.url + p.url + '">';
+    : '<meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="' + site.url + p.url + '">';
   const ogType = p.article ? 'article' : 'website';
-  const ogImage = p.article
-    ? site.url + '/assets/generated/' + p.article.image
-    : site.url + '/assets/logo-horizontal-primary.png';
-  const ogImageAlt = p.article
-    ? 'صورة توضيحية لمقال توعوي'
-    : 'الشعار الرسمي لعيادة الدكتورة فايزة';
+  const ogImage = site.url + socialImage(p);
+  const ogImageAlt = p.url === '/about/' ? 'شعار واسم الدكتورة فايزة الوصابي على جدار العيادة'
+    : p.url === '/contact/' ? 'لوحة عيادة الدكتورة فايزة الوصابي على واجهة المبنى'
+    : p.article ? p.article.title : 'الشعار الرسمي لعيادة الدكتورة فايزة';
   return '<!doctype html><html lang="ar" dir="rtl"><head>' +
     '<meta charset="utf-8">' +
     '<meta name="viewport" content="width=device-width, initial-scale=1">' +
@@ -508,6 +526,7 @@ function html(p) {
     '<meta name="description" content="' + p.desc + '">' +
     canonical +
     '<meta property="og:locale" content="ar_YE">' +
+    '<meta property="og:site_name" content="' + site.short + '">' +
     '<meta property="og:type" content="' + ogType + '">' +
     '<meta property="og:title" content="' + title + '">' +
     '<meta property="og:description" content="' + p.desc + '">' +
@@ -515,6 +534,10 @@ function html(p) {
     '<meta property="og:image" content="' + ogImage + '">' +
     '<meta property="og:image:alt" content="' + ogImageAlt + '">' +
     '<meta name="twitter:card" content="summary_large_image">' +
+    '<meta name="twitter:title" content="' + title + '">' +
+    '<meta name="twitter:description" content="' + p.desc + '">' +
+    '<meta name="twitter:image" content="' + ogImage + '">' +
+    '<meta name="twitter:image:alt" content="' + ogImageAlt + '">' +
     '<link rel="icon" href="/assets/symbol-primary.png">' +
     '<link rel="preload" as="font" href="/assets/fonts/ibm-plex-sans-arabic-400.woff2" type="font/woff2" crossorigin>' +
     (noindex ? '' : '<link rel="preload" as="image" href="/assets/logo-horizontal-480.webp" fetchpriority="high">') +
@@ -559,7 +582,7 @@ await sharp(rawSymbol).resize({width:64,height:64,fit:'contain',background:{r:25
 const responsive=new Map();
 const photosDir=path.join(assetsOut,'generated');
 const photos=fs.readdirSync(photosDir).filter(n=>n.endsWith('.webp')&&!/-\d+\.webp$/.test(n)).map(n=>'generated/'+n);
-photos.push('clinic-contact-hero.webp');
+photos.push('clinic-contact-hero.webp','clinic-about-hero.webp');
 for(const filename of photos){
  const input=path.join(assetsOut,filename);
  const info=await sharp(input).metadata();
