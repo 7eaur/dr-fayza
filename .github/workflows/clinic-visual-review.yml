@@ -5,6 +5,7 @@ on:
       - release/clinic-unified-20261112
       - main
       - fix/clinic-layout-performance-20261114
+      - fix/clinic-content-seo-20261114
   workflow_dispatch:
 
 permissions:

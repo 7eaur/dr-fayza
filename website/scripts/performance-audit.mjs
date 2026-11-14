@@ -52,6 +52,16 @@ for(const width of [320,390,768,1440]){
  for(const route of ['/','/contact/','/about/','/services/','/services/pregnancy/','/guides/','/faq/']){
   await page.goto(base+route,{waitUntil:'load'});
   await page.evaluate(()=>document.fonts.ready);
+  if(route==='/about/'){
+   const sign=await page.locator('.clinic-inner-hero--clinic img').evaluate(img=>({
+    source:img.currentSrc,fit:getComputedStyle(img).objectFit,
+    ratio:img.getBoundingClientRect().width/img.getBoundingClientRect().height,
+    original:img.naturalWidth/img.naturalHeight
+   }));
+   assert(sign.source.includes('clinic-about-hero'),'About hero must use the supplied clinic photo');
+   assert.equal(sign.fit,'contain','Clinic sign must remain fully visible');
+   assert(Math.abs(sign.ratio-sign.original)<.01,'Clinic photo must retain its original proportions');
+  }
   await page.waitForTimeout(300);
   const data=await page.evaluate(()=>{
    const lastLine=[];

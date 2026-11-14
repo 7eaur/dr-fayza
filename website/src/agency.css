@@ -1159,7 +1159,6 @@ h1,h2,h3{overflow-wrap:break-word}
 .clinic-inner-hero--text .clinic-inner-hero__copy>p{max-width:75ch}
 .clinic-inner-hero__visual{margin-inline:0;position:relative;border-radius:13px}
 .clinic-hero__visual,.clinic-services-hero__image,.tile-visual{position:relative}
-.clinic-image-note{position:absolute;inset-inline-start:10px;bottom:10px;max-width:calc(100% - 20px);background:#fffffff2;color:#294f59;border:1px solid #dce9e4;border-radius:6px;padding:3px 8px;font-size:12px;line-height:1.6}
 main img{transition:opacity .24s ease}
 .clinic-image-loading{opacity:.35}
 .clinic-image-ready{opacity:1}
@@ -1186,7 +1185,6 @@ main img{transition:opacity .24s ease}
  .clinic-process__timeline h3{font-size:15px}
  .clinic-process__timeline p{font-size:13px;line-height:1.8}
  .agency-section-head h2,.agency-doctor__content h2{font-size:27px;line-height:1.5}
- .clinic-image-note{font-size:12px;bottom:7px;inset-inline-start:7px}
  .clinic-services-directory__heading>p{max-width:none}
  .clinic-contact-hero h1{line-height:1.5}
 }
@@ -1218,3 +1216,7 @@ main img{transition:opacity .24s ease}
 #page-top:focus{outline:none}
 @media(prefers-reduced-motion:reduce){.back-to-top:not([hidden]){animation:none}}
 @media print{.back-to-top{display:none!important}}
+
+/* Keep the supplied clinic sign fully visible at every viewport. */
+.clinic-inner-hero--clinic .clinic-inner-hero__visual{aspect-ratio:auto}
+.clinic-inner-hero--clinic .clinic-inner-hero__visual img{height:auto;object-fit:contain}

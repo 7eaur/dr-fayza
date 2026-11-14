@@ -4,7 +4,7 @@
   "version": "3.0.0",
   "type": "module",
   "scripts": {
-    "build": "node build.mjs && node check.mjs",
+    "build": "node build.mjs && node check.mjs && node scripts/seo-audit.mjs",
     "check": "node --check build.mjs && node --check check.mjs"
   },
   "dependencies": {
