@@ -4,7 +4,6 @@ on:
     branches:
       - release/clinic-unified-20261112
       - main
-      - feature/clinic-brand-signature-reveal-20261114
   workflow_dispatch:
 
 permissions:
