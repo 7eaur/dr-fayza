@@ -63,7 +63,7 @@ for (const config of configs) {
         brokenImages: [...document.images].filter(x => x.complete && x.naturalWidth === 0).map(x => x.getAttribute('src')),
         viewportMeta: document.querySelector('meta[name="viewport"]')?.content,
         missingAlt: [...document.images].filter(x => !x.hasAttribute('alt')).map(x => x.getAttribute('src')),
-        includesAgencyCss: [...document.styleSheets].some(x => String(x.href).includes('/styles/agency.css')),
+        includesAgencyCss: [...document.styleSheets].some(x => String(x.href).includes('/styles/site.css')),
         hasLoader: !!document.querySelector('.clinic-loader'),
         headerLogoReady: !!(document.querySelector('.header .logo img')?.naturalWidth),
         cssSheets: [...document.styleSheets].filter(x=>x.href).map(x=>new URL(x.href).pathname),
@@ -149,8 +149,8 @@ for(const scenario of ['no-style','old-style','no-js','reduce','blocked-storage'
  const page=await context.newPage();
  try{
   if(scenario==='blocked-storage')await page.addInitScript(()=>{Storage.prototype.getItem=()=>{throw new Error('Storage unavailable')};Storage.prototype.setItem=()=>{throw new Error('Storage unavailable')};});
-  if(scenario==='old-style')await page.route('**/styles/agency.css*',r=>r.fulfill({status:200,contentType:'text/css',body:fs.readFileSync('dist/styles/agency.css','utf8').replace(/--clinic-motion-ready:1;?/g,'')}));
-  if(scenario==='no-style')await page.route('**/styles/agency.css*',r=>r.fulfill({status:200,contentType:'text/css',body:'body{font-family:sans-serif}'}));
+  if(scenario==='old-style')await page.route('**/styles/site.css*',r=>r.fulfill({status:200,contentType:'text/css',body:fs.readFileSync('dist/styles/site.css','utf8').replace(/--clinic-motion-ready:1;?/g,'')}));
+  if(scenario==='no-style')await page.route('**/styles/site.css*',r=>r.fulfill({status:200,contentType:'text/css',body:'body{font-family:sans-serif}'}));
   await page.goto(base+'/',{waitUntil:'load'});
   if(await page.locator('.header .logo img').count()!==1)report.errors.push({scenario,issue:'Header image duplicated'});
   if(await page.locator('.clinic-logo-reveal,[data-clinic-brand-intro],body>img').count())report.errors.push({scenario,issue:'An unsafe logo layer appeared'});

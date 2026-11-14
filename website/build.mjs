@@ -3,91 +3,12 @@ import path from 'node:path';
 import sharp from 'sharp';
 import { transform } from 'esbuild';
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { PurgeCSS } from 'purgecss';
 
 const ROOT = process.cwd();
 const OUT = path.join(ROOT, 'dist');
-const site = {
-  name: 'عيادة الدكتورة فايزة علي ناصر الوصابي',
-  short: 'عيادة الدكتورة فايزة',
-  phone: '785600066',
-  call: 'tel:+967785600066',
-  whatsapp: 'https://wa.me/967785600066?text=' + encodeURIComponent('مرحبًا، أود الاستفسار عن خدمات العيادة والوقت المناسب للزيارة.'),
-  url: 'https://dr-fayza.vercel.app',
-  address: 'ذمار — شارع صنعاء تعز، قبل جولة كمران، أمام بنك الكريمي',
-  hours: 'السبت إلى الخميس، 8 صباحًا–1 ظهرًا، و4 عصرًا–8 مساءً.'
-};
-
-// Map search uses the known address only; it does not claim a verified business pin.
-const mapsSearch = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(site.address);
-const whatsappFor = (topic) => 'https://wa.me/967785600066?text=' +
-  encodeURIComponent('مرحبًا، أود الاستفسار عن ' + topic + ' والوقت المناسب للزيارة.');
-
-const services = [
-  { id: 'pregnancy', name: 'متابعة الحمل', icon: 'baby', art: 'pregnancy', desc: 'متابعة مراحل الحمل وفهم الفحوصات والاستفسارات المناسبة لكل مرحلة.', intro: 'تختلف احتياجات الحمل من سيدة لأخرى. تبدأ المتابعة بمراجعة التاريخ الصحي وعمر الحمل ثم توضيح ما يلزم من تقييم ومتابعة.', benefits: ['مراجعة التاريخ الصحي وعوامل الخطورة', 'متابعة الحمل بحسب المرحلة والحالة', 'مناقشة الأعراض والاستفسارات', 'الاستعداد للولادة بخطوات واضحة'], who: 'للسيدات الحوامل أو من يخططن للحمل ويرغبن في استشارة متخصصة.', tip: 'أحضري تقاريرك السابقة وقائمة الأدوية إن وُجدت.' },
-  { id: 'womens-health', name: 'صحة المرأة وأمراض النساء', icon: 'heart', art: 'womens', desc: 'استشارات لاضطرابات الدورة وصحة المرأة وتنظيم الأسرة ومناقشة الفحوصات المناسبة.', intro: 'يساعد وصف الأعراض ومدتها والتاريخ الصحي على بناء استشارة أوضح وتحديد الفحوصات المناسبة عند الحاجة.', benefits: ['مناقشة اضطرابات الدورة والأعراض غير المعتادة', 'مراجعة العوامل الهرمونية والتاريخ الصحي عند الحاجة', 'الاستشارة حول تنظيم الأسرة', 'توضيح متى قد تفيد الفحوصات أو الاستشارة الجراحية وفق التقييم'], who: 'لمن تحتاج إلى تقييم أو متابعة نسائية بحسب الأعراض والحالة.', tip: 'دوّني الأعراض ومدتها وأي فحوصات أو علاجات سابقة.' },
-  { id: 'fertility', name: 'تأخر الحمل والعقم', icon: 'sparkles', art: 'fertility', desc: 'تقييم أسباب تأخر الإنجاب ومراجعة الفحوصات وخيارات المتابعة.', intro: 'تأخر الحمل قد يرتبط بعوامل متعددة لدى أحد الزوجين أو كليهما. تبدأ الزيارة بمراجعة التاريخ الصحي والإنجابي دون افتراض سبب مسبق.', benefits: ['مراجعة مدة محاولة الحمل والتاريخ الصحي', 'قراءة الفحوصات السابقة عند توفرها', 'مناقشة خطوات التقييم المناسبة', 'شرح خيارات الرعاية أو الإحالة عند الحاجة'], who: 'للأزواج الراغبين في فهم الخطوة الأولى عند تأخر الحمل.', tip: 'من المفيد حضور الزوجين أو إحضار المعلومات والفحوصات المتاحة.' },
-  { id: 'ultrasound', name: 'السونار والتصوير الطبي', icon: 'scan', art: 'diagnostics', desc: 'التصوير بالموجات فوق الصوتية دعمًا لتقييم الحمل وبعض الحالات النسائية.', intro: 'السونار وسيلة مساعدة في التقييم، ويحدد الطبيب نوع الفحص وتوقيته بحسب الأعراض والمرحلة والحالة.', benefits: ['التصوير بحسب التوصية الطبية', 'دعم متابعة الحمل', 'مراجعة التقارير السابقة', 'توضيح معنى النتائج والخطوة التالية'], who: 'لمن توصي الطبيبة لها بفحص تصويري ضمن خطة التقييم.', tip: 'اسألي عن نوع الفحص المتاح وتعليمات التحضير قبل الحضور.' },
-  { id: 'maternity', name: 'استقبال حالات الولادة', icon: 'clock', art: 'motherhood', desc: 'استقبال حالات الولادة على مدار 24 ساعة تحت إشراف كادر طبي متخصص.', intro: 'استقبال حالات الولادة على مدار 24 ساعة منفصل عن مواعيد عمل العيادة. اتصلي قبل الحضور لتأكيد مكان الاستقبال وطريقة الوصول.', benefits: ['استقبال حالات الولادة على مدار 24 ساعة', 'إشراف كادر طبي متخصص', 'تأكيد مكان استقبال الحالة بالاتصال', 'توجيه الحالة بحسب وضعها الطبي'], who: 'للاستفسار عن استقبال حالات الولادة وطريقة الوصول.', tip: 'في الحالة الطارئة توجهي إلى أقرب طوارئ قادرة على تقديم الرعاية، واتصلي لتأكيد جهة الاستقبال.' },
-  { id: 'cosmetic', name: 'الاستشارات التجميلية النسائية', icon: 'flower', art: 'womens', desc: 'استشارة وتقييم الاحتياجات المرتبطة بالتجميل النسائي قبل اتخاذ أي إجراء.', intro: 'تبدأ الاستشارة بفهم الاحتياج ومناقشة الملاءمة الطبية والتوقعات والبدائل والمخاطر المحتملة.', benefits: ['تقييم الاحتياج بشكل فردي', 'مناقشة الخيارات والبدائل', 'توضيح التوقعات الواقعية', 'تحديد المتابعة المناسبة'], who: 'لمن ترغب في مناقشة احتياج تجميلي نسائي مع الطبيبة.', tip: 'اكتبي أسئلتكِ عن الخيارات المناسبة والتحضير والمتابعة لمناقشتها خلال الاستشارة.' }
-];
-
-const faqs = [
-  ['ما أوقات دوام العيادة؟', site.hours],
-  ['هل استقبال حالات الولادة متاح 24 ساعة؟', 'نعم، نستقبل حالات الولادة على مدار 24 ساعة تحت إشراف كادر طبي متخصص. اتصلي لمعرفة مكان الاستقبال وطريقة الوصول.'],
-  ['أين تقع العيادة؟', site.address + ' يُرجى الاتصال عند الحاجة إلى إرشادات دقيقة للوصول.'],
-  ['كيف أستفسر عن موعد أو خدمة؟', 'يمكنك الاتصال أو مراسلة واتساب على الرقم ' + site.phone + '. وللتأكد من الموعد، يُرجى التواصل مباشرة مع العيادة.'],
-  ['هل يمكن إحضار فحوصات سابقة؟', 'نعم، إحضار التقارير والتحاليل السابقة وقائمة الأدوية يساعد على جعل الاستشارة أكثر وضوحًا.'],
-  ['هل كل الخدمات متاحة طوال اليوم؟', 'استقبال حالات الولادة متاح على مدار 24 ساعة. للاستشارات وبقية الخدمات، نرحب بكِ من السبت إلى الخميس، 8 صباحًا–1 ظهرًا و4 عصرًا–8 مساءً.'],
-  ['هل تقدم المقالات تشخيصًا للحالة؟', 'لا. المقالات للتثقيف العام ولا تغني عن الفحص أو الاستشارة الطبية المناسبة للحالة.'],
-  ['كيف أستعد لزيارتي الأولى؟', 'دوّني أسئلتك والأعراض ومدتها، وأحضري الفحوصات والتقارير السابقة وأسماء الأدوية إن وجدت. قد تختلف التحضيرات بحسب نوع الخدمة.'],
-  ['هل أستطيع السؤال عن الفحوصات المخبرية أو السونار؟', 'نعم، يمكنك التواصل للتأكد من نوع الفحص وتوفره وتعليمات التحضير ومكان إجرائه قبل الحضور.']
-];
-
-const articles = [
-  { id: 'cycle-changes', title: 'تغيرات الدورة الشهرية: متى تحتاج إلى تقييم؟', category: 'صحة المرأة', image: 'womens-consultation.webp', desc: 'فهم أسباب الاهتمام بالتغيرات غير المعتادة وكيفية وصفها في الاستشارة.', parts: [
-    ['ما الذي يتغير؟','قد تختلف مدة الدورة أو كمية النزف أو الألم من فترة لأخرى. بعض الاختلافات شائع، لكن التغير المستمر أو الشديد يستحق التقييم، خاصة إذا أثر على الحياة اليومية.'],
-    ['ماذا تسجلين؟','سجلي تاريخ بداية الدورة ومدتها، وطبيعة النزف، والألم المصاحب، وأي أدوية أو تغيرات صحية حديثة.'],
-    ['متى لا تنتظرين؟','النزف الغزير جدًا أو المصحوب بدوخة شديدة أو إغماء، أو الألم الحاد المفاجئ يستدعي رعاية عاجلة.'],
-    ['ما الذي تتوقعينه من الاستشارة؟','قد تناقش الطبيبة التاريخ الصحي والحاجة إلى فحص أو تحاليل أو تصوير وفق الأعراض، ولا يمكن معرفة السبب من انتظام الدورة وحده.']
-  ] },
-  { id: 'pregnancy-warning-signs', title: 'علامات خلال الحمل لا ينبغي تجاهلها', category: 'الحمل والأمومة', image: 'pregnancy-care.webp', desc: 'أعراض تستدعي التواصل السريع أو التوجه للرعاية العاجلة.', parts: [
-    ['لماذا تختلف الأعراض؟','قد ترافق الحمل تغيرات معتادة، لكن لا ينبغي اعتبار كل ألم أو نزف طبيعيًا دون تقييم.'],
-    ['أعراض تحتاج عناية عاجلة','النزف الغزير، ألم البطن الشديد، صعوبة التنفس، فقدان الوعي، الصداع الشديد المصحوب بتغير الرؤية، أو انخفاض حركة الجنين على نحو مقلق تستدعي تقييمًا عاجلاً.'],
-    ['ماذا تفعلين؟','اتجهي إلى الجهة القادرة على تقديم الرعاية العاجلة، ولا تنتظري جواب رسالة نصية عند وجود علامات خطورة.'],
-    ['استفيدي من المتابعة','اسألي طبيبتك في كل مرحلة عن علامات الإنذار المناسبة لعمر الحمل وحالتك.']
-  ] },
-  { id: 'fertility-timing', title: 'تأخر الحمل: متى يبدأ التقييم وما الذي يشمله؟', category: 'تأخر الإنجاب', image: 'fertility-support.webp', desc: 'إرشاد عام لموعد طلب المشورة والخطوات الأساسية للتقييم.', parts: [
-    ['التوقيت يعتمد على العمر والتاريخ الطبي','يُنصح عمومًا ببدء التقييم بعد 12 شهرًا من محاولة الحمل المنتظمة دون نجاح لمن هن دون 35 عامًا، وبعد 6 أشهر لمن هن في سن 35 عامًا أو أكبر. وقد يكون التقييم المبكر مناسبًا عند وجود عوامل خطورة.'],
-    ['الطرفان جزء من التقييم','قد يتطلب الأمر تقييم صحة المرأة والرجل ومراجعة التاريخ الصحي والإنجابي بدل افتراض السبب مسبقًا.'],
-    ['ليس كل فحص مناسبًا للجميع','تحدد الطبيبة ترتيب الفحوصات وأهميتها بحسب الأعراض والفحص والتاريخ الطبي، مع مراعاة النتائج السابقة.'],
-    ['اجعلي الاستشارة عملية','احضري ما لديك من تقارير واكتبي أسئلتك عن سبب كل فحص وتوقيت متابعة النتائج.']
-  ] },
-
-  { id: 'pregnancy-care', title: 'متابعة الحمل: لماذا تختلف الزيارات من مرحلة لأخرى؟', category: 'الحمل والأمومة', image: 'pregnancy-care.webp', desc: 'فهم مبسط لفكرة المتابعة المنتظمة وما الذي يفيدك في كل زيارة.', parts: [
-    ['المتابعة ليست جدولًا واحدًا للجميع', 'يُحدد توقيت الزيارات ونوع الفحوصات بحسب عمر الحمل والحالة الصحية والتاريخ الطبي. لذلك لا يناسب جدول سيدة بالضرورة سيدة أخرى، وتبقى الطبيبة هي الأقدر على تحديد ما يلزم بعد التقييم.'],
-    ['ما الذي يفيدك قبل الموعد؟', 'اكتبي الأعراض أو الأسئلة التي تريدين مناقشتها، وأحضري نتائج الفحوصات السابقة وقائمة الأدوية أو المكملات إن وُجدت. هذه التفاصيل تساعد على استشارة منظمة وتقلل نسيان المعلومات المهمة.'],
-    ['متى تطلبين مساعدة عاجلة؟', 'النزف الشديد، الألم الحاد، صعوبة التنفس، الإغماء، أو أي عرض مفاجئ ومقلق يستدعي طلب الرعاية العاجلة. لا تنتظري المقالات أو الرسائل إذا شعرتِ أن الحالة طارئة.'],
-    ['الخلاصة', 'الهدف من المتابعة هو مراقبة صحة الأم والجنين، واكتشاف ما يحتاج إلى اهتمام، وشرح الخطوة التالية بوضوح.']
-  ] },
-  { id: 'womens-visit', title: 'كيف تستعدين للاستشارة النسائية؟', category: 'صحة المرأة', image: 'womens-consultation.webp', desc: 'خطوات بسيطة تساعدك على عرض الأعراض والحصول على استشارة أكثر فائدة.', parts: [
-    ['سجلي الأعراض بوضوح', 'دوّني مكان الألم أو طبيعة العرض ومدته وما إذا كان يتكرر أو يرتبط بالدورة الشهرية. لا تحتاجين إلى استخدام مصطلحات طبية؛ الوصف الطبيعي والدقيق مفيد.'],
-    ['أحضري المعلومات المهمة', 'جهزي التقارير السابقة وأسماء الأدوية والتحاليل وصورة من أي وصفة أو نتيجة متوفرة. إذا كان العرض مرتبطًا بالدورة، اذكري تاريخ آخر دورة تقريبًا.'],
-    ['حضّري أسئلتك', 'اسألي: ما الاحتمالات التي نحتاج إلى تقييمها؟ هل أحتاج إلى فحص أو تحليل؟ ما الخطوة التالية؟ ومتى أعود للمراجعة؟ فهمك للخطة جزء مهم من الرعاية.'],
-    ['متى لا تؤجلين الزيارة؟', 'إذا كان العرض شديدًا أو مفاجئًا أو مصحوبًا بنزف غير معتاد أو حرارة أو دوخة شديدة، اطلبي تقييمًا طبيًا عاجلًا بحسب شدة الحالة.']
-  ] },
-  { id: 'fertility-consultation', title: 'الزيارة الأولى عند تأخر الحمل: كيف تبدأ رحلة التقييم؟', category: 'تأخر الإنجاب', image: 'fertility-support.webp', desc: 'ماذا تناقشين في البداية، ولماذا لا ينبغي افتراض السبب قبل التقييم؟', parts: [
-    ['ابدؤوا بالمعلومات لا باللوم', 'تأخر الحمل قد يرتبط بعوامل مختلفة لدى المرأة أو الرجل أو كليهما. يبدأ التقييم الجيد بالاستماع إلى التاريخ الصحي والإنجابي للزوجين، لا بافتراض أن المسؤولية تقع على طرف واحد.'],
-    ['ما المعلومات التي تفيد؟', 'مدة محاولة الحمل، انتظام الدورة، أي حمل سابق، عمليات أو التهابات سابقة، الأدوية، والفحوصات السابقة. كل معلومة تساعد على اختيار الخطوة المناسبة بدل تكرار فحوصات غير ضرورية.'],
-    ['الفحوصات ليست متشابهة للجميع', 'تحدد الطبيبة الحاجة إلى الفحوصات ونوعها وفق القصة الصحية والفحص. قد تحتاج الخطة إلى مراجعة نتائج سابقة أو استكمال تقييم أحد الزوجين أو كليهما.'],
-    ['توقعي خطة واقعية', 'تساعدكِ الزيارة على فهم الاحتمالات ومراجعة الفحوصات، ثم الاتفاق مع الطبيبة على خطوة متابعة تناسب حالتكِ.']
-  ] },
-  { id: 'ultrasound-guide', title: 'السونار أثناء الحمل: ما الذي يساعد على توضيحه؟', category: 'الفحوصات', image: 'hero-mother-care.webp', desc: 'تعرّفي على دور السونار في متابعة الحمل وفهم النتائج والاستعداد للفحص.', parts: [
-    ['السونار وسيلة مساعدة', 'يستخدم التصوير بالموجات فوق الصوتية لدعم تقييم الحمل وبعض الحالات النسائية. نوع الفحص وتوقيته يعتمدان على المرحلة والأعراض وما تراه الطبيبة مناسبًا.'],
-    ['النتيجة تحتاج إلى سياق', 'لا تُفسر صورة أو قياس منفردًا بعيدًا عن عمر الحمل والتاريخ الصحي والفحص السريري. اسألي الطبيبة عن معنى النتيجة وما إذا كانت تحتاج إلى متابعة.'],
-    ['قبل الحضور', 'اسألي عن نوع الفحص المناسب وتعليمات التحضير والموعد قبل زيارتكِ.']
-  ] }
-];
+import {site,mapsSearch,whatsappFor,services,faqs,articles} from './src/content.mjs';
 
 const icons = { calendar: 'M4 5h16v16H4zM8 2v6m8-6v6M4 10h16', menu: 'M4 6h16M4 12h16M4 18h16', close: 'M5 5l14 14M19 5 5 19', heart: 'M20.8 4.6a5.6 5.6 0 0 0-7.9 0L12 5.5l-.9-.9a5.6 5.6 0 0 0-7.9 7.9L12 21l8.8-8.5a5.6 5.6 0 0 0 0-7.9Z', clock: 'M12 7v5l4 2', pin: 'M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z', phone: 'M21 16v4a2 2 0 0 1-2 2C10 21 3 14 2 5a2 2 0 0 1 2-2h4l2 5-2 2a15 15 0 0 0 6 6l2-2Z', message: 'M21 12a9 9 0 0 1-9 9 9 9 0 0 1-4-.9L3 21l1.5-4.3A9 9 0 1 1 21 12Z', arrow: 'M19 12H5m6-6-6 6 6 6', check: 'm4 12 5 5L20 6', scan: 'M3 4h18v15H3Zm5 12c3-8 7-8 10 0', baby: 'M9 4a3 3 0 0 1 6 0M12 7c-6 0-9 4-9 8s4 7 9 7 9-3 9-7-3-8-9-8Z', flower: 'M12 12C7 11 4 6 6 2c4 0 6 4 6 10Zm0 0c5-1 8-6 6-10-4 0-6 4-6 6 10Zm0 0v10', sparkles: 'm12 2 2 7 7 2-7 2-2 7-2-7-7-2 7-2 2-7Z', shield: 'M12 2 21 6v6c0 5-3 8-9 10-6-2-9-5-9-10V6Zm-4 10 3 3 5-6', file: 'M5 2h9l5 5v15H5Z M14 2v6h5 M9 13h6m-6 4h6', info: 'M12 11v6m0-10h.01' };
 const ico = (key) => '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="' + (icons[key] || icons.heart) + '"/>' + (key === 'clock' ? '<circle cx="12" cy="12" r="9"/>' : '') + (key === 'pin' ? '<circle cx="12" cy="10" r="2.5"/>' : '') + (key === 'info' ? '<circle cx="12" cy="12" r="9"/>' : '') + '</svg>';
@@ -298,7 +219,7 @@ function home() {
 }
 function about() {
   return [
-    innerHero('عن الدكتورة','الدكتورة فايزة علي ناصر الوصابي','استشارية أمراض وجراحة النساء والتوليد والعقم في ذمار؛ رعاية لصحة المرأة ومتابعة الحمل والخصوبة، تبدأ بالإنصات وتقييم احتياجات كل حالة.','clinic-about-hero.webp','clinic'),
+    innerHero('عن الدكتورة','الدكتورة فايزة علي ناصر الوصابي','استشارية أمراض وجراحة النساء والتوليد والعقم في ذمار؛ رعاية لصحة المرأة ومتابعة الحمل والخصوبة باهتمام وخصوصية.','clinic-about-hero.webp','clinic'),
     '<section class="section"><div class="container agency-profile__grid"><article class="agency-profile__story"><span class="kicker">النهج المهني</span><h2>الاهتمام بالتفاصيل يصنع فرقًا في فهم الحالة</h2><p>لكل مراجعة تاريخ صحي وظروف مختلفة. تبدأ الاستشارة بفهم الشكوى وأهداف الزيارة، ثم ربط الأعراض والتقارير المتاحة بخيارات الفحص والمتابعة. وتبقى الأسئلة جزءًا طبيعيًا من الحوار الطبي، سواء كانت الزيارة لأول مرة أو ضمن متابعة مستمرة.</p><p>تشمل مجالات الاهتمام صحة المرأة والحمل والولادة وتأخر الإنجاب والاستشارات النسائية التجميلية، مع توجيه كل حالة إلى التقييم المناسب بدل افتراض أن الحل واحد للجميع.</p></article><aside class="agency-profile__credentials"><span class="kicker">التأهيل المهني</span><h2>المؤهلات</h2><ul class="check-list"><li>'+ico('check')+'دكتوراه زمالة عربية (الأردن)</li><li>'+ico('check')+'دكتوراه زمالة يمنية</li><li>'+ico('check')+'دبلوم تجميل نسائي</li><li>'+ico('check')+'دبلوم طب الإنجاب والإخصاب المساعد (IVF)</li></ul></aside></div></section>',
     '<section class="agency-mission" aria-labelledby="agency-mission-title"><div class="container"><div class="agency-section-head"><div><span class="kicker">ما نطمح إليه</span><h2 id="agency-mission-title">رؤيتنا ورسالتنا</h2><p>رعاية تنطلق من احتياجاتكِ، وتمنحكِ مساحة لفهم صحتكِ ومناقشة خياراتكِ بثقة.</p></div></div><div class="agency-mission__grid"><article><span>01 / الرؤية</span><h3>رعاية نسائية أقرب إلى احتياجات كل امرأة</h3><p>أن تكون العيادة وجهة معروفة في ذمار للاستشارة النسائية المتخصصة، حيث تجد المرأة مساحة لطرح أسئلتها، وفهم خياراتها، ومتابعة صحتها بوعي في كل مرحلة من حياتها.</p></article><article><span>02 / الرسالة</span><h3>الجمع بين التخصص والوضوح والاحترام</h3><p>نسعى إلى تقديم رعاية واستشارات في أمراض النساء والولادة والخصوبة، تقوم على الإنصات والتقييم المناسب وتوضيح خطوات المتابعة، مع احترام الخصوصية والاختلافات الفردية بين المراجعات.</p></article></div></div></section>',
     editorialSection('مراحل من حياة المرأة','احتياجات تتغير ورعاية تتطور','تختلف الأسئلة الصحية من سن إلى آخر، ولهذا لا تُختصر صحة المرأة في الحمل والولادة فقط.',[['الصحة النسائية اليومية','متابعة اضطرابات الدورة وآلام الحوض والأسئلة المتعلقة بالهرمونات وتنظيم الأسرة.'],['الحمل والأمومة','مراجعات الحمل والاستعداد للولادة، ومناقشة ما يتغير قبل الحمل وبعده.'],['الخصوبة والقرارات الشخصية','فهم أسباب تأخر الإنجاب أو مناقشة خيارات نسائية أخرى وفق الأهداف والحالة الصحية.']]),
@@ -476,7 +397,7 @@ const pages = [
 const pageTitle = p => p.seoTitle || p.title + ' | ' + site.short + ' في ذمار';
 const socialImage = p => p.url === '/about/' ? '/assets/clinic-about-hero.webp'
   : p.url === '/contact/' ? '/assets/clinic-contact-hero.webp'
-  : p.article ? '/assets/generated/' + p.article.image : '/assets/logo-horizontal-primary.png';
+  : p.article ? '/assets/generated/' + p.article.image : '/assets/clinic-social-card.png';
 const pageTrail = p => [
   { name: 'الرئيسية', url: '/' },
   ...(p.service ? [{ name: 'الخدمات الطبية', url: '/services/' }] : p.article ? [{ name: 'التوعية الصحية', url: '/guides/' }] : []),
@@ -517,7 +438,7 @@ function html(p) {
   const ogImage = site.url + socialImage(p);
   const ogImageAlt = p.url === '/about/' ? 'شعار واسم الدكتورة فايزة الوصابي على جدار العيادة'
     : p.url === '/contact/' ? 'لوحة عيادة الدكتورة فايزة الوصابي على واجهة المبنى'
-    : p.article ? p.article.title : 'الشعار الرسمي لعيادة الدكتورة فايزة';
+    : p.article ? p.article.title : 'عيادة الدكتورة فايزة الوصابي — رعاية متخصصة لصحة المرأة في ذمار';
   return '<!doctype html><html lang="ar" dir="rtl"><head>' +
     '<meta charset="utf-8">' +
     '<meta name="viewport" content="width=device-width, initial-scale=1">' +
@@ -532,6 +453,7 @@ function html(p) {
     '<meta property="og:description" content="' + p.desc + '">' +
     '<meta property="og:url" content="' + site.url + p.url + '">' +
     '<meta property="og:image" content="' + ogImage + '">' +
+    (ogImage.endsWith('/clinic-social-card.png') ? '<meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">' : '') +
     '<meta property="og:image:alt" content="' + ogImageAlt + '">' +
     '<meta name="twitter:card" content="summary_large_image">' +
     '<meta name="twitter:title" content="' + title + '">' +
@@ -541,7 +463,7 @@ function html(p) {
     '<link rel="icon" href="/assets/symbol-primary.png">' +
     '<link rel="preload" as="font" href="/assets/fonts/ibm-plex-sans-arabic-400.woff2" type="font/woff2" crossorigin>' +
     (noindex ? '' : '<link rel="preload" as="image" href="/assets/logo-horizontal-480.webp" fetchpriority="high">') +
-    '<link rel="stylesheet" href="/styles/agency.css">' +
+    '<link rel="stylesheet" href="/styles/site.css">' +
     '<script type="application/ld+json">' + schemaFor(p) + '</script>' +
     '<script src="/scripts/site.js" defer></script></head><body id="page-top" tabindex="-1">' +
     (noindex ? '' : header(p.url)) +
@@ -554,15 +476,16 @@ function html(p) {
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 for (const p of pages) { const file = path.join(OUT, p.url === '/' ? 'index.html' : p.url.slice(1) + 'index.html'); fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, html(p), 'utf8'); }
-const fullCss=fs.readFileSync(path.join(ROOT,'src','styles.css'),'utf8')+'\n'+fs.readFileSync(path.join(ROOT,'src','agency.css'),'utf8');
+const fullCss=fs.readFileSync(path.join(ROOT,'src','styles.css'),'utf8');
 const optimizedCss=(await transform(fullCss,{loader:'css',minify:true,target:'es2020'})).code;
 const optimizedJs=(await transform(fs.readFileSync(path.join(ROOT,'src','client.js'),'utf8'),{loader:'js',minify:true,target:'es2019'})).code;
 fs.mkdirSync(path.join(OUT,'styles'),{recursive:true});
 fs.mkdirSync(path.join(OUT,'scripts'),{recursive:true});
-fs.writeFileSync(path.join(OUT,'styles','agency.css'),optimizedCss,'utf8');
+fs.writeFileSync(path.join(OUT,'styles','site.css'),optimizedCss,'utf8');
 fs.writeFileSync(path.join(OUT,'scripts','site.js'),optimizedJs,'utf8');
-console.log('Asset bundling (CSS combined/minified, JS minified):',JSON.stringify({cssBeforeBytes:Buffer.byteLength(fullCss),cssAfterBytes:Buffer.byteLength(optimizedCss),jsAfterBytes:Buffer.byteLength(optimizedJs)}));
+console.log('Asset bundling (CSS minified, JS minified):',JSON.stringify({cssBeforeBytes:Buffer.byteLength(fullCss),cssAfterBytes:Buffer.byteLength(optimizedCss),jsAfterBytes:Buffer.byteLength(optimizedJs)}));
 fs.cpSync(path.join(ROOT, 'assets'), path.join(OUT, 'assets'), { recursive: true });
+execFileSync(process.execPath,[path.join(ROOT,'../tools/build_social_card.mjs')],{stdio:'inherit'});
 fs.writeFileSync(path.join(OUT, '404.html'), html({ url: '/404/', title: 'الصفحة غير موجودة', desc: 'الرابط غير موجود.', body: '<section class="clinic-notfound"><div class="clinic-notfound__inner"><img src="/assets/symbol-primary.png" width="72" height="72" alt=""><span class="clinic-notfound__code">404</span><h1>الصفحة غير موجودة</h1>' + link('/', 'العودة للرئيسية', 'solid','arrow') + '</div></section>' }));
 /* Images are transformed at build time, never in the visitor's browser. */
 const assetsOut=path.join(OUT,'assets');
@@ -649,7 +572,7 @@ const versionAsset=relative=>{
  fingerprint.set(relative,versioned);return versioned;
 };
 const reference=/(\/(?:assets|styles|scripts)\/[a-zA-Z0-9_./-]+\.(?:webp|png|svg|woff2|css|js))/g;
-const cssFile=path.join(OUT,'styles','agency.css');
+const cssFile=path.join(OUT,'styles','site.css');
 const [pruned]=await new PurgeCSS().purge({
  content:[...htmlTargets,{raw:fs.readFileSync(path.join(ROOT,'src','client.js'),'utf8'),extension:'js'}],
  css:[{raw:optimizedCss}],

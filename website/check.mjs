@@ -6,7 +6,7 @@ const readText=file=>fs.readFileSync(file,'utf8').replace(/\/static\/[a-f0-9]{12
 for(const p of pages){
  const html=readText(path.join(root,p));
  if(!html.includes('<html lang="ar" dir="rtl">'))issues.push('Arabic RTL missing: '+p);
- if(!html.includes('href="/styles/agency.css"'))issues.push('Agency styles missing: '+p);
+ if(!html.includes('href="/styles/site.css"'))issues.push('Agency styles missing: '+p);
  if(!html.includes('<meta property="og:image"'))issues.push('OG image missing: '+p);
  if(html.includes('774694946'))issues.push('Retired phone number: '+p);
  if(html.includes('لم نستلم رابط خرائط'))issues.push('Internal editorial text leaked: '+p);
@@ -14,7 +14,7 @@ for(const p of pages){
    if(!/\balt="/.test(match[0]))issues.push('Image alt missing: '+p);
  }
 }
-const agencyCss=readText(path.join(root,'styles/agency.css'));
+const agencyCss=readText(path.join(root,'styles/site.css'));
 const cssChecks=[['brand-token',/--ink\s*:\s*#0c495c/i],['mobile',/@media\s*\(max-width:\s*600px\)/],['reduced-motion',/prefers-reduced-motion/]];
 for(const [name,regex] of cssChecks){if(!regex.test(agencyCss))issues.push('Design token or responsive gate missing: '+name);}
 if(issues.length){console.error(issues.join('\n'));process.exit(1);}
@@ -68,7 +68,7 @@ if(!homeHtml.includes('clinic-process__timeline')) issues.push('Missing practica
 if(!homeHtml.includes('agency-services__diagnostics')) issues.push('Missing diagnostic service discovery');
 if(!aboutHtml.includes('agency-mission__grid')) issues.push('Missing clinic vision and mission');
 if(!faqHtml.includes('كيف أستعد لزيارتي الأولى؟')) issues.push('Missing first-visit FAQ');
-const agencyCssMobile=readText(path.join(root,'styles/agency.css'));
+const agencyCssMobile=readText(path.join(root,'styles/site.css'));
 if(!/\.section\s+\.cards:not\(\.agency-services__cards\)/.test(agencyCssMobile)) issues.push('Mobile related service layout regression');
 if(issues.length){console.error(issues.join('\n'));process.exit(1);}
 console.log('Agency mobile UX and content coverage gates passed.');
@@ -140,6 +140,6 @@ for(const asset of ['assets/fonts/ibm-plex-sans-arabic-400.woff2','assets/fonts/
 }
 if(/fonts\.(googleapis|gstatic)\.com/.test(agencyCss))issues.push('External font found in CSS');
 if(!agencyCss.includes('/assets/fonts/ibm-plex-sans-arabic-400.woff2'))issues.push('Local font-face missing');
-if(files.includes('styles/site.css'))issues.push('Unused second stylesheet still emitted');
+if(files.filter(x=>x.endsWith('.css')&&!x.startsWith('static/')).length!==1)issues.push('Expected one shared stylesheet');
 if(issues.length){console.error(issues.join('\n'));process.exit(1);}
 console.log('Optimized image and logo source checks passed.');
