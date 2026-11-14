@@ -5,7 +5,7 @@ import fs from 'node:fs';import path from 'node:path';const root=path.join(proce
 for(const p of pages){
  const html=fs.readFileSync(path.join(root,p),'utf8');
  if(!html.includes('<html lang="ar" dir="rtl">'))issues.push('Arabic RTL missing: '+p);
- if(!html.includes('href="/styles/agency.css"'))issues.push('Agency styles missing: '+p);
+ if(!/href="\/styles\/agency\.css\?v=[a-f0-9]{12}"/.test(html))issues.push('Versioned agency stylesheet missing: '+p);
  if(!html.includes('<meta property="og:image"'))issues.push('OG image missing: '+p);
  if(html.includes('774694946'))issues.push('Retired phone number: '+p);
  if(html.includes('لم نستلم رابط خرائط'))issues.push('Internal editorial text leaked: '+p);
@@ -119,20 +119,19 @@ if(!finalHome.includes('srcset="/assets/generated/')) issues.push('Responsive im
 if(finalHome.includes('src="/assets/logo-horizontal-primary.png"')) issues.push('Heavy PNG logo still used for display');
 if(finalHome.includes('class="clinic-loader"')) issues.push('Blocking logo overlay must not ship');
 
-if(!finalHome.includes('data-clinic-brand-intro')) issues.push('First-visit brand reveal missing');
-if(!finalHome.includes('dr-fayza-intro-v1')) issues.push('First-visit storage guard missing');
-if(!finalHome.includes('clinic-intro-pending')) issues.push('Brand intro bootstrap missing');
-if(!finalHome.includes('clinic-brand-intro__layer--symbol') ||
-   !finalHome.includes('clinic-brand-intro__layer--name') ||
-   !finalHome.includes('clinic-brand-intro__layer--finished')) issues.push('Brand logo reveal layers missing');
-if(!agencyCss.includes('@keyframes clinic-intro-symbol') ||
-   !agencyCss.includes('@keyframes clinic-intro-name') ||
-   !agencyCss.includes('@keyframes clinic-intro-out')) issues.push('Brand reveal animation missing');
-const introScript=fs.readFileSync(path.join(root,'scripts/site.js'),'utf8');
-if(!introScript.includes('data-clinic-brand-intro') ||
-   !introScript.includes('localStorage.setItem') ||
-   !introScript.includes('950')) issues.push('Intro cleanup and timeout missing');
-if(errorHtml.includes('data-clinic-brand-intro')) issues.push('Brand intro must not block error page');
+if(finalHome.includes('clinic-brand-intro') || finalHome.includes('data-clinic-brand-intro') ||
+   finalHome.includes('clinic-intro-pending')) issues.push('Old triple-logo loader markup still emitted');
+if(!/src="\/scripts\/site\.js\?v=[a-f0-9]{12}"/.test(finalHome))
+ issues.push('JS file must have the same content fingerprint as CSS');
+const js=fs.readFileSync(path.join(root,'scripts/site.js'),'utf8');
+if(!js.includes('clinic-logo-reveal') || !js.includes('dr-fayza-intro-v2') ||
+   !js.includes('getComputedStyle')) issues.push('Single-image logo reveal safety code missing');
+if(!agencyCss.includes('--clinic-logo-reveal-ready:v2') ||
+   !agencyCss.includes('@keyframes clinic-logo-reveal-image') ||
+   !agencyCss.includes('.clinic-logo-reveal[hidden]'))
+ issues.push('Safe single-image reveal CSS missing');
+if(errorHtml.includes('clinic-logo-reveal')) issues.push('No logo animation on 404 page');
+
 if(!finalHome.includes('fetchpriority="high"')) issues.push('Header logo priority missing');
 for(const page of pages){
  const content=fs.readFileSync(path.join(root,page),'utf8');

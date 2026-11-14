@@ -55,8 +55,8 @@ for (const config of configs) {
           new Promise(resolve => setTimeout(resolve, 15000))
         ]);
       });
-      // Let the first-visit intro finish before capturing actual page layout.
-      await page.waitForFunction(() => !document.querySelector('[data-clinic-brand-intro]'), null, { timeout: 4500 }).catch(() => {});
+      // The JS-created one-image reveal finishes before capturing page layout.
+      await page.waitForFunction(() => !document.querySelector('.clinic-logo-reveal'), null, { timeout: 3500 }).catch(() => {});
       await page.waitForTimeout(100);
       const d = await page.evaluate(() => ({
         title: document.title,
@@ -135,36 +135,47 @@ for (const config of configs) {
   await context.close();
 }
 
-// One-time signature reveal: observe first landing, final logo, and skipped repeats.
-const introCheck=async(width)=>{
- const ctx=await browser.newContext({viewport:{width,height:844},deviceScaleFactor:1,locale:'ar-YE',colorScheme:'light'});
- const page=await ctx.newPage();
+// One-image first visit: no triple logo, repeats, or overlays without CSS.
+const revealCheck=async width=>{
+ const context=await browser.newContext({viewport:{width,height:844},locale:'ar-YE'});
+ const page=await context.newPage();
  try{
   await page.goto(base+'/contact/',{waitUntil:'domcontentloaded',timeout:30000});
-  await page.waitForFunction(()=>document.documentElement.classList.contains('clinic-intro-active'),null,{timeout:3500});
+  await page.waitForSelector('.clinic-logo-reveal',{timeout:3000});
+  const images=await page.locator('.clinic-logo-reveal img').count();
+  if(images!==1)report.errors.push({width,issue:'Intro must contain exactly one logo image; got '+images});
   await page.waitForTimeout(380);
   await page.screenshot({path:path.join(out,width+'__logo-intro.png'),animations:'allow'});
-  await page.waitForTimeout(740);
+  await page.waitForTimeout(650);
   await page.screenshot({path:path.join(out,width+'__logo-finished.png'),animations:'allow'});
-  await page.waitForFunction(()=>!document.querySelector('[data-clinic-brand-intro]'),null,{timeout:3500});
-  const seen=await page.evaluate(()=>localStorage.getItem('dr-fayza-intro-v1'));
-  if(seen!=='seen')report.errors.push({width,issue:'Brand intro completion is not persisted'});
-  await page.goto(base+'/services/',{waitUntil:'domcontentloaded',timeout:30000});
-  const repeated=await page.locator('[data-clinic-brand-intro]').count();
-  if(repeated!==0)report.errors.push({width,issue:'Intro repeated on subsequent navigation'});
- }catch(error){report.errors.push({width,issue:'Brand intro browser test failed: '+String(error)})}
- finally{await ctx.close()}
+  await page.waitForFunction(()=>!document.querySelector('.clinic-logo-reveal'),null,{timeout:3000});
+  const seen=await page.evaluate(()=>localStorage.getItem('dr-fayza-intro-v2'));
+  if(seen!=='seen')report.errors.push({width,issue:'Brand intro not persisted'});
+  await page.goto(base+'/services/',{waitUntil:'domcontentloaded'});
+  await page.waitForTimeout(160);
+  if(await page.locator('.clinic-logo-reveal').count())report.errors.push({width,issue:'Intro repeated on next page'});
+ }catch(e){report.errors.push({width,issue:'One-image intro QA: '+String(e)})}finally{await context.close()}
 };
-await introCheck(390);
-await introCheck(1280);
-const noMotionContext=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
-const noMotionPage=await noMotionContext.newPage();
+await revealCheck(390);
+await revealCheck(1280);
+const noStyleContext=await browser.newContext({viewport:{width:390,height:844},locale:'ar-YE'});
+const noStylePage=await noStyleContext.newPage();
 try{
- await noMotionPage.goto(base+'/',{waitUntil:'domcontentloaded'});
- const present=await noMotionPage.locator('[data-clinic-brand-intro]').count();
- if(present)report.errors.push({width:390,issue:'Brand intro shown despite reduced-motion setting'});
-}catch(error){report.errors.push({issue:'Reduced-motion brand check failed: '+String(error)})}
-finally{await noMotionContext.close()}
+ await noStylePage.route('**/styles/agency.css*',route=>route.fulfill({status:200,contentType:'text/css',body:'body{font-family:sans-serif}'}));
+ await noStylePage.goto(base+'/',{waitUntil:'domcontentloaded',timeout:30000});
+ await noStylePage.waitForTimeout(1100);
+ const stray=await noStylePage.locator('.clinic-logo-reveal, .clinic-brand-intro, [data-clinic-brand-intro]').count();
+ if(stray)report.errors.push({width:390,issue:'An unstyled logo loader leaked into the page'});
+ const logoImgs=await noStylePage.locator('body > img').count();
+ if(logoImgs)report.errors.push({width:390,issue:'Stray logo image visible on bare page'});
+}catch(e){report.errors.push({width:390,issue:'Stale/missing stylesheet QA failed: '+String(e)})}finally{await noStyleContext.close()}
+const reduceContext=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
+const reducePage=await reduceContext.newPage();
+try{
+ await reducePage.goto(base+'/',{waitUntil:'domcontentloaded'});
+ await reducePage.waitForTimeout(140);
+ if(await reducePage.locator('.clinic-logo-reveal').count())report.errors.push({width:390,issue:'Reveal shown under reduced-motion'});
+}catch(e){report.errors.push({issue:'Reduced-motion QA failed: '+String(e)})}finally{await reduceContext.close()}
 
 // Simulated cold 4G samples provide a more useful mobile check than unthrottled CI localhost-style timings.
 const throttledSamples=[];
