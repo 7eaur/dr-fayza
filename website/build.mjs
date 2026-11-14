@@ -2,6 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 import { transform } from 'esbuild';
+import { createHash } from 'node:crypto';
+import { PurgeCSS } from 'purgecss';
 
 const ROOT = process.cwd();
 const OUT = path.join(ROOT, 'dist');
@@ -115,7 +117,7 @@ function servicesHero(){
  '<span class="kicker">رعاية طبية متخصصة في ذمار</span><h1 id="clinic-services-hero-title">خدمات واضحة لصحة المرأة والحمل</h1>'+
  '<p>تعرّفي على مجالات الاستشارة والمتابعة والتدخلات النسائية والفحوصات المساندة، واستفسري عن توفر الإجراء المناسب قبل الزيارة.</p>'+
  '<nav class="clinic-services-hero__links" aria-label="الانتقال لأقسام الخدمات"><a href="#services-list">الخدمات الرئيسية</a><a href="#surgical-care">التدخلات النسائية</a><a href="#diagnostics">المختبر والسونار</a></nav></div>'+
- '<div class="clinic-services-hero__image"><img src="/assets/generated/pregnancy-care.webp" width="960" height="540" alt="صورة توضيحية عامة للرعاية الطبية النسائية، وليست تصويرًا للعيادة" decoding="async" fetchpriority="high"></div>'+
+ '<div class="clinic-services-hero__image"><img data-image-slot="services" src="/assets/generated/pregnancy-care.webp" width="960" height="720" alt="صورة توضيحية عامة للرعاية الطبية النسائية، وليست تصويرًا للعيادة" decoding="async" fetchpriority="high"><small class="clinic-image-note">صورة توضيحية</small></div>'+
  '</div></section>';
 }
 const surgicalTopics = [
@@ -137,7 +139,11 @@ function surgerySection(){
 
 const card = (s) => '<a class="card" href="/services/' + s.id + '/"><span class="card-ic">' + ico(s.icon) + '</span><h3>' + s.name + '</h3><p>' + s.desc + '</p><span class="more">اعرفي التفاصيل ' + ico('arrow') + '</span></a>';
 const faq = (items) => '<div class="faq-list">' + items.map(([q, a], i) => '<details ' + (i === 0 ? 'open' : '') + '><summary>' + q + ico('arrow') + '</summary><p>' + a + '</p></details>').join('') + '</div>';
-const articleTile = (a) => '<article class="tile"><div class="tile-visual"><img src="/assets/generated/' + a.image + '" alt="صورة تحريرية عن ' + a.category + '" width="960" height="720" loading="lazy"></div><div class="tile-body"><small>' + a.category + '</small><h3>' + a.title + '</h3><p>' + a.desc + '</p><a href="/guides/' + a.id + '/">اقرئي المقال ' + ico('arrow') + '</a></div></article>';
+const articleTile = (a) => {
+ const artwork={ 'pregnancy-care':'pregnancy', 'womens-visit':'womens', 'fertility-consultation':'fertility', 'ultrasound-guide':'diagnostics' }[a.id];
+ const source=artwork?'/assets/illustrations/'+artwork+'.svg':'/assets/generated/'+a.image;
+ return '<article class="tile"><div class="tile-visual"><img src="'+source+'" alt="رسم أو صورة توضيحية عن '+a.category+'" width="960" height="720" loading="lazy" decoding="async"></div><div class="tile-body"><small>'+a.category+'</small><h3>'+a.title+'</h3><p>'+a.desc+'</p><a href="/guides/'+a.id+'/">اقرئي المقال '+ico('arrow')+'</a></div></article>';
+};
 
 function header(url) {
  return '<a class="skip" href="#main">تخطي إلى المحتوى</a><header class="header"><div class="container header-inner"><a class="logo" href="/" aria-label="الرئيسية"><img src="/assets/logo-horizontal-primary.png" alt="'+site.name+'" width="225" height="86" loading="eager" fetchpriority="high" decoding="sync"></a><nav class="nav" id="primary-nav" aria-label="القائمة الرئيسية">'+nav.map(([href,label])=>'<a href="'+href+'" '+(url===href?'aria-current="page"':'')+'>'+label+'</a>').join('')+'</nav><div class="header-actions"><a class="header-wa" aria-label="تواصلي عبر واتساب" href="'+site.whatsapp+'" target="_blank" rel="noopener noreferrer">'+ico('message')+'<span>اسألي عبر واتساب</span></a><button class="menu-toggle" id="menu-button" aria-expanded="false" aria-controls="primary-nav" aria-label="فتح القائمة">'+ico('menu')+'</button></div></div></header>';
@@ -158,9 +164,9 @@ function cta(title = 'هل تريدين معرفة الخطوة التالية؟
   return '<section class="cta clinic-page-cta"><div class="container cta-inner"><div><span class="kicker kicker-light">تواصلي قبل الزيارة</span><h2>' + title + '</h2><p>اسألي عن الخدمة المناسبة، الدوام، أو طريقة الوصول قبل الحضور.</p></div><div class="cta-actions">' + link(site.whatsapp, 'اسألي عبر واتساب', 'white', 'message') + link(site.call, 'اتصلي الآن', 'ghost', 'phone') + '</div></div></section>';
 }
 const innerHero = (kicker,title,desc,asset='hero-mother-care.webp',mode='image') =>
- '<section class="clinic-inner-hero"><div class="container clinic-inner-hero__grid">'+
- '<div class="clinic-inner-hero__copy"><nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><span>'+kicker+'</span></nav><span class="kicker">'+kicker+'</span><h1>'+title+'</h1><p>'+desc+'</p></div>'+
- '<div class="clinic-inner-hero__visual"><img src="'+(mode==='svg'?'/assets/illustrations/'+asset+'.svg':'/assets/generated/'+asset)+'" alt="'+(mode==='svg'?'رسم توضيحي':'صورة تحريرية توضيحية عامة، وليست صورة لمقر العيادة أو الطبيبة')+'" width="960" height="540" loading="eager" decoding="async"></div>'+
+ '<section class="clinic-inner-hero'+(mode==='text'?' clinic-inner-hero--text':'')+'"><div class="container clinic-inner-hero__grid">'+
+ '<div class="clinic-inner-hero__copy"><nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><span>'+kicker+'</span></nav><h1>'+title+'</h1><p>'+desc+'</p></div>'+
+ (mode==='text'?'':'<div class="clinic-inner-hero__visual"><img data-image-slot="inner" src="'+(mode==='svg'?'/assets/illustrations/'+asset+'.svg':'/assets/generated/'+asset)+'" alt="'+(mode==='svg'?'رسم توضيحي':'صورة تحريرية توضيحية عامة، وليست صورة لمقر العيادة أو الطبيبة')+'" width="960" height="540" loading="eager" fetchpriority="high" decoding="async">'+(mode==='svg'?'':'<small class="clinic-image-note">صورة توضيحية</small>')+'</div>')+
  '</div></section>';
 function pageHead(kicker,title,sub,art='motherhood',variant='') {
  const assets={motherhood:'hero-mother-care.webp',pregnancy:'pregnancy-care.webp',womens:'womens-consultation.webp',fertility:'fertility-support.webp',diagnostics:'diagnostics'};
@@ -242,7 +248,7 @@ function home() {
   return [
     '<section class="agency-hero clinic-hero" aria-labelledby="agency-hero-title"><div class="container clinic-hero__shell">'+
     '<div class="clinic-hero__copy"><span class="clinic-hero__kicker">عيادة الدكتورة فايزة الوصابي · ذمار</span><h1 id="agency-hero-title">رعاية متخصصة لصحة المرأة <span>والحمل وتأخر الإنجاب</span></h1><p>استشارات متخصصة في أمراض النساء والتوليد والخصوبة، مع اهتمام بفهم احتياج كل مراجعة وتوضيح خطوات الرعاية المناسبة لها.</p></div>'+
-    '<div class="clinic-hero__visual"><img src="/assets/generated/hero-mother-care.webp" alt="صورة تحريرية توضيحية للرعاية النسائية وليست صورة للطبيبة أو المقر" width="2560" height="1440" fetchpriority="high" decoding="async"></div>'+
+    '<div class="clinic-hero__visual"><img data-image-slot="home" src="/assets/generated/hero-mother-care.webp" alt="صورة تحريرية توضيحية للرعاية النسائية وليست صورة للطبيبة أو المقر" width="1600" height="900" fetchpriority="high" decoding="async"><small class="clinic-image-note">صورة توضيحية، وليست صورة مقر العيادة</small></div>'+
     '<div class="clinic-hero__actions">'+link(site.whatsapp,'تواصلي عبر واتساب','solid','message')+link("/services/","استكشفي الخدمات","line","arrow")+'</div>'+
     '<ul class="clinic-hero__features"><li>'+ico('check')+'صحة المرأة</li><li>'+ico('check')+'متابعة الحمل</li><li>'+ico('check')+'الخصوبة والإنجاب</li></ul>'+
     '</div></section>',
@@ -358,7 +364,7 @@ function diagnosticsSection() {
 
 function guides() {
   return [
-    innerHero('التوعية الصحية','معلومات تساعدكِ على فهم صحتكِ','مقالات مبسطة عن الحمل وصحة المرأة وتأخر الإنجاب، لتجهيزي أسئلتك قبل الاستشارة.','fertility-support.webp'),
+    innerHero('التوعية الصحية','معلومات تساعدكِ على فهم صحتكِ','مقالات مبسطة عن الحمل وصحة المرأة وتأخر الإنجاب، لتجهيزي أسئلتك قبل الاستشارة.','fertility-support.webp','text'),
     "<section class=\"section agency-article-index\"><div class=\"container\"><div class=\"note agency-article-index__notice\">إذا كنتِ تعانين من أعراض شديدة أو مفاجئة، اطلبي تقييمًا طبيًا عاجلًا ولا تنتظري الرد على الرسائل.</div><div class=\"tiles\">",
     articles.map(articleTile).join(''),
     "</div></div></section>",
@@ -368,7 +374,7 @@ function guides() {
 function article(a) { return innerHero(a.category,a.title,a.desc,a.image) + '<article class="section clinic-article"><div class="container article-layout"><div class="article-main"><div class="note">هذه معلومات تثقيفية عامة وليست تشخيصًا أو خطة علاج شخصية.</div>' + a.parts.map(([h, p]) => '<h2>' + h + '</h2><p>' + p + '</p>').join('') + '<p class="article-signoff">إذا كانت لديك حالة أو أعراض مقلقة، تواصلي مع الطبيبة لتحديد ما يلزم من تقييم ومتابعة.</p><a class="text-link" href="/guides/">عودة إلى التوعية الصحية ' + ico('arrow') + '</a></div><aside class="article-aside"><span class="kicker">هل لديك سؤال؟</span><h3>خذي المعلومة إلى استشارة مناسبة</h3><p>المقال يشرح الفكرة العامة، أما القرار الطبي فيعتمد على حالتك وتاريخك الصحي.</p>' + link(site.whatsapp, 'اسألي عبر واتساب', 'solid', 'message') + '</aside></div></article>'; }
 function faqPage() {
   return [
-    innerHero('الأسئلة الشائعة','كل ما يهمك قبل الزيارة','إجابات واضحة عن التواصل والدوام والخدمات والموقع والتحضير للاستشارة.','motherhood','svg'),
+    innerHero('الأسئلة الشائعة','كل ما يهمك قبل الزيارة','إجابات واضحة عن التواصل والدوام والخدمات والموقع والتحضير للاستشارة.','motherhood','text'),
     "<section class=\"section agency-faq-page\"><div class=\"container agency-faq-page__grid\"><div>",
     faq(faqs),
     "</div><aside class=\"agency-faq-page__contact\"><span class=\"kicker\">هل لديكِ سؤال آخر؟</span><h2>تواصلي مع العيادة مباشرة</h2><p>يمكنكِ التأكد من الخدمة والوقت المناسب قبل الحضور.</p>",
@@ -382,14 +388,11 @@ function faqPage() {
 function contactHero() {
   return `<section class="clinic-contact-hero" aria-labelledby="clinic-contact-hero-title">
     <div class="container"><div class="clinic-contact-hero__stage">
-      <img class="clinic-contact-hero__image" src="/assets/clinic-contact-hero.webp"
-           srcset="/assets/clinic-contact-hero-720.webp 720w, /assets/clinic-contact-hero.webp 1440w"
-           sizes="(max-width: 680px) 100vw, 1100px" width="1440" height="810"
+      <img class="clinic-contact-hero__image" data-image-slot="contact" src="/assets/clinic-contact-hero.webp" width="1440" height="810"
            loading="eager" fetchpriority="high" decoding="async"
            alt="لوحة عيادة الدكتورة فايزة الوصابي على واجهة المبنى">
       <div class="clinic-contact-hero__copy" dir="rtl">
         <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/">الرئيسية</a><span aria-hidden="true">/</span><span>التواصل</span></nav>
-        <span class="kicker">تواصلي معنا</span>
         <h1 id="clinic-contact-hero-title">نساعدكِ على الوصول والاستفسار</h1>
         <p>تواصلي عبر الهاتف أو واتساب لمعرفة الوقت المناسب، أو اطلعي على العنوان وساعات الدوام.</p>
       </div>
@@ -508,7 +511,6 @@ function html(p) {
   const ogImageAlt = p.article
     ? 'صورة توضيحية لمقال توعوي'
     : 'الشعار الرسمي لعيادة الدكتورة فايزة';
-  const introBootstrap = noindex ? '' : '<script>(()=>{try{if(localStorage.getItem("dr-fayza-intro-v1")==="seen")return;}catch(e){}if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;const net=navigator.connection||navigator.mozConnection||navigator.webkitConnection;if(net&&(net.saveData||["slow-2g","2g"].includes(net.effectiveType)))return;document.documentElement.classList.add("clinic-intro-pending");})();</script>';
   return '<!doctype html><html lang="ar" dir="rtl"><head>' +
     '<meta charset="utf-8">' +
     '<meta name="viewport" content="width=device-width, initial-scale=1">' +
@@ -525,9 +527,8 @@ function html(p) {
     '<meta property="og:image:alt" content="' + ogImageAlt + '">' +
     '<meta name="twitter:card" content="summary_large_image">' +
     '<link rel="icon" href="/assets/symbol-primary.png">' +
-    (p.url === '/' ? '<link rel="preload" as="image" href="/assets/generated/hero-mother-care-960.webp" imagesrcset="/assets/generated/hero-mother-care-480.webp 480w, /assets/generated/hero-mother-care-960.webp 960w, /assets/generated/hero-mother-care.webp 2560w" imagesizes="(max-width: 680px) 100vw, 1100px">' : '') +
+    '<link rel="preload" as="font" href="/assets/fonts/ibm-plex-sans-arabic-400.woff2" type="font/woff2" crossorigin>' +
     (noindex ? '' : '<link rel="preload" as="image" href="/assets/logo-horizontal-480.webp" fetchpriority="high">') +
-    introBootstrap +
     '<link rel="stylesheet" href="/styles/agency.css">' +
     '<script type="application/ld+json">' + schemaFor(p) + '</script>' +
     '<script src="/scripts/site.js" defer></script></head><body>' +
@@ -565,38 +566,95 @@ const convert=async(input,output,width,quality=76)=>{
 await convert(rawLogo,path.join(assetsOut,'logo-horizontal-480.webp'),480,78);
 await convert(rawSymbol,path.join(assetsOut,'symbol-128.webp'),128,80);
 await sharp(rawSymbol).resize({width:64,height:64,fit:'contain',background:{r:255,g:255,b:255,alpha:0}}).png({compressionLevel:9}).toFile(path.join(assetsOut,'favicon-64.png'));
-// Contact-only imagery stays local. The small hero variant avoids a large download on phones.
-await convert(path.join(assetsOut,'clinic-contact-hero.webp'),path.join(assetsOut,'clinic-contact-hero-720.webp'),720,68);
+// The original and responsive files share one source of dimensions and descriptors.
 const responsive=new Map();
 const photosDir=path.join(assetsOut,'generated');
-for(const filename of fs.readdirSync(photosDir).filter(n=>n.endsWith('.webp')&&!/-\d+\.webp$/.test(n))){
- const input=path.join(photosDir,filename);
+const photos=fs.readdirSync(photosDir).filter(n=>n.endsWith('.webp')&&!/-\d+\.webp$/.test(n)).map(n=>'generated/'+n);
+photos.push('clinic-contact-hero.webp');
+for(const filename of photos){
+ const input=path.join(assetsOut,filename);
  const info=await sharp(input).metadata();
+ // Re-encode display originals too; source artwork remains untouched in assets/.
+ fs.writeFileSync(input,await sharp(input).webp({quality:72,effort:5}).toBuffer());
  const formats=[];
- for(const width of [480,960]){
+ for(const width of [360,480,720,960,1200]){
   if(info.width <= width)continue;
   const name=filename.replace(/\.webp$/,`-${width}.webp`);
-  await convert(input,path.join(photosDir,name),width,70);
+  await convert(path.join(ROOT,'assets',filename),path.join(assetsOut,name),width,70);
   formats.push({name,width});
  }
  formats.push({name:filename,width:info.width});
- responsive.set(filename,formats);
+ responsive.set('/assets/'+filename,{formats,width:info.width,height:info.height});
 }
+const imageSizes={
+ home:'(max-width: 680px) calc(100vw - 76px), (max-width: 1204px) calc(47vw - 55px), 510px',
+ inner:'(max-width: 680px) calc(100vw - 44px), (max-width: 1204px) calc(44vw - 51px), 480px',
+ services:'(max-width: 680px) calc(100vw - 84px), (max-width: 1204px) calc(42vw - 45px), 460px',
+ contact:'(max-width: 680px) calc(100vw - 44px), (max-width: 1204px) calc(74vw - 33px), 858px'
+};
 const htmlTargets=[...pages.map(p=>path.join(OUT,p.url==='/'?'index.html':p.url.slice(1)+'index.html')),path.join(OUT,'404.html')];
 for(const target of htmlTargets){
  let document=fs.readFileSync(target,'utf8');
  document=document.replaceAll('src="/assets/logo-horizontal-primary.png"','src="/assets/logo-horizontal-480.webp"');
  document=document.replaceAll('src="/assets/symbol-primary.png"','src="/assets/symbol-128.webp"');
  document=document.replaceAll('rel="icon" href="/assets/symbol-primary.png"','rel="icon" type="image/png" href="/assets/favicon-64.png"');
- for(const [filename,formats] of responsive){
-  const pattern='src="/assets/generated/'+filename+'"';
-  const selected=formats.find(x=>x.width>=960)||formats[formats.length-1];
-  const srcset=formats.map(x=>'/assets/generated/'+x.name+' '+x.width+'w').join(', ');
-  document=document.replaceAll(pattern,'src="/assets/generated/'+selected.name+'" srcset="'+srcset+'" sizes="(max-width: 680px) 100vw, (max-width: 1100px) 75vw, 1100px"');
+ document=document.replace(/<img\b[^>]*>/g,tag=>{
+  const source=tag.match(/\bsrc="([^"]+)"/)?.[1];
+  const photo=responsive.get(source);
+  if(!photo)return tag.includes('decoding=')?tag:tag.replace('<img ','<img decoding="async" ');
+  const slot=tag.match(/data-image-slot="([^"]+)"/)?.[1];
+  const isIndex=target===path.join(OUT,'guides','index.html');
+  const sizes=imageSizes[slot]||(isIndex
+   ?'(max-width: 600px) 105px, (max-width: 1204px) calc(50vw - 30px), 574px'
+   :'(max-width: 600px) 110px, (max-width: 880px) calc(50vw - 30px), (max-width: 1204px) calc(33.33vw - 27px), 374px');
+  const selected=photo.formats.find(x=>x.width>=960)||photo.formats.at(-1);
+  const srcset=photo.formats.map(x=>'/assets/'+x.name+' '+x.width+'w').join(', ');
+  const clean=tag.replace(/\s(?:src|srcset|sizes|width|height|decoding)="[^"]*"/g,'');
+  return clean.replace('<img ','<img src="/assets/'+selected.name+'" srcset="'+srcset+'" sizes="'+sizes+'" width="'+photo.width+'" height="'+photo.height+'" decoding="async" ');
+ });
+ // The preload and the image are emitted from the SAME resolved attributes.
+ const hero=document.match(/<img\b[^>]*data-image-slot="[^"]+"[^>]*>/)?.[0];
+ if(hero){
+  const attr=name=>hero.match(new RegExp('\\b'+name+'="([^"]+)"'))?.[1];
+  document=document.replace('</head>','<link rel="preload" as="image" href="'+attr('src')+'"'+(attr('srcset')?' imagesrcset="'+attr('srcset')+'" imagesizes="'+attr('sizes')+'"':'')+' fetchpriority="high"></head>');
  }
+ document=document.replace('<h1>الدكتورة فايزة علي ناصر الوصابي</h1>','<h1 class="clinic-doctor-name"><span>الدكتورة فايزة</span> <span>علي ناصر الوصابي</span></h1>');
  fs.writeFileSync(target,document,'utf8');
 }
 console.log('Optimized media:',JSON.stringify(imageBudget));
+
+// Content-addressed files can be cached for a year without stale UI after releases.
+// Stable aliases remain revalidated for shared image links and older page visits.
+const fingerprint=new Map();
+const versionAsset=relative=>{
+ if(fingerprint.has(relative))return fingerprint.get(relative);
+ const file=path.join(OUT,relative.slice(1));
+ const bytes=fs.readFileSync(file);
+ const digest=createHash('sha256').update(bytes).digest('hex').slice(0,12);
+ const versioned='/static/'+digest+relative;
+ const output=path.join(OUT,versioned.slice(1));
+ fs.mkdirSync(path.dirname(output),{recursive:true});fs.writeFileSync(output,bytes);
+ fingerprint.set(relative,versioned);return versioned;
+};
+const reference=/(\/(?:assets|styles|scripts)\/[a-zA-Z0-9_./-]+\.(?:webp|png|svg|woff2|css|js))/g;
+const cssFile=path.join(OUT,'styles','agency.css');
+const [pruned]=await new PurgeCSS().purge({
+ content:[...htmlTargets,{raw:fs.readFileSync(path.join(ROOT,'src','client.js'),'utf8'),extension:'js'}],
+ css:[{raw:optimizedCss}],
+ safelist:{standard:['open',/^clinic-intro-/,/^clinic-image-/,/^clinic-in-view$/]},
+ keyframes:false,fontFace:false
+});
+const finalCss=(await transform(pruned.css,{loader:'css',minify:true,target:'es2020'})).code;
+console.log('CSS used by current routes:',JSON.stringify({beforeBytes:Buffer.byteLength(optimizedCss),afterBytes:Buffer.byteLength(finalCss)}));
+fs.writeFileSync(cssFile,finalCss.replace(reference,url=>versionAsset(url)));
+for(const target of htmlTargets){
+ const content=fs.readFileSync(target,'utf8').replace(reference,(url,matched,offset,whole)=>{
+  // Keep absolute canonical social-image URLs stable; version browser resources.
+  if(whole.slice(Math.max(0,offset-30),offset).endsWith(site.url))return url;
+  return versionAsset(url);
+ });
+ fs.writeFileSync(target,content);
+}
 
 fs.writeFileSync(path.join(OUT, 'robots.txt'), 'User-agent: *\nAllow: /\nSitemap: ' + site.url + '/sitemap.xml\n');
 fs.writeFileSync(path.join(OUT, 'sitemap.xml'), '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + pages.map(p => '<url><loc>' + site.url + p.url + '</loc></url>').join('') + '</urlset>');

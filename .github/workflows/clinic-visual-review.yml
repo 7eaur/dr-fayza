@@ -4,6 +4,7 @@ on:
     branches:
       - release/clinic-unified-20261112
       - main
+      - fix/clinic-layout-performance-20261114
   workflow_dispatch:
 
 permissions:
@@ -36,6 +37,7 @@ jobs:
           trap 'kill "$server_pid" || true' EXIT
           sleep 2
           node scripts/visual-audit.mjs
+          node scripts/performance-audit.mjs
       - name: Upload visual report and screenshots
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

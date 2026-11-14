@@ -1,9 +1,10 @@
-import fs from 'node:fs';import path from 'node:path';const root=path.join(process.cwd(),'dist');const files=[];function scan(dir){for(const x of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,x.name);if(x.isDirectory())scan(p);else files.push(path.relative(root,p).replaceAll('\\','/'));}}scan(root);const pages=files.filter(p=>p.endsWith('index.html'));const issues=[];if(pages.length!==19)issues.push('Expected 19 HTML pages; got '+pages.length);for(const p of pages){const html=fs.readFileSync(path.join(root,p),'utf8');const title=html.match(/<title>(.*?)<\/title>/)?.[1];if(!title)issues.push('Missing title: '+p);if(!html.includes('name="description"'))issues.push('Missing description: '+p);if(!html.includes('<main id="main">'))issues.push('Missing main: '+p);for(const m of html.matchAll(/(?:href|src)="(\/[^"#?]*)/g)){let u=m[1];if(u==='/')u='index.html';else if(u.endsWith('/'))u+='index.html';else u=u.slice(1);if(u.startsWith('/'))u=u.slice(1);if(!files.includes(u))issues.push(p+' => missing '+m[1]);}if((html.match(/<h1\b/g)||[]).length!==1)issues.push('Expected one h1: '+p);}if(issues.length){console.error(issues.join('\n'));process.exit(1);}console.log('Verified '+pages.length+' static pages and '+files.length+' total output files.');
+import fs from 'node:fs';import path from 'node:path';
+const readText=file=>fs.readFileSync(file,'utf8').replace(/\/static\/[a-f0-9]{12}(?=\/(?:assets|styles|scripts)\/)/g,'');const root=path.join(process.cwd(),'dist');const files=[];function scan(dir){for(const x of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,x.name);if(x.isDirectory())scan(p);else files.push(path.relative(root,p).replaceAll('\\','/'));}}scan(root);const pages=files.filter(p=>p.endsWith('index.html'));const issues=[];if(pages.length!==19)issues.push('Expected 19 HTML pages; got '+pages.length);for(const p of pages){const html=readText(path.join(root,p));const title=html.match(/<title>(.*?)<\/title>/)?.[1];if(!title)issues.push('Missing title: '+p);if(!html.includes('name="description"'))issues.push('Missing description: '+p);if(!html.includes('<main id="main">'))issues.push('Missing main: '+p);for(const m of html.matchAll(/(?:href|src)="(\/[^"#?]*)/g)){let u=m[1];if(u==='/')u='index.html';else if(u.endsWith('/'))u+='index.html';else u=u.slice(1);if(u.startsWith('/'))u=u.slice(1);if(!files.includes(u))issues.push(p+' => missing '+m[1]);}if((html.match(/<h1\b/g)||[]).length!==1)issues.push('Expected one h1: '+p);}if(issues.length){console.error(issues.join('\n'));process.exit(1);}console.log('Verified '+pages.length+' static pages and '+files.length+' total output files.');
 
 
 // Agency redesign acceptance gates. These are static checks, not a visual-browser audit.
 for(const p of pages){
- const html=fs.readFileSync(path.join(root,p),'utf8');
+ const html=readText(path.join(root,p));
  if(!html.includes('<html lang="ar" dir="rtl">'))issues.push('Arabic RTL missing: '+p);
  if(!html.includes('href="/styles/agency.css"'))issues.push('Agency styles missing: '+p);
  if(!html.includes('<meta property="og:image"'))issues.push('OG image missing: '+p);
@@ -13,7 +14,7 @@ for(const p of pages){
    if(!/\balt="/.test(match[0]))issues.push('Image alt missing: '+p);
  }
 }
-const agencyCss=fs.readFileSync(path.join(root,'styles/agency.css'),'utf8');
+const agencyCss=readText(path.join(root,'styles/agency.css'));
 const cssChecks=[['brand-token',/--ink\s*:\s*#0c495c/i],['mobile',/@media\s*\(max-width:\s*600px\)/],['reduced-motion',/prefers-reduced-motion/]];
 for(const [name,regex] of cssChecks){if(!regex.test(agencyCss))issues.push('Design token or responsive gate missing: '+name);}
 if(issues.length){console.error(issues.join('\n'));process.exit(1);}
@@ -21,24 +22,24 @@ console.log('Agency design checks passed: Arabic RTL, imagery, SEO, tokens and C
 
 
 for(const p of pages) {
- const html=fs.readFileSync(path.join(root,p),'utf8');
+ const html=readText(path.join(root,p));
  const isArticle=p.startsWith('guides/') && p!=='guides/index.html';
  if(isArticle && !html.includes('<meta property="og:type" content="article">')) issues.push('Missing article OG type: '+p);
  if(!isArticle && html.includes('<meta property="og:type" content="article">')) issues.push('Wrong OG type: '+p);
  if(html.includes('author":{"@id":"https://dr-fayza.vercel.app/#doctor"')) issues.push('Unverified medical content authorship: '+p);
  if(!html.includes('<meta property="og:image:alt"')) issues.push('Missing social image description: '+p);
 }
-const notFound=fs.readFileSync(path.join(root,'404.html'),'utf8');
+const notFound=readText(path.join(root,'404.html'));
 if(!notFound.includes('name="robots" content="noindex,follow"')) issues.push('404 page must be noindex');
 if(notFound.includes('<link rel="canonical"')) issues.push('404 page must not claim canonical');
 if(issues.length){console.error(issues.join('\n'));process.exit(1);}
 console.log('Agency editorial SEO and medical attribution checks passed.');
 
 // Marketing-and-mobile regression gates.
-const homeHtml=fs.readFileSync(path.join(root,'index.html'),'utf8');
-const aboutHtml=fs.readFileSync(path.join(root,'about/index.html'),'utf8');
-const faqHtml=fs.readFileSync(path.join(root,'faq/index.html'),'utf8');
-const serviceHtml=fs.readFileSync(path.join(root,'services/index.html'),'utf8');
+const homeHtml=readText(path.join(root,'index.html'));
+const aboutHtml=readText(path.join(root,'about/index.html'));
+const faqHtml=readText(path.join(root,'faq/index.html'));
+const serviceHtml=readText(path.join(root,'services/index.html'));
 const medicalSlugs=['pregnancy','womens-health','fertility','ultrasound','maternity','cosmetic'];
 for(const slug of medicalSlugs){
  if(!homeHtml.includes('href="/services/'+slug+'/')) issues.push('Medical service absent from home: '+slug);
@@ -53,7 +54,7 @@ if(!serviceHtml.includes('استفسري عن توفر') && !serviceHtml.include
 if(!serviceHtml.includes('clinic-diagnostics__grid')) issues.push('Condensed diagnostics cards missing');
 if(serviceHtml.includes('استقبال الحالات الطارئة وحالات الولادة والعمليات على مدار 24 ساعة')) issues.push('Unverified general 24-hour claim');
 for(const slug of ['pregnancy','womens-health','fertility','ultrasound','maternity','cosmetic']){
- const detailHtml=fs.readFileSync(path.join(root,'services',slug,'index.html'),'utf8');
+ const detailHtml=readText(path.join(root,'services',slug,'index.html'));
  if(!detailHtml.includes('clinic-detail-overview__scope')) issues.push('Missing expanded scope details: '+slug);
  if(!detailHtml.includes('clinic-detail-overview__opening')) issues.push('Service introduction missing: '+slug);
  if(!detailHtml.includes('clinic-detail-contact')) issues.push('Missing direct contact on detail page: '+slug);
@@ -67,7 +68,7 @@ if(!homeHtml.includes('clinic-process__timeline')) issues.push('Missing practica
 if(!homeHtml.includes('agency-services__diagnostics')) issues.push('Missing diagnostic service discovery');
 if(!aboutHtml.includes('agency-mission__grid')) issues.push('Missing clinic vision and mission');
 if(!faqHtml.includes('كيف أستعد لزيارتي الأولى؟')) issues.push('Missing first-visit FAQ');
-const agencyCssMobile=fs.readFileSync(path.join(root,'styles/agency.css'),'utf8');
+const agencyCssMobile=readText(path.join(root,'styles/agency.css'));
 if(!/\.section\s+\.cards:not\(\.agency-services__cards\)/.test(agencyCssMobile)) issues.push('Mobile related service layout regression');
 if(issues.length){console.error(issues.join('\n'));process.exit(1);}
 console.log('Agency mobile UX and content coverage gates passed.');
@@ -75,9 +76,9 @@ console.log('Agency mobile UX and content coverage gates passed.');
 if(!homeHtml.includes('https://www.google.com/maps/search/')) issues.push('Map search link missing');
 if(!aboutHtml.includes('رؤيتنا ورسالتنا')) issues.push('Clinic story missing');
 if(!homeHtml.includes('OpeningHoursSpecification')) issues.push('Opening hours missing from structured data');
-if(!fs.readFileSync(path.join(root,'services/pregnancy/index.html'),'utf8').includes('clinic-inner-hero')) { 
+if(!readText(path.join(root,'services/pregnancy/index.html')).includes('clinic-inner-hero')) {
   // Page-head compact hides duplicated decorative art above service content.
-  const servicePage=fs.readFileSync(path.join(root,'services/pregnancy/index.html'),'utf8');
+  const servicePage=readText(path.join(root,'services/pregnancy/index.html'));
   if(!servicePage.includes('clinic-inner-hero__grid')) issues.push('Interior service hero missing');
 }
 if(issues.length){console.error(issues.join('\n'));process.exit(1);}
@@ -85,8 +86,8 @@ console.log('Unified clinic release gates passed.');
 
 // The retired standalone diagnostics page and redirect must not return accidentally.
 if(files.includes('diagnostics/index.html')) issues.push('Retired diagnostics page still generated');
-if(!fs.readFileSync(path.join(root,'services/index.html'),'utf8').includes('id="diagnostics"')) issues.push('Integrated services diagnostics missing');
-const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
+if(!readText(path.join(root,'services/index.html')).includes('id="diagnostics"')) issues.push('Integrated services diagnostics missing');
+const index=readText(path.join(root,'index.html'));
 if(!index.includes('clinic-hours__sessions') || !index.includes('clinic-visit__layout')) issues.push('Home visit and hours component missing');
 if(index.includes('الدوام الاعتيادي')) issues.push('Retired ordinary-hours label on homepage');
 if(issues.length){console.error(issues.join('\\n'));process.exit(1);}
@@ -95,9 +96,9 @@ console.log('Visit section, schedule and diagnostics cleanup verified.');
 // Release gates: remove privacy, simple 404, motion and usable contrast.
 if(files.includes('privacy/index.html')) issues.push('Privacy page must not be built');
 if(homeHtml.includes('href="/privacy/"')) issues.push('Privacy link still visible');
-const errorHtml=fs.readFileSync(path.join(root,'404.html'),'utf8');
+const errorHtml=readText(path.join(root,'404.html'));
 if(!errorHtml.includes('clinic-notfound') || !errorHtml.includes('href="/"')) issues.push('Simple 404 missing');
-const contactHtml=fs.readFileSync(path.join(root,'contact/index.html'),'utf8');
+const contactHtml=readText(path.join(root,'contact/index.html'));
 if(!contactHtml.includes('agency-contact__hours-head')) issues.push('Contact schedule missing');
 if(!contactHtml.includes('clinic-contact-hero__stage')) issues.push('Contact hero missing');
 if(!contactHtml.includes('clinic-address-card__zoom')) issues.push('Map enlarge link missing');
@@ -114,28 +115,28 @@ console.log('Privacy removal, error-page and motion checks passed.');
 for(const file of ['assets/logo-horizontal-480.webp','assets/symbol-128.webp','assets/favicon-64.png','assets/generated/hero-mother-care-960.webp','assets/clinic-contact-hero.webp','assets/clinic-contact-hero-720.webp','assets/clinic-address-map.webp']){
  if(!files.includes(file)) issues.push('Optimized media missing: '+file);
 }
-const finalHome=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const finalHome=readText(path.join(root,'index.html'));
 if(!finalHome.includes('srcset="/assets/generated/')) issues.push('Responsive image srcset missing');
 if(finalHome.includes('src="/assets/logo-horizontal-primary.png"')) issues.push('Heavy PNG logo still used for display');
 if(finalHome.includes('class="clinic-loader"')) issues.push('Blocking logo overlay must not ship');
 
 if(!finalHome.includes('data-clinic-brand-intro')) issues.push('First-visit brand reveal missing');
-if(!finalHome.includes('dr-fayza-intro-v1')) issues.push('First-visit storage guard missing');
-if(!finalHome.includes('clinic-intro-pending')) issues.push('Brand intro bootstrap missing');
+
+if(finalHome.includes('clinic-intro-pending')) issues.push('Intro must not block first paint');
 if(!finalHome.includes('clinic-brand-intro__layer--symbol') ||
    !finalHome.includes('clinic-brand-intro__layer--name') ||
    !finalHome.includes('clinic-brand-intro__layer--finished')) issues.push('Brand logo reveal layers missing');
 if(!agencyCss.includes('@keyframes clinic-intro-symbol') ||
    !agencyCss.includes('@keyframes clinic-intro-name') ||
    !agencyCss.includes('@keyframes clinic-intro-out')) issues.push('Brand reveal animation missing');
-const introScript=fs.readFileSync(path.join(root,'scripts/site.js'),'utf8');
+const introScript=readText(path.join(root,'scripts/site.js'));
 if(!introScript.includes('data-clinic-brand-intro') ||
-   !introScript.includes('localStorage.setItem') ||
+   !introScript.includes('dr-fayza-intro-v1') || !introScript.includes('localStorage.setItem') ||
    !introScript.includes('950')) issues.push('Intro cleanup and timeout missing');
 if(errorHtml.includes('data-clinic-brand-intro')) issues.push('Brand intro must not block error page');
 if(!finalHome.includes('fetchpriority="high"')) issues.push('Header logo priority missing');
 for(const page of pages){
- const content=fs.readFileSync(path.join(root,page),'utf8');
+ const content=readText(path.join(root,page));
  if(/fonts\.(googleapis|gstatic)\.com/.test(content))issues.push('External font link in '+page);
  if(/<link\s+rel="(?:stylesheet|preconnect|modulepreload)"[^>]*href="https?:\/\//i.test(content)||/<script\b[^>]*src="https?:\/\//i.test(content))issues.push('External render dependency in '+page);
 }

@@ -86,7 +86,7 @@ for (const config of configs) {
       if (is404 && (!entry.hasSimple404 || entry.hasLoader)) report.errors.push({ width: config.width, route, issue:'Missing simple 404 or loader incorrectly displayed' });
       if (entry.hasLoader) report.errors.push({width:config.width,route,issue:'Full-screen loader should not block page'});
       if(!is404&&!entry.headerLogoReady)report.errors.push({width:config.width,route,issue:'Header logo not ready at load'});
-      if(!is404&&entry.cssSheets.filter(x=>x.startsWith('/styles/')).length!==1)report.errors.push({width:config.width,route,issue:'Expected one combined local stylesheet',sheets:entry.cssSheets});
+      if(!is404&&entry.cssSheets.filter(x=>x.includes('/styles/')).length!==1)report.errors.push({width:config.width,route,issue:'Expected one combined local stylesheet',sheets:entry.cssSheets});
       if (!is404 && entry.status !== 200) report.errors.push({ width: config.width, route, issue: 'HTTP ' + entry.status });
       if (is404 && entry.status !== 404) report.errors.push({ width: config.width, route, issue: '404 status incorrect: ' + entry.status });
       if (entry.h1Count !== 1 || !entry.main || entry.lang !== 'ar' || entry.dir !== 'rtl') report.errors.push({ width: config.width, route, issue: 'Semantic document structure mismatch', entry });
@@ -149,7 +149,7 @@ const introCheck=async(width)=>{
   await page.waitForFunction(()=>!document.querySelector('[data-clinic-brand-intro]'),null,{timeout:3500});
   const seen=await page.evaluate(()=>localStorage.getItem('dr-fayza-intro-v1'));
   if(seen!=='seen')report.errors.push({width,issue:'Brand intro completion is not persisted'});
-  await page.goto(base+'/services/',{waitUntil:'domcontentloaded',timeout:30000});
+  await page.goto(base+'/services/',{waitUntil:'load',timeout:30000});
   const repeated=await page.locator('[data-clinic-brand-intro]').count();
   if(repeated!==0)report.errors.push({width,issue:'Intro repeated on subsequent navigation'});
  }catch(error){report.errors.push({width,issue:'Brand intro browser test failed: '+String(error)})}
@@ -160,7 +160,7 @@ await introCheck(1280);
 const noMotionContext=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
 const noMotionPage=await noMotionContext.newPage();
 try{
- await noMotionPage.goto(base+'/',{waitUntil:'domcontentloaded'});
+ await noMotionPage.goto(base+'/',{waitUntil:'load'});
  const present=await noMotionPage.locator('[data-clinic-brand-intro]').count();
  if(present)report.errors.push({width:390,issue:'Brand intro shown despite reduced-motion setting'});
 }catch(error){report.errors.push({issue:'Reduced-motion brand check failed: '+String(error)})}
