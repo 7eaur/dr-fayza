@@ -120,20 +120,14 @@ if(!finalHome.includes('srcset="/assets/generated/')) issues.push('Responsive im
 if(finalHome.includes('src="/assets/logo-horizontal-primary.png"')) issues.push('Heavy PNG logo still used for display');
 if(finalHome.includes('class="clinic-loader"')) issues.push('Blocking logo overlay must not ship');
 
-if(!finalHome.includes('data-clinic-brand-intro')) issues.push('First-visit brand reveal missing');
-
-if(finalHome.includes('clinic-intro-pending')) issues.push('Intro must not block first paint');
-if(!finalHome.includes('clinic-brand-intro__layer--symbol') ||
-   !finalHome.includes('clinic-brand-intro__layer--name') ||
-   !finalHome.includes('clinic-brand-intro__layer--finished')) issues.push('Brand logo reveal layers missing');
-if(!agencyCss.includes('@keyframes clinic-intro-symbol') ||
-   !agencyCss.includes('@keyframes clinic-intro-name') ||
-   !agencyCss.includes('@keyframes clinic-intro-out')) issues.push('Brand reveal animation missing');
+// Only the original header image may animate; no loader HTML is emitted.
+for(const forbidden of ['clinic-brand-intro','data-clinic-brand-intro','clinic-intro-pending','clinic-logo-reveal']) {
+ if(finalHome.includes(forbidden) || agencyCss.includes(forbidden)) issues.push('Retired loader still emitted: '+forbidden);
+}
 const introScript=readText(path.join(root,'scripts/site.js'));
-if(!introScript.includes('data-clinic-brand-intro') ||
-   !introScript.includes('dr-fayza-intro-v1') || !introScript.includes('localStorage.setItem') ||
-   !introScript.includes('950')) issues.push('Intro cleanup and timeout missing');
-if(errorHtml.includes('data-clinic-brand-intro')) issues.push('Brand intro must not block error page');
+if(!introScript.includes('dr-fayza-header-motion-v3') || !introScript.includes('getComputedStyle')) issues.push('Header motion readiness guard missing');
+if(!finalHome.includes('data-back-to-top') || !finalHome.includes('id="page-top"')) issues.push('Back to top target/link missing');
+
 if(!finalHome.includes('fetchpriority="high"')) issues.push('Header logo priority missing');
 for(const page of pages){
  const content=readText(path.join(root,page));

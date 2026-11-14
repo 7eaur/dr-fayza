@@ -1044,8 +1044,8 @@ body,.clinic-hero,.agency-services,.agency-visit,.clinic-inner-hero,
 .agency-services+.agency-doctor,.agency-guides+.clinic-visit{border-top:1px solid #f0f4f2}
 .section .heading,.section .agency-section-head{margin-bottom:clamp(16px,2.4vw,30px)}
 .clinic-footer{margin-top:0}
-@keyframes clinic-fade-up{from{opacity:.45;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.clinic-in-view{animation:clinic-fade-up .55s cubic-bezier(.2,.8,.25,1) both}
+@keyframes clinic-fade-up{from{opacity:.75;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.clinic-in-view{animation:clinic-fade-up .36s cubic-bezier(.2,.8,.25,1) both}
 button,.button,a.card,a.tile,.clinic-service-feature,.clinic-service-row,.clinic-diagnostics-feature{transition:transform .22s ease,box-shadow .22s ease,background-color .22s ease,border-color .22s ease,color .22s ease}
 @media(hover:hover){.button:hover{transform:translateY(-1px)}.clinic-service-row:hover{transform:translateX(-2px)}}
 :focus-visible{outline:3px solid #18836f;outline-offset:3px}
@@ -1083,21 +1083,6 @@ button,.button,a.card,a.tile,.clinic-service-feature,.clinic-service-row,.clinic
 }
 
 
-/* Immediate local header branding: an accent draws under the already-visible image.
-   No fullscreen splash, opacity fade, navigation delay, or extra image request. */
-.header .logo{position:relative;isolation:isolate}
-.header .logo>img{opacity:1!important;visibility:visible!important;transform:none!important}
-.header .logo::after{
- content:"";position:absolute;bottom:0;inset-inline:14% 14%;
- height:2px;border-radius:99px;background:#45a18e;pointer-events:none;
- transform-origin:right;animation:clinic-header-line .38s ease-out both;
-}
-@keyframes clinic-header-line{
- 0%{opacity:0;transform:scaleX(0)}
- 50%{opacity:.8;transform:scaleX(1)}
- 100%{opacity:0;transform:scaleX(1)}
-}
-@media(prefers-reduced-motion:reduce){.header .logo::after{animation:none;display:none}}
 @media(hover:none){.clinic-service-feature:hover,.agency-services__cards .card:hover{transform:none}}
 
 
@@ -1163,62 +1148,6 @@ button,.button,a.card,a.tile,.clinic-service-feature,.clinic-service-row,.clinic
 }
 
 
-/* Approved Signature Reveal pattern (Wasl Tech / Update Card), adapted for
-   the clinic's ORIGINAL logo. Its mark is on the LEFT in the source artwork.
-   First-visit only; the rest of the site stays unchanged and local. */
-.clinic-brand-intro{display:none;position:absolute;inset:0;z-index:1;background:#fff;
-  width:100%;height:100%;padding:0;place-items:center;isolation:isolate;opacity:1;pointer-events:none;overflow:hidden}
-html.clinic-intro-pending .clinic-brand-intro{
-  display:grid;animation:clinic-intro-pending-out .2s ease-out 2.8s both
-}
-html.clinic-intro-active .clinic-brand-intro{
-  display:grid;animation:clinic-intro-out .32s ease-in-out 1.23s both
-}
-.clinic-brand-intro__mark{position:relative;width:100%;aspect-ratio:1580/470;
-  contain:layout paint}
-.clinic-brand-intro__layer{position:absolute;inset:0;display:block;width:100%;height:100%;
-  object-fit:contain;opacity:0}
-html.clinic-intro-pending .clinic-brand-intro__layer--finished{
-  opacity:1;animation:clinic-intro-pending-logo .22s ease-out both
-}
-html.clinic-intro-active .clinic-brand-intro__layer--symbol{
-  animation:clinic-intro-symbol .72s cubic-bezier(.22,.7,.2,1) both
-}
-html.clinic-intro-active .clinic-brand-intro__layer--name{
-  animation:clinic-intro-name .69s cubic-bezier(.22,.7,.2,1) .40s both
-}
-html.clinic-intro-active .clinic-brand-intro__layer--finished{
-  animation:clinic-intro-finish .20s ease-out 1.04s both
-}
-.clinic-brand-intro__line{position:absolute;bottom:-8px;left:20%;right:20%;height:2px;
-  background:#45a18e;border-radius:2px;opacity:0;transform:scaleX(0);transform-origin:right}
-html.clinic-intro-active .clinic-brand-intro__line{
-  animation:clinic-intro-line .78s cubic-bezier(.22,.7,.2,1) .34s both
-}
-@keyframes clinic-intro-symbol{
-  0%{opacity:1;clip-path:inset(0 100% 0 0);transform:translateX(36%)}
-  42%{opacity:1;clip-path:inset(0 72% 0 0);transform:translateX(36%)}
-  100%{opacity:1;clip-path:inset(0 72% 0 0);transform:translateX(0)}
-}
-@keyframes clinic-intro-name{
-  from{opacity:1;clip-path:inset(0 0 0 100%)}
-  to{opacity:1;clip-path:inset(0 0 0 28%)}
-}
-@keyframes clinic-intro-finish{from{opacity:0}to{opacity:1}}
-@keyframes clinic-intro-line{
-  0%{opacity:1;transform:scaleX(0)}
-  70%{opacity:1;transform:scaleX(1)}
-  100%{opacity:0;transform:scaleX(1)}
-}
-@keyframes clinic-intro-out{from{opacity:1;visibility:visible}to{opacity:0;visibility:hidden}}
-@keyframes clinic-intro-pending-out{from{opacity:1;visibility:visible}to{opacity:0;visibility:hidden}}
-@keyframes clinic-intro-pending-logo{
-  from{opacity:0;transform:scale(.99)}to{opacity:1;transform:scale(1)}
-}
-
-@media(prefers-reduced-motion:reduce){.clinic-brand-intro{display:none!important}}
-
-
 /* Shared reading widths and image states. Text stays visible with or without JS. */
 .agency-section-head>div,.agency-doctor__content,.agency-contact__grid>div{min-width:0}
 h1,h2,h3{overflow-wrap:break-word}
@@ -1275,4 +1204,17 @@ main img{transition:opacity .24s ease}
  main img{transition:none}
 }
 
-.header .logo .clinic-brand-intro__layer{width:100%;height:100%;max-height:none;object-position:center}
+
+
+/* The stylesheet sentinel enables optional motion only when current CSS loaded.
+   The existing header logo is animated directly; no duplicate image or overlay. */
+:root{--clinic-motion-ready:1}
+.back-to-top{position:fixed;inset-inline-end:max(18px,env(safe-area-inset-left));bottom:calc(22px + env(safe-area-inset-bottom));z-index:35;display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#0c495c;color:#fff;border:1px solid #ffffff80;box-shadow:0 4px 14px #0c495c26;touch-action:manipulation}
+.back-to-top[hidden]{display:none}
+.back-to-top .ico{width:23px;height:23px;transform:rotate(90deg)}
+.back-to-top:not([hidden]){animation:clinic-page-in .18s ease-out both}
+.back-to-top:hover{background:#12685d}
+.back-to-top:focus-visible{outline:3px solid #18836f;outline-offset:4px}
+#page-top:focus{outline:none}
+@media(prefers-reduced-motion:reduce){.back-to-top:not([hidden]){animation:none}}
+@media print{.back-to-top{display:none!important}}

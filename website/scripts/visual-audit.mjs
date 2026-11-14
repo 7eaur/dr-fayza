@@ -7,15 +7,8 @@ const base = (process.env.CLINIC_PREVIEW_URL || 'https://dr-fayza-git-design-age
 const out = path.resolve('visual-audit');
 fs.mkdirSync(out, { recursive: true });
 
-const allRoutes = [
-  '/', '/about/', '/services/',
-  '/services/pregnancy/', '/services/womens-health/', '/services/fertility/',
-  '/services/ultrasound/', '/services/maternity/', '/services/cosmetic/',
-  '/services/#diagnostics', '/guides/',
-  '/guides/pregnancy-care/', '/guides/womens-visit/',
-  '/guides/fertility-consultation/', '/guides/ultrasound-guide/',
-  '/faq/', '/contact/', '/missing-page-test'
-];
+const allRoutes = [...fs.readFileSync('dist/sitemap.xml','utf8').matchAll(/<loc>[^<]+<\/loc>/g)].map(x=>new URL(x[0].slice(5,-6)).pathname);
+allRoutes.push('/services/#diagnostics','/missing-page-test');
 const configs = [
   { width: 320, height: 700, routes: ['/', '/about/', '/services/pregnancy/', '/contact/'] },
   { width: 360, height: 800, routes: ['/', '/contact/'] },
@@ -55,8 +48,8 @@ for (const config of configs) {
           new Promise(resolve => setTimeout(resolve, 15000))
         ]);
       });
-      // Let the first-visit intro finish before capturing actual page layout.
-      await page.waitForFunction(() => !document.querySelector('[data-clinic-brand-intro]'), null, { timeout: 4500 }).catch(() => {});
+      // The JS-created one-image reveal finishes before capturing page layout.
+      await page.waitForFunction(() => !document.querySelector('.clinic-logo-reveal'), null, { timeout: 3500 }).catch(() => {});
       await page.waitForTimeout(100);
       const d = await page.evaluate(() => ({
         title: document.title,
@@ -135,36 +128,36 @@ for (const config of configs) {
   await context.close();
 }
 
-// One-time signature reveal: observe first landing, final logo, and skipped repeats.
-const introCheck=async(width)=>{
- const ctx=await browser.newContext({viewport:{width,height:844},deviceScaleFactor:1,locale:'ar-YE',colorScheme:'light'});
- const page=await ctx.newPage();
+// Header-only logo motion: exactly one original image, no overlays to leak.
+for(const width of [390,1280]){
+ const context=await browser.newContext({viewport:{width,height:844},locale:'ar-YE'});
+ const page=await context.newPage();
  try{
-  await page.goto(base+'/contact/',{waitUntil:'domcontentloaded',timeout:30000});
-  await page.waitForFunction(()=>document.documentElement.classList.contains('clinic-intro-active'),null,{timeout:3500});
-  await page.waitForTimeout(380);
-  await page.screenshot({path:path.join(out,width+'__logo-intro.png'),animations:'allow'});
-  await page.waitForTimeout(740);
-  await page.screenshot({path:path.join(out,width+'__logo-finished.png'),animations:'allow'});
-  await page.waitForFunction(()=>!document.querySelector('[data-clinic-brand-intro]'),null,{timeout:3500});
-  const seen=await page.evaluate(()=>localStorage.getItem('dr-fayza-intro-v1'));
-  if(seen!=='seen')report.errors.push({width,issue:'Brand intro completion is not persisted'});
-  await page.goto(base+'/services/',{waitUntil:'load',timeout:30000});
-  const repeated=await page.locator('[data-clinic-brand-intro]').count();
-  if(repeated!==0)report.errors.push({width,issue:'Intro repeated on subsequent navigation'});
- }catch(error){report.errors.push({width,issue:'Brand intro browser test failed: '+String(error)})}
- finally{await ctx.close()}
-};
-await introCheck(390);
-await introCheck(1280);
-const noMotionContext=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
-const noMotionPage=await noMotionContext.newPage();
-try{
- await noMotionPage.goto(base+'/',{waitUntil:'load'});
- const present=await noMotionPage.locator('[data-clinic-brand-intro]').count();
- if(present)report.errors.push({width:390,issue:'Brand intro shown despite reduced-motion setting'});
-}catch(error){report.errors.push({issue:'Reduced-motion brand check failed: '+String(error)})}
-finally{await noMotionContext.close()}
+  await page.goto(base+'/contact/',{waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>['running','complete'].includes(document.querySelector('.header .logo>img')?.dataset.logoMotion));
+  if(await page.locator('.header .logo img').count()!==1)report.errors.push({width,issue:'Duplicate header logo'});
+  if(await page.locator('.clinic-logo-reveal,[data-clinic-brand-intro],body>img').count())report.errors.push({width,issue:'An overlay or stray image was injected'});
+  await page.screenshot({path:path.join(out,width+'__logo-motion.png'),animations:'allow'});
+  await page.waitForFunction(()=>document.querySelector('.header .logo>img')?.dataset.logoMotion==='complete');
+  await page.goto(base+'/services/',{waitUntil:'load'});
+  if(scenario!=='blocked-storage'&&await page.locator('[data-logo-motion]').count())report.errors.push({width,issue:'Header logo animation repeated'});
+ }catch(error){report.errors.push({width,issue:'Header logo motion check: '+String(error)})}
+ finally{await context.close()}
+}
+for(const scenario of ['no-style','old-style','no-js','reduce','blocked-storage']){
+ const context=await browser.newContext({viewport:{width:390,height:844},javaScriptEnabled:scenario!=='no-js',reducedMotion:scenario==='reduce'?'reduce':'no-preference'});
+ const page=await context.newPage();
+ try{
+  if(scenario==='blocked-storage')await page.addInitScript(()=>{Storage.prototype.getItem=()=>{throw new Error('Storage unavailable')};Storage.prototype.setItem=()=>{throw new Error('Storage unavailable')};});
+  if(scenario==='old-style')await page.route('**/styles/agency.css*',r=>r.fulfill({status:200,contentType:'text/css',body:fs.readFileSync('dist/styles/agency.css','utf8').replace(/--clinic-motion-ready:1;?/g,'')}));
+  if(scenario==='no-style')await page.route('**/styles/agency.css*',r=>r.fulfill({status:200,contentType:'text/css',body:'body{font-family:sans-serif}'}));
+  await page.goto(base+'/',{waitUntil:'load'});
+  if(await page.locator('.header .logo img').count()!==1)report.errors.push({scenario,issue:'Header image duplicated'});
+  if(await page.locator('.clinic-logo-reveal,[data-clinic-brand-intro],body>img').count())report.errors.push({scenario,issue:'An unsafe logo layer appeared'});
+  if(scenario!=='blocked-storage'&&await page.locator('[data-logo-motion]').count())report.errors.push({scenario,issue:'Optional motion ran without a usable stylesheet / JS / motion preference'});
+ }catch(error){report.errors.push({scenario,issue:String(error)})}
+ finally{await context.close()}
+}
 
 // Simulated cold 4G samples provide a more useful mobile check than unthrottled CI localhost-style timings.
 const throttledSamples=[];

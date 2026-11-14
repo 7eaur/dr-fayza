@@ -77,13 +77,24 @@ for(const width of [320,390,768,1440]){
  if(external.length||broken.length)report.failures.push({width,external,broken});
  await context.close();
 }
-// The signature cannot intercept a tap, even on the first visit.
+// Header motion leaves mobile navigation available; back-to-top is a real anchor.
 const fresh=await browser.newContext({viewport:{width:390,height:844}});
 const first=await fresh.newPage();await first.goto(base+'/',{waitUntil:'load'});
-const intro=first.locator('[data-clinic-brand-intro]');
-if(await intro.count())assert.equal(await intro.evaluate(x=>getComputedStyle(x).pointerEvents),'none');
+assert.equal(await first.locator('.header .logo img').count(),1);
+assert.equal(await first.locator('.clinic-logo-reveal,[data-clinic-brand-intro]').count(),0);
 await first.locator('#menu-button').click();assert.equal(await first.locator('#menu-button').getAttribute('aria-expanded'),'true');
-await fresh.close();report.checks.push('First-visit signature does not intercept mobile menu taps');
+await first.keyboard.press('Escape');
+const topLink=first.locator('[data-back-to-top]');
+assert.equal(await topLink.isVisible(),false);
+await first.locator('footer').scrollIntoViewIfNeeded();
+await topLink.waitFor({state:'visible'});
+assert.equal(await topLink.getAttribute('href'),'#page-top');
+await topLink.focus();await first.keyboard.press('Enter');
+await first.waitForFunction(()=>scrollY<5);
+await topLink.waitFor({state:'hidden'});
+assert.equal(await topLink.isVisible(),false);
+assert.equal(await first.evaluate(()=>document.activeElement?.id),'page-top');
+await fresh.close();report.checks.push('One header logo; mobile menu and keyboard back-to-top work during normal browsing');
 // A missing photo offers a retry and recovers without reloading the page.
 const failureContext=await browser.newContext();const failurePage=await failureContext.newPage();
 const imagePattern='**/assets/clinic-contact-hero*.webp';
@@ -97,8 +108,8 @@ await failureContext.close();report.checks.push('Failed image retries successful
 for(const options of [{javaScriptEnabled:false},{reducedMotion:'reduce'}]){
  const context=await browser.newContext({viewport:{width:390,height:844},...options});const page=await context.newPage();
  await page.goto(base+'/',{waitUntil:'load'});assert(await page.locator('main h1').isVisible());
- if(options.reducedMotion){assert.equal(await page.locator('.clinic-brand-intro').count(),0);assert.equal(await page.evaluate(()=>document.getAnimations().length),0)}
- else assert.equal(await page.locator('.clinic-brand-intro').isVisible(),false);
+ if(options.reducedMotion){assert.equal(await page.locator('.clinic-logo-reveal,[data-clinic-brand-intro]').count(),0);assert.equal(await page.evaluate(()=>document.getAnimations().length),0)}
+ else assert.equal(await page.locator('.clinic-logo-reveal,[data-clinic-brand-intro]').count(),0);
  await context.close();
 }
 report.checks.push('Page remains readable without JS; reduced-motion disables optional animations');

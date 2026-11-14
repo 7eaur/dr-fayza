@@ -146,7 +146,7 @@ const articleTile = (a) => {
 };
 
 function header(url) {
- return '<a class="skip" href="#main">تخطي إلى المحتوى</a><header class="header"><div class="container header-inner"><a class="logo" href="/" aria-label="الرئيسية">'+logoIntro()+'<img src="/assets/logo-horizontal-primary.png" alt="'+site.name+'" width="225" height="86" loading="eager" fetchpriority="high" decoding="sync"></a><nav class="nav" id="primary-nav" aria-label="القائمة الرئيسية">'+nav.map(([href,label])=>'<a href="'+href+'" '+(url===href?'aria-current="page"':'')+'>'+label+'</a>').join('')+'</nav><div class="header-actions"><a class="header-wa" aria-label="تواصلي عبر واتساب" href="'+site.whatsapp+'" target="_blank" rel="noopener noreferrer">'+ico('message')+'<span>اسألي عبر واتساب</span></a><button class="menu-toggle" id="menu-button" aria-expanded="false" aria-controls="primary-nav" aria-label="فتح القائمة">'+ico('menu')+'</button></div></div></header>';
+ return '<a class="skip" href="#main">تخطي إلى المحتوى</a><header class="header"><div class="container header-inner"><a class="logo" href="/" aria-label="الرئيسية"><img src="/assets/logo-horizontal-primary.png" alt="'+site.name+'" width="225" height="86" loading="eager" fetchpriority="high" decoding="sync"></a><nav class="nav" id="primary-nav" aria-label="القائمة الرئيسية">'+nav.map(([href,label])=>'<a href="'+href+'" '+(url===href?'aria-current="page"':'')+'>'+label+'</a>').join('')+'</nav><div class="header-actions"><a class="header-wa" aria-label="تواصلي عبر واتساب" href="'+site.whatsapp+'" target="_blank" rel="noopener noreferrer">'+ico('message')+'<span>اسألي عبر واتساب</span></a><button class="menu-toggle" id="menu-button" aria-expanded="false" aria-controls="primary-nav" aria-label="فتح القائمة">'+ico('menu')+'</button></div></div></header>';
 }
 function footer() {
  const officialLinks = [
@@ -487,17 +487,6 @@ function schemaFor(p) {
   return JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
 }
 
-/* First-visit signature reveal, using the unchanged official clinic logo. */
-function logoIntro() {
- return '<div class="clinic-brand-intro" data-clinic-brand-intro aria-hidden="true">'+
- '<div class="clinic-brand-intro__mark">'+
- '<img class="clinic-brand-intro__layer clinic-brand-intro__layer--symbol" src="/assets/logo-horizontal-480.webp" width="480" height="143" alt="" decoding="async">'+
- '<img class="clinic-brand-intro__layer clinic-brand-intro__layer--name" src="/assets/logo-horizontal-480.webp" width="480" height="143" alt="" decoding="async">'+
- '<img class="clinic-brand-intro__layer clinic-brand-intro__layer--finished" src="/assets/logo-horizontal-480.webp" width="480" height="143" alt="" decoding="async">'+
- '<span class="clinic-brand-intro__line" aria-hidden="true"></span>'+
- '</div></div>';
-}
-
 function html(p) {
   const title = p.title + ' | ' + site.short;
   const noindex = p.url === '/404/';
@@ -531,10 +520,11 @@ function html(p) {
     (noindex ? '' : '<link rel="preload" as="image" href="/assets/logo-horizontal-480.webp" fetchpriority="high">') +
     '<link rel="stylesheet" href="/styles/agency.css">' +
     '<script type="application/ld+json">' + schemaFor(p) + '</script>' +
-    '<script src="/scripts/site.js" defer></script></head><body>' +
+    '<script src="/scripts/site.js" defer></script></head><body id="page-top" tabindex="-1">' +
     (noindex ? '' : header(p.url)) +
     '<main id="main">' + p.body + '</main>' +
     (noindex ? '' : footer()) +
+    '<a class="back-to-top" href="#page-top" aria-label="العودة إلى أعلى الصفحة" data-back-to-top hidden>'+ico('arrow')+'</a>' +
     '</body></html>';
 }
 
@@ -640,7 +630,7 @@ const cssFile=path.join(OUT,'styles','agency.css');
 const [pruned]=await new PurgeCSS().purge({
  content:[...htmlTargets,{raw:fs.readFileSync(path.join(ROOT,'src','client.js'),'utf8'),extension:'js'}],
  css:[{raw:optimizedCss}],
- safelist:{standard:['open',/^clinic-intro-/,/^clinic-image-/,/^clinic-in-view$/]},
+ safelist:{standard:['open',/^back-to-top$/,/^clinic-image-/,/^clinic-in-view$/]},
  keyframes:false,fontFace:false
 });
 const finalCss=(await transform(pruned.css,{loader:'css',minify:true,target:'es2020'})).code;
