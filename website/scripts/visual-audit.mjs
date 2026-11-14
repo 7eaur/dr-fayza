@@ -140,7 +140,7 @@ for(const width of [390,1280]){
   await page.screenshot({path:path.join(out,width+'__logo-motion.png'),animations:'allow'});
   await page.waitForFunction(()=>document.querySelector('.header .logo>img')?.dataset.logoMotion==='complete');
   await page.goto(base+'/services/',{waitUntil:'load'});
-  if(scenario!=='blocked-storage'&&await page.locator('[data-logo-motion]').count())report.errors.push({width,issue:'Header logo animation repeated'});
+  if(await page.locator('[data-logo-motion]').count())report.errors.push({width,issue:'Header logo animation repeated'});
  }catch(error){report.errors.push({width,issue:'Header logo motion check: '+String(error)})}
  finally{await context.close()}
 }
