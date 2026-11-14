@@ -140,8 +140,7 @@
 
 ## 8. مراجع المشروع
 
-- [معيار هندسة وتصميم الموقع](WEBSITE_STANDARD.md)
-- [نظام التوثيق والتحديث](DOCUMENTATION_SYSTEM.md)
+- [تطوير الموقع والتحقق منه](DEVELOPMENT.md)
 - [دليل الهوية البصرية](../brand/guidelines/VISUAL_IDENTITY.md)
 - [مرجع الافتتاح والعروض](../campaigns/opening/README.md)
 

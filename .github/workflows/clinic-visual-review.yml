@@ -1,11 +1,9 @@
 name: Clinic Design Visual QA
 on:
   push:
-    branches:
-      - release/clinic-unified-20261112
-      - main
-      - fix/clinic-layout-performance-20261114
-      - fix/clinic-content-seo-20261114
+    branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
