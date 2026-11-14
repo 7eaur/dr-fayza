@@ -45,6 +45,20 @@ for(const slug of medicalSlugs){
  if(!serviceHtml.includes('href="/services/'+slug+'/')) issues.push('Medical service absent from services: '+slug);
 }
 if(!serviceHtml.includes('id="diagnostics"')) issues.push('Diagnostics section not embedded into medical services');
+
+if(!serviceHtml.includes('id="services-list"') || !serviceHtml.includes('clinic-services-directory__grid')) issues.push('Services card directory missing');
+if((serviceHtml.match(/class="clinic-services-card"/g)||[]).length!==6) issues.push('Service directory must have six clear cards');
+if(!serviceHtml.includes('id="surgical-care"') || !serviceHtml.includes('جراحات الرحم والأورام الليفية')) issues.push('Surgical procedures guide missing');
+if(!serviceHtml.includes('استفسري عن توفر') && !serviceHtml.includes('التأكد من توفرها')) issues.push('Procedure availability note missing');
+if(!serviceHtml.includes('clinic-diagnostics__grid')) issues.push('Condensed diagnostics cards missing');
+if(serviceHtml.includes('استقبال الحالات الطارئة وحالات الولادة والعمليات على مدار 24 ساعة')) issues.push('Unverified general 24-hour claim');
+for(const slug of ['pregnancy','womens-health','fertility','ultrasound','maternity','cosmetic']){
+ const detailHtml=fs.readFileSync(path.join(root,'services',slug,'index.html'),'utf8');
+ if(!detailHtml.includes('clinic-detail-overview__scope')) issues.push('Missing expanded scope details: '+slug);
+ if(!detailHtml.includes('clinic-detail-contact')) issues.push('Missing direct contact on detail page: '+slug);
+ if(!detailHtml.includes('clinic-questions__list')) issues.push('Missing preparation questions: '+slug);
+}
+
 if(!serviceHtml.includes('فحوصات مخبرية تدعم التقييم')) issues.push('Lab information missing from medical services');
 if(!serviceHtml.includes('التصوير الطبي عندما يلزم')) issues.push('Sonography information missing from medical services');
 if(pages.includes('diagnostics/index.html')) issues.push('Old diagnostics page must not be generated');
