@@ -1196,8 +1196,9 @@ html.clinic-intro-active .clinic-brand-intro__line{
   animation:clinic-intro-line .78s cubic-bezier(.22,.7,.2,1) .34s both
 }
 @keyframes clinic-intro-symbol{
-  from{opacity:1;clip-path:inset(0 100% 0 0)}
-  to{opacity:1;clip-path:inset(0 72% 0 0)}
+  0%{opacity:1;clip-path:inset(0 100% 0 0);transform:translateX(36%)}
+  42%{opacity:1;clip-path:inset(0 72% 0 0);transform:translateX(36%)}
+  100%{opacity:1;clip-path:inset(0 72% 0 0);transform:translateX(0)}
 }
 @keyframes clinic-intro-name{
   from{opacity:1;clip-path:inset(0 0 0 100%)}
