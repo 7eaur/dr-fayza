@@ -28,7 +28,7 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
 .heading h2,.section-intro h2,.agency-section-head h2 { letter-spacing: -.035em; line-height: 1.34; }
 .page-head { background: #f4f8f7; padding: clamp(35px,5vw,70px) 0; }
 .page-head-grid { grid-template-columns: minmax(0,1.3fr) minmax(220px,.55fr); gap: 40px; }
-.page-head h1 { font-size: clamp(30px,4vw,52px); max-width: 17ch; }
+.page-head h1 { font-size: clamp(30px,4vw,52px); max-width: none; }
 .page-head p { max-width: 55ch; }
 .page-art { height: 180px; border-radius: 18px; box-shadow: none; background: #e1f1eb; }
 .page-art img { object-fit: contain; }
@@ -45,7 +45,7 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
 .agency-hero__intro { max-width: 820px; }
 .agency-hero__eyebrow { display: inline-flex; align-items: center; gap: 9px; flex-wrap: wrap; color: #12685d; font-size: 13px; font-weight: 700; letter-spacing: .015em; }
 .agency-hero__dot { display: inline-block; inline-size: 8px; block-size: 8px; border-radius: 50%; background: #45a18e; }
-.agency-hero h1 { max-width: 16ch; margin: 19px 0 19px; font-weight: 700; font-size: clamp(36px,5.6vw,76px); line-height: 1.28; letter-spacing: -.05em; color: #0c495c; text-wrap: balance; }
+.agency-hero h1 { max-width: 16ch; margin: 19px 0 19px; font-weight: 700; font-size: clamp(36px,5.6vw,76px); line-height: 1.28; letter-spacing:normal; color: #0c495c; text-wrap: balance; }
 .agency-hero h1 span { color: #186b66; }
 .agency-hero__lead { font-size: clamp(16px,1.6vw,19px); max-width: 62ch; margin: 0 0 24px; line-height: 1.95; color: #526b71; }
 .agency-hero__actions { display: flex; align-items: center; gap: 11px; flex-wrap: wrap; }
@@ -78,7 +78,7 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
 .agency-needs__icon .ico { width: 18px; height: 18px; }
 .agency-needs__grid a:hover { background: #f3faf6; }
 .agency-section-head { display: flex; justify-content: space-between; align-items: end; gap: 30px; margin-bottom: 29px; }
-.agency-section-head h2 { max-width: 22ch; font-size: clamp(29px,3.2vw,43px); margin: 0 0 10px; color: #0c495c; }
+.agency-section-head h2 { max-width: none; font-size: clamp(26px,2.8vw,36px); margin: 0 0 10px; color: #0c495c; }
 .agency-section-head p { max-width: 65ch; color: #526b71; margin: 0; font-size: 15px; }
 .agency-text-link { white-space: nowrap; padding-bottom: 8px; }
 .agency-services { background: #fff; }
@@ -90,8 +90,8 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
 .agency-services__cards .card p { font-size: 13px; margin: 0; line-height: 1.75; color: #526b71; }
 .agency-services__cards .card .more { font-size: 12px; margin-top: 5px; }
 .agency-doctor { background: #f4f8f7; }
-.agency-doctor__grid { display: grid; grid-template-columns: minmax(0,1.15fr) minmax(0,.85fr); align-items: center; gap: clamp(30px,6vw,100px); }
-.agency-doctor__content h2 { max-width: 17ch; margin-bottom: 19px; font-size: clamp(31px,3.8vw,50px); line-height: 1.36; color: #0c495c; }
+.agency-doctor__grid { display: grid; grid-template-columns: minmax(0,1.15fr) minmax(0,.85fr); align-items: center; gap: clamp(24px,3vw,44px); }
+.agency-doctor__content h2 { text-wrap:balance; max-width: none; margin-bottom: 19px; font-size: clamp(28px,2.9vw,38px); line-height: 1.36; color: #0c495c; }
 .agency-doctor__content p { max-width: 63ch; color: #526b71; font-size: 16px; }
 .agency-doctor__content .button { margin-top: 12px; }
 .agency-doctor__credentials { position: relative; overflow: hidden; border: 1px solid #d5e8e1; border-radius: 20px; padding: 34px; background: #fff; }
@@ -116,7 +116,7 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
 .agency-guides .tiles { gap: 16px; }
 .agency-guides .tile { border-radius: 16px; }
 .agency-guides .tile-visual { height: 180px; }
-.agency-visit__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px,6vw,100px); }
+.agency-visit__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px,3vw,44px); }
 .agency-visit__address h2 { font-size: clamp(32px,4vw,49px); color: #0c495c; }
 .agency-visit__address>p { font-size: 17px; max-width: 44ch; }
 .agency-visit__detail { display: flex; gap: 12px; padding: 20px 0; border-top: 1px solid #e0ece7; border-bottom: 1px solid #e0ece7; margin-block: 23px; }
@@ -132,7 +132,7 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
 .agency-profile__lead { color: #12685d; font-size: clamp(18px,2vw,24px); font-weight: 700; }
 .agency-profile__intro>p:last-child { color: #526b71; max-width: 62ch; font-size: 17px; }
 .agency-profile__grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(24px,5vw,70px); align-items: start; }
-.agency-profile__story h2 { color: #0c495c; max-width: 22ch; font-size: 34px; }
+.agency-profile__story h2 { color: #0c495c; max-width: none; font-size: 34px; }
 .agency-profile__story p { font-size: 17px; color: #526b71; }
 .agency-profile__credentials { border: 1px solid #dceae4; background: #f7fbf9; border-radius: 18px; padding: 26px; }
 .agency-profile__credentials h2 { color: #0c495c; font-size: 25px; }
@@ -224,7 +224,7 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
 /* Agency interior pages: distinct editorial composition and mobile-first surfaces */
 .agency-page-intro { background: #f4f8f7; padding: clamp(36px,5vw,72px) 0; border-bottom: 1px solid #e0ece7; }
 .agency-page-intro .breadcrumbs { margin-bottom: 19px; }
-.agency-page-intro h1 { max-width: 20ch; color: #0c495c; font-size: clamp(32px,4.6vw,57px); line-height: 1.34; letter-spacing: -.04em; margin-bottom: 13px; }
+.agency-page-intro h1 { max-width: 20ch; color: #0c495c; font-size: clamp(32px,4.6vw,57px); line-height: 1.34; letter-spacing:normal; margin-bottom: 13px; }
 .agency-page-intro p { max-width: 63ch; color: #526b71; font-size: 17px; margin-bottom: 0; }
 .agency-services-page .agency-section-head { margin-bottom: 25px; }
 .agency-services-page .agency-section-head h2 { font-size: clamp(25px,3vw,36px); }
@@ -240,7 +240,7 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
 .agency-faq-page__contact p { font-size: 14px; color: #526b71; }
 .agency-faq-page__contact .button { display: flex; width: 100%; margin-top: 9px; }
 .agency-contact__grid { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(260px,.7fr); gap: clamp(35px,6vw,85px); align-items: center; }
-.agency-contact h2 { max-width: 16ch; color: #0c495c; font-size: clamp(28px,3.8vw,45px); }
+.agency-contact h2 { max-width:none; color:#0c495c; font-size:clamp(26px,2.6vw,35px); line-height:1.5; margin-bottom:14px; text-wrap:pretty; }
 .agency-contact__grid>div>p { font-size: 16px; color: #526b71; max-width: 59ch; }
 .agency-contact__actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
 .agency-contact__privacy { font-size: 12px!important; margin: 14px 0 0; max-width: 66ch; }
@@ -434,7 +434,7 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
 .clinic-hero__shell { display:grid; gap:14px; padding:20px 16px 16px; border:1px solid #dceae4; border-radius:19px; background:radial-gradient(circle at 50% 60%,rgba(69,161,142,.09),transparent 47%),linear-gradient(180deg,#fff,#f4f9f6); box-shadow:0 12px 30px rgba(12,73,92,.06); overflow:hidden; }
 .clinic-hero__copy { text-align:center; }
 .clinic-hero__kicker { display:inline-flex; align-items:center; justify-content:center; gap:8px; color:#237969; font-size:12px; font-weight:700; }
-.clinic-hero h1 { max-width:none; margin:8px auto 10px; color:#0c495c; font-size:clamp(30px,8.6vw,45px); line-height:1.3; letter-spacing:-.035em; }
+.clinic-hero h1 { max-width:none; margin:8px auto 10px; color:#0c495c; font-size:clamp(30px,8.6vw,45px); line-height:1.3; letter-spacing:normal; }
 .clinic-hero h1 span { color:#268374; }
 .clinic-hero__copy >p { max-width:58ch; margin:0 auto; font-size:14px; line-height:1.85; color:#526b71; }
 .clinic-hero__visual { overflow:hidden; border-radius:15px; background:#eaf5f1; }
@@ -485,11 +485,11 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
 .visually-hidden { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 @media(min-width:681px) {
  .clinic-hero { padding:14px 0 16px; }
- .clinic-hero__shell { grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:14px 30px; align-items:center; padding:28px; }
+ .clinic-hero__shell { grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr); gap:14px 24px; align-items:center; padding:28px; }
  .clinic-hero__visual { grid-column:1; grid-row:1/4; border-radius:18px; }
  .clinic-hero__copy { grid-column:2; grid-row:1; text-align:start; align-self:end; }
  .clinic-hero__kicker { justify-content:flex-start; }
- .clinic-hero h1 { margin:11px 0; font-size:clamp(34px,4.1vw,60px); }
+ .clinic-hero h1 { margin:11px 0; font-size:clamp(30px,3.5vw,46px); }
  .clinic-hero__copy>p { font-size:15px; margin:0; }
  .clinic-hero__actions { grid-column:2; grid-row:2; display:flex; flex-wrap:wrap; }
  .clinic-hero__actions .button { width:auto; }
@@ -517,13 +517,13 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
  .clinic-birth h2 { font-size:16px; }
  .clinic-birth p { font-size:11px; }
  .clinic-birth .agency-birth__inner>.button { grid-column:2; justify-self:start; min-height:36px; font-size:11px; padding:7px 10px; }
- .clinic-process__timeline h3 { font-size:11px; }
- .clinic-process__timeline p { font-size:10px; }
+ .clinic-process__timeline h3 { font-size:15px; }
+ .clinic-process__timeline p { font-size:13px; }
 }
 @media(max-width:360px) {
  .clinic-hero__shell { padding:16px 12px; }
  .clinic-hero__features li { font-size:10px; padding-inline:2px; }
- .clinic-process__timeline p { font-size:9px; }
+ .clinic-process__timeline p { font-size:13px; }
  .clinic-footer__contact { grid-template-columns:1fr; }
 }
 
@@ -534,7 +534,7 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
 .clinic-inner-hero__copy{padding:15px 1px 0;text-align:start;min-width:0}
 .clinic-inner-hero__copy .breadcrumbs{margin-bottom:13px;color:#718b8c;font-size:12px}
 .clinic-inner-hero__copy .kicker{font-size:12px;background:#e9f5f0;padding:4px 11px;border-radius:100px;margin:0 0 10px}
-.clinic-inner-hero h1{max-width:21ch;margin:0 0 11px;font-size:clamp(29px,8vw,42px);font-weight:700;line-height:1.3;color:#0c495c;letter-spacing:-.03em}
+.clinic-inner-hero h1{max-width:none;margin:0 0 11px;font-size:clamp(29px,8vw,42px);font-weight:700;line-height:1.3;color:#0c495c;letter-spacing:normal}
 .clinic-inner-hero__copy>p{max-width:57ch;margin:0;font-size:14px;line-height:1.9;color:#526b71}
 .clinic-inner-hero__visual{aspect-ratio:16/8.6;overflow:hidden;background:#eaf3ef;margin-inline:-22px}
 .clinic-inner-hero__visual img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
@@ -579,10 +579,10 @@ body { background: #fff; font-size: 16px; line-height: 1.83; }
 .agency-privacy{padding-block:clamp(26px,4vw,52px)}
 @media(min-width:681px){
   .clinic-inner-hero{padding:12px 0 22px}
-  .clinic-inner-hero__grid{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(20px,5vw,60px);align-items:center;background:#f8fbf9;border:1px solid #dceae4;border-radius:17px;padding:clamp(16px,2.5vw,28px)}
+  .clinic-inner-hero__grid{grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr);gap:24px;align-items:center;background:#f8fbf9;border:1px solid #dceae4;border-radius:17px;padding:clamp(16px,2.5vw,28px)}
   .clinic-inner-hero__copy{grid-column:2;grid-row:1;padding:0}
-  .clinic-inner-hero__visual{grid-column:1;grid-row:1;border-radius:13px;margin:0;aspect-ratio:16/11}
-  .clinic-inner-hero h1{font-size:clamp(33px,3.6vw,52px)}
+  .clinic-inner-hero__visual{grid-column:1;grid-row:1;border-radius:13px;margin:0;aspect-ratio:16/9}
+  .clinic-inner-hero h1{font-size:clamp(29px,2.8vw,39px)}
   .clinic-inner-hero__copy>p{font-size:15px}
 }
 @media(max-width:680px){
@@ -1044,12 +1044,12 @@ body,.clinic-hero,.agency-services,.agency-visit,.clinic-inner-hero,
 .agency-services+.agency-doctor,.agency-guides+.clinic-visit{border-top:1px solid #f0f4f2}
 .section .heading,.section .agency-section-head{margin-bottom:clamp(16px,2.4vw,30px)}
 .clinic-footer{margin-top:0}
-@keyframes clinic-fade-up{from{opacity:.45;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.clinic-in-view{animation:clinic-fade-up .55s cubic-bezier(.2,.8,.25,1) both}
+@keyframes clinic-fade-up{from{opacity:.75;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.clinic-in-view{animation:clinic-fade-up .36s cubic-bezier(.2,.8,.25,1) both}
 button,.button,a.card,a.tile,.clinic-service-feature,.clinic-service-row,.clinic-diagnostics-feature{transition:transform .22s ease,box-shadow .22s ease,background-color .22s ease,border-color .22s ease,color .22s ease}
 @media(hover:hover){.button:hover{transform:translateY(-1px)}.clinic-service-row:hover{transform:translateX(-2px)}}
 :focus-visible{outline:3px solid #18836f;outline-offset:3px}
-.agency-contact__grid{align-items:stretch;gap:clamp(20px,4vw,56px)}
+.agency-contact__grid{align-items:start;gap:clamp(20px,3vw,40px)}
 .agency-contact__hours{background:#f5faf8!important;border:1px solid #d7e7df;color:#0c495c!important;border-radius:19px;padding:clamp(21px,3vw,30px);box-shadow:0 8px 24px rgba(12,73,92,.045)}
 .agency-contact__hours-head{display:flex;align-items:center;gap:12px;margin-bottom:15px}
 .agency-contact__hours-icon{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:12px;background:#0c495c;color:#fff}
@@ -1083,21 +1083,6 @@ button,.button,a.card,a.tile,.clinic-service-feature,.clinic-service-row,.clinic
 }
 
 
-/* Immediate local header branding: an accent draws under the already-visible image.
-   No fullscreen splash, opacity fade, navigation delay, or extra image request. */
-.header .logo{position:relative;isolation:isolate}
-.header .logo img{opacity:1!important;visibility:visible!important;transform:none!important}
-.header .logo::after{
- content:"";position:absolute;bottom:0;inset-inline:14% 14%;
- height:2px;border-radius:99px;background:#45a18e;pointer-events:none;
- transform-origin:right;animation:clinic-header-line .38s ease-out both;
-}
-@keyframes clinic-header-line{
- 0%{opacity:0;transform:scaleX(0)}
- 50%{opacity:.8;transform:scaleX(1)}
- 100%{opacity:0;transform:scaleX(1)}
-}
-@media(prefers-reduced-motion:reduce){.header .logo::after{animation:none;display:none}}
 @media(hover:none){.clinic-service-feature:hover,.agency-services__cards .card:hover{transform:none}}
 
 
@@ -1110,7 +1095,7 @@ button,.button,a.card,a.tile,.clinic-service-feature,.clinic-service-row,.clinic
 .clinic-contact-hero__copy .breadcrumbs{align-self:flex-start;display:flex;gap:8px;align-items:center;max-width:100%;margin-bottom:12px;font-size:12px;color:#294f59}
 .clinic-contact-hero__copy .breadcrumbs a,.clinic-contact-hero__copy .breadcrumbs span{color:#294f59;opacity:1}
 .clinic-contact-hero__copy .kicker{background:rgba(255,255,255,.9);color:#0c665d;border:1px solid #d4e9e2;border-radius:100px;padding:4px 12px;font-size:12px}
-.clinic-contact-hero h1{font-size:clamp(27px,3.1vw,40px);line-height:1.3;letter-spacing:-.025em;font-weight:700;color:#0c495c;max-width:17ch;margin:9px 0 8px;text-wrap:balance}
+.clinic-contact-hero h1{font-size:clamp(27px,3.1vw,40px);line-height:1.3;letter-spacing:normal;font-weight:700;color:#0c495c;max-width:none;margin:9px 0 8px;text-wrap:balance}
 .clinic-contact-hero__copy>p{font-size:clamp(12px,1.15vw,14px);max-width:40ch;line-height:1.7;margin:0;color:#345963}
 
 /* The map is a compact directions image, not a giant scroll surface. */
@@ -1162,48 +1147,74 @@ button,.button,a.card,a.tile,.clinic-service-feature,.clinic-service-row,.clinic
  .clinic-contact-hero h1{font-size:24px}
 }
 
-/* Single-source progressive logo reveal.
- * The original logo is one image, created by JS only after current CSS
- * and the image are ready. A missing/stale stylesheet shows no intro markup.
- */
-:root{--clinic-logo-reveal-ready:v2}
-.clinic-logo-reveal{
-  position:fixed;inset:0;z-index:9998;display:grid;place-items:center;
-  padding:20px;background:#fff;isolation:isolate;cursor:pointer;
-  animation:clinic-logo-reveal-exit .32s ease-in-out 1.24s both
+
+/* Shared reading widths and image states. Text stays visible with or without JS. */
+.agency-section-head>div,.agency-doctor__content,.agency-contact__grid>div{min-width:0}
+h1,h2,h3{overflow-wrap:break-word}
+.clinic-doctor-name span{display:inline-block;white-space:nowrap}
+.agency-doctor__credentials h3{max-width:none}
+.clinic-inner-hero--text .clinic-inner-hero__grid{display:block;padding:clamp(20px,3vw,32px)}
+.clinic-inner-hero--text .clinic-inner-hero__copy{max-width:none}
+.clinic-inner-hero--text h1{margin-block:8px 10px}
+.clinic-inner-hero--text .clinic-inner-hero__copy>p{max-width:75ch}
+.clinic-inner-hero__visual{margin-inline:0;position:relative;border-radius:13px}
+.clinic-hero__visual,.clinic-services-hero__image,.tile-visual{position:relative}
+.clinic-image-note{position:absolute;inset-inline-start:10px;bottom:10px;max-width:calc(100% - 20px);background:#fffffff2;color:#294f59;border:1px solid #dce9e4;border-radius:6px;padding:3px 8px;font-size:12px;line-height:1.6}
+main img{transition:opacity .24s ease}
+.clinic-image-loading{opacity:.35}
+.clinic-image-ready{opacity:1}
+.clinic-image-retry{display:block;position:relative;margin:8px auto;padding:8px 12px;max-width:100%;border:1px solid #b6d3c9;border-radius:8px;background:#fff;color:#0c495c;font-size:13px}
+.clinic-services-hero__grid{gap:24px}
+.clinic-services-directory__heading{align-items:start}
+@media(min-width:681px){
+ .clinic-inner-hero__grid{min-height:0}
+ .clinic-inner-hero__copy>p{max-width:none}
+ .clinic-services-hero__grid{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}
+ .clinic-services-hero h1{max-width:none;font-size:clamp(28px,3vw,40px)}
+ .clinic-services-hero__image{aspect-ratio:16/10}
+ .clinic-services-hero__image img{height:100%;object-fit:cover}
+ .agency-contact__grid{grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr)}
 }
-.clinic-logo-reveal[hidden]{display:none!important}
-.clinic-logo-reveal__mark{
-  position:relative;width:min(84vw,435px);aspect-ratio:1580/470;contain:layout paint
+@media(max-width:680px){
+ .clinic-hero h1{font-size:clamp(28px,7.7vw,36px);line-height:1.45;text-wrap:pretty}
+ .clinic-inner-hero h1{max-width:none;line-height:1.5;text-wrap:pretty}
+ .clinic-inner-hero__copy{padding-top:12px}
+ .clinic-inner-hero__visual{aspect-ratio:16/9}
+ .clinic-inner-hero__copy>p,.clinic-contact-hero__copy>p{font-size:14px;line-height:1.9}
+ .clinic-process__timeline{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 14px}
+ .clinic-process__timeline::before{display:none}
+ .clinic-process__timeline h3{font-size:15px}
+ .clinic-process__timeline p{font-size:13px;line-height:1.8}
+ .agency-section-head h2,.agency-doctor__content h2{font-size:27px;line-height:1.5}
+ .clinic-image-note{font-size:12px;bottom:7px;inset-inline-start:7px}
+ .clinic-services-directory__heading>p{max-width:none}
+ .clinic-contact-hero h1{line-height:1.5}
 }
-.clinic-logo-reveal__image{
-  display:block;width:100%;height:100%;object-fit:contain;
-  opacity:1;clip-path:inset(0 100% 0 0);
-  animation:clinic-logo-reveal-image 1.12s cubic-bezier(.22,.7,.2,1) both
-}
-.clinic-logo-reveal__line{
-  position:absolute;bottom:-8px;left:19%;right:19%;height:2px;
-  background:#45a18e;border-radius:2px;opacity:0;transform:scaleX(0);
-  transform-origin:right;animation:clinic-logo-reveal-line .78s ease .32s both
-}
-@keyframes clinic-logo-reveal-image{
-  0%{clip-path:inset(0 100% 0 0);transform:translateX(36%)}
-  27%{clip-path:inset(0 72% 0 0);transform:translateX(36%)}
-  44%{clip-path:inset(0 72% 0 0);transform:translateX(0)}
-  88%,100%{clip-path:inset(0 0 0 0);transform:translateX(0)}
-}
-@keyframes clinic-logo-reveal-line{
-  0%{opacity:1;transform:scaleX(0)}
-  78%{opacity:1;transform:scaleX(1)}
-  100%{opacity:0;transform:scaleX(1)}
-}
-@keyframes clinic-logo-reveal-exit{
-  from{opacity:1;visibility:visible}
-  to{opacity:0;visibility:hidden}
-}
-@media(max-width:600px){
-  .clinic-logo-reveal__mark{width:min(88vw,390px)}
-}
+@media(max-width:360px){.clinic-doctor-name{font-size:26px!important}}
+
+/* Native navigation starts immediately. Unsupported browsers keep normal navigation. */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:clinic-page-out .12s ease both}
+::view-transition-new(root){animation:clinic-page-in .18s ease-out both}
+@keyframes clinic-page-out{to{opacity:0}}
+@keyframes clinic-page-in{from{opacity:.6;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){
-  .clinic-logo-reveal{display:none!important;animation:none!important}
+ @view-transition{navigation:none}
+ ::view-transition-old(root),::view-transition-new(root){animation:none!important}
+ main img{transition:none}
 }
+
+
+
+/* The stylesheet sentinel enables optional motion only when current CSS loaded.
+   The existing header logo is animated directly; no duplicate image or overlay. */
+:root{--clinic-motion-ready:1}
+.back-to-top{position:fixed;inset-inline-end:max(18px,env(safe-area-inset-left));bottom:calc(22px + env(safe-area-inset-bottom));z-index:35;display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#0c495c;color:#fff;border:1px solid #ffffff80;box-shadow:0 4px 14px #0c495c26;touch-action:manipulation}
+.back-to-top[hidden]{display:none}
+.back-to-top .ico{width:23px;height:23px;transform:rotate(90deg)}
+.back-to-top:not([hidden]){animation:clinic-page-in .18s ease-out both}
+.back-to-top:hover{background:#12685d}
+.back-to-top:focus-visible{outline:3px solid #18836f;outline-offset:4px}
+#page-top:focus{outline:none}
+@media(prefers-reduced-motion:reduce){.back-to-top:not([hidden]){animation:none}}
+@media print{.back-to-top{display:none!important}}

@@ -8,7 +8,8 @@
     "check": "node --check build.mjs && node --check check.mjs"
   },
   "dependencies": {
-    "sharp": "0.35.5",
-    "esbuild": "0.25.12"
+    "esbuild": "0.25.12",
+    "purgecss": "9.1.0",
+    "sharp": "0.35.5"
   }
 }

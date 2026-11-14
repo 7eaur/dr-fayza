@@ -7,15 +7,8 @@ const base = (process.env.CLINIC_PREVIEW_URL || 'https://dr-fayza-git-design-age
 const out = path.resolve('visual-audit');
 fs.mkdirSync(out, { recursive: true });
 
-const allRoutes = [
-  '/', '/about/', '/services/',
-  '/services/pregnancy/', '/services/womens-health/', '/services/fertility/',
-  '/services/ultrasound/', '/services/maternity/', '/services/cosmetic/',
-  '/services/#diagnostics', '/guides/',
-  '/guides/pregnancy-care/', '/guides/womens-visit/',
-  '/guides/fertility-consultation/', '/guides/ultrasound-guide/',
-  '/faq/', '/contact/', '/missing-page-test'
-];
+const allRoutes = [...fs.readFileSync('dist/sitemap.xml','utf8').matchAll(/<loc>[^<]+<\/loc>/g)].map(x=>new URL(x[0].slice(5,-6)).pathname);
+allRoutes.push('/services/#diagnostics','/missing-page-test');
 const configs = [
   { width: 320, height: 700, routes: ['/', '/about/', '/services/pregnancy/', '/contact/'] },
   { width: 360, height: 800, routes: ['/', '/contact/'] },
@@ -86,7 +79,7 @@ for (const config of configs) {
       if (is404 && (!entry.hasSimple404 || entry.hasLoader)) report.errors.push({ width: config.width, route, issue:'Missing simple 404 or loader incorrectly displayed' });
       if (entry.hasLoader) report.errors.push({width:config.width,route,issue:'Full-screen loader should not block page'});
       if(!is404&&!entry.headerLogoReady)report.errors.push({width:config.width,route,issue:'Header logo not ready at load'});
-      if(!is404&&entry.cssSheets.filter(x=>x.startsWith('/styles/')).length!==1)report.errors.push({width:config.width,route,issue:'Expected one combined local stylesheet',sheets:entry.cssSheets});
+      if(!is404&&entry.cssSheets.filter(x=>x.includes('/styles/')).length!==1)report.errors.push({width:config.width,route,issue:'Expected one combined local stylesheet',sheets:entry.cssSheets});
       if (!is404 && entry.status !== 200) report.errors.push({ width: config.width, route, issue: 'HTTP ' + entry.status });
       if (is404 && entry.status !== 404) report.errors.push({ width: config.width, route, issue: '404 status incorrect: ' + entry.status });
       if (entry.h1Count !== 1 || !entry.main || entry.lang !== 'ar' || entry.dir !== 'rtl') report.errors.push({ width: config.width, route, issue: 'Semantic document structure mismatch', entry });
@@ -135,47 +128,36 @@ for (const config of configs) {
   await context.close();
 }
 
-// One-image first visit: no triple logo, repeats, or overlays without CSS.
-const revealCheck=async width=>{
+// Header-only logo motion: exactly one original image, no overlays to leak.
+for(const width of [390,1280]){
  const context=await browser.newContext({viewport:{width,height:844},locale:'ar-YE'});
  const page=await context.newPage();
  try{
-  await page.goto(base+'/contact/',{waitUntil:'domcontentloaded',timeout:30000});
-  await page.waitForSelector('.clinic-logo-reveal',{timeout:3000});
-  const images=await page.locator('.clinic-logo-reveal img').count();
-  if(images!==1)report.errors.push({width,issue:'Intro must contain exactly one logo image; got '+images});
-  await page.waitForTimeout(380);
-  await page.screenshot({path:path.join(out,width+'__logo-intro.png'),animations:'allow'});
-  await page.waitForTimeout(650);
-  await page.screenshot({path:path.join(out,width+'__logo-finished.png'),animations:'allow'});
-  await page.waitForFunction(()=>!document.querySelector('.clinic-logo-reveal'),null,{timeout:3000});
-  const seen=await page.evaluate(()=>localStorage.getItem('dr-fayza-intro-v2'));
-  if(seen!=='seen')report.errors.push({width,issue:'Brand intro not persisted'});
-  await page.goto(base+'/services/',{waitUntil:'domcontentloaded'});
-  await page.waitForTimeout(160);
-  if(await page.locator('.clinic-logo-reveal').count())report.errors.push({width,issue:'Intro repeated on next page'});
- }catch(e){report.errors.push({width,issue:'One-image intro QA: '+String(e)})}finally{await context.close()}
-};
-await revealCheck(390);
-await revealCheck(1280);
-const noStyleContext=await browser.newContext({viewport:{width:390,height:844},locale:'ar-YE'});
-const noStylePage=await noStyleContext.newPage();
-try{
- await noStylePage.route('**/styles/agency.css*',route=>route.fulfill({status:200,contentType:'text/css',body:'body{font-family:sans-serif}'}));
- await noStylePage.goto(base+'/',{waitUntil:'domcontentloaded',timeout:30000});
- await noStylePage.waitForTimeout(1100);
- const stray=await noStylePage.locator('.clinic-logo-reveal, .clinic-brand-intro, [data-clinic-brand-intro]').count();
- if(stray)report.errors.push({width:390,issue:'An unstyled logo loader leaked into the page'});
- const logoImgs=await noStylePage.locator('body > img').count();
- if(logoImgs)report.errors.push({width:390,issue:'Stray logo image visible on bare page'});
-}catch(e){report.errors.push({width:390,issue:'Stale/missing stylesheet QA failed: '+String(e)})}finally{await noStyleContext.close()}
-const reduceContext=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
-const reducePage=await reduceContext.newPage();
-try{
- await reducePage.goto(base+'/',{waitUntil:'domcontentloaded'});
- await reducePage.waitForTimeout(140);
- if(await reducePage.locator('.clinic-logo-reveal').count())report.errors.push({width:390,issue:'Reveal shown under reduced-motion'});
-}catch(e){report.errors.push({issue:'Reduced-motion QA failed: '+String(e)})}finally{await reduceContext.close()}
+  await page.goto(base+'/contact/',{waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>['running','complete'].includes(document.querySelector('.header .logo>img')?.dataset.logoMotion));
+  if(await page.locator('.header .logo img').count()!==1)report.errors.push({width,issue:'Duplicate header logo'});
+  if(await page.locator('.clinic-logo-reveal,[data-clinic-brand-intro],body>img').count())report.errors.push({width,issue:'An overlay or stray image was injected'});
+  await page.screenshot({path:path.join(out,width+'__logo-motion.png'),animations:'allow'});
+  await page.waitForFunction(()=>document.querySelector('.header .logo>img')?.dataset.logoMotion==='complete');
+  await page.goto(base+'/services/',{waitUntil:'load'});
+  if(await page.locator('[data-logo-motion]').count())report.errors.push({width,issue:'Header logo animation repeated'});
+ }catch(error){report.errors.push({width,issue:'Header logo motion check: '+String(error)})}
+ finally{await context.close()}
+}
+for(const scenario of ['no-style','old-style','no-js','reduce','blocked-storage']){
+ const context=await browser.newContext({viewport:{width:390,height:844},javaScriptEnabled:scenario!=='no-js',reducedMotion:scenario==='reduce'?'reduce':'no-preference'});
+ const page=await context.newPage();
+ try{
+  if(scenario==='blocked-storage')await page.addInitScript(()=>{Storage.prototype.getItem=()=>{throw new Error('Storage unavailable')};Storage.prototype.setItem=()=>{throw new Error('Storage unavailable')};});
+  if(scenario==='old-style')await page.route('**/styles/agency.css*',r=>r.fulfill({status:200,contentType:'text/css',body:fs.readFileSync('dist/styles/agency.css','utf8').replace(/--clinic-motion-ready:1;?/g,'')}));
+  if(scenario==='no-style')await page.route('**/styles/agency.css*',r=>r.fulfill({status:200,contentType:'text/css',body:'body{font-family:sans-serif}'}));
+  await page.goto(base+'/',{waitUntil:'load'});
+  if(await page.locator('.header .logo img').count()!==1)report.errors.push({scenario,issue:'Header image duplicated'});
+  if(await page.locator('.clinic-logo-reveal,[data-clinic-brand-intro],body>img').count())report.errors.push({scenario,issue:'An unsafe logo layer appeared'});
+  if(scenario!=='blocked-storage'&&await page.locator('[data-logo-motion]').count())report.errors.push({scenario,issue:'Optional motion ran without a usable stylesheet / JS / motion preference'});
+ }catch(error){report.errors.push({scenario,issue:String(error)})}
+ finally{await context.close()}
+}
 
 // Simulated cold 4G samples provide a more useful mobile check than unthrottled CI localhost-style timings.
 const throttledSamples=[];
