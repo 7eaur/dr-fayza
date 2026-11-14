@@ -1075,11 +1075,9 @@ button,.button,a.card,a.tile,.clinic-service-feature,.clinic-service-row,.clinic
  .agency-contact__hours dl div{grid-template-columns:1fr;gap:2px;padding:13px 0}
  .agency-contact__hours dd{text-align:start;white-space:normal}
  .agency-contact__hours-head strong{font-size:19px}
- .clinic-loader img{width:62px;height:62px}
  .section .heading,.section .agency-section-head{margin-bottom:17px}
 }
 @media(prefers-reduced-motion:reduce){
- .clinic-loader{display:none!important}
  .clinic-in-view{animation:none!important}
  button,.button,a.card,a.tile,.clinic-service-feature,.clinic-service-row,.clinic-diagnostics-feature{transition:none!important}
 }
@@ -1163,3 +1161,59 @@ button,.button,a.card,a.tile,.clinic-service-feature,.clinic-service-row,.clinic
  .clinic-contact-hero__copy{padding:15px 16px}
  .clinic-contact-hero h1{font-size:24px}
 }
+
+
+/* Approved Signature Reveal pattern (Wasl Tech / Update Card), adapted for
+   the clinic's ORIGINAL logo. Its mark is on the LEFT in the source artwork.
+   First-visit only; the rest of the site stays unchanged and local. */
+.clinic-brand-intro{display:none;position:fixed;inset:0;z-index:9998;background:#fff;
+  padding:20px;place-items:center;isolation:isolate;opacity:1;touch-action:manipulation;cursor:pointer}
+html.clinic-intro-pending .clinic-brand-intro{
+  display:grid;animation:clinic-intro-pending-out .2s ease-out 2.8s both
+}
+html.clinic-intro-active .clinic-brand-intro{
+  display:grid;animation:clinic-intro-out .32s ease-in-out 1.23s both
+}
+.clinic-brand-intro__mark{position:relative;width:min(82vw,435px);aspect-ratio:1580/470;
+  contain:layout paint}
+.clinic-brand-intro__layer{position:absolute;inset:0;display:block;width:100%;height:100%;
+  object-fit:contain;opacity:0}
+html.clinic-intro-pending .clinic-brand-intro__layer--finished{
+  opacity:1;animation:clinic-intro-pending-logo .22s ease-out both
+}
+html.clinic-intro-active .clinic-brand-intro__layer--symbol{
+  animation:clinic-intro-symbol .72s cubic-bezier(.22,.7,.2,1) both
+}
+html.clinic-intro-active .clinic-brand-intro__layer--name{
+  animation:clinic-intro-name .69s cubic-bezier(.22,.7,.2,1) .40s both
+}
+html.clinic-intro-active .clinic-brand-intro__layer--finished{
+  animation:clinic-intro-finish .20s ease-out 1.04s both
+}
+.clinic-brand-intro__line{position:absolute;bottom:-8px;left:20%;right:20%;height:2px;
+  background:#45a18e;border-radius:2px;opacity:0;transform:scaleX(0);transform-origin:right}
+html.clinic-intro-active .clinic-brand-intro__line{
+  animation:clinic-intro-line .78s cubic-bezier(.22,.7,.2,1) .34s both
+}
+@keyframes clinic-intro-symbol{
+  from{opacity:1;clip-path:inset(0 100% 0 0)}
+  to{opacity:1;clip-path:inset(0 72% 0 0)}
+}
+@keyframes clinic-intro-name{
+  from{opacity:1;clip-path:inset(0 0 0 100%)}
+  to{opacity:1;clip-path:inset(0 0 0 28%)}
+}
+@keyframes clinic-intro-finish{from{opacity:0}to{opacity:1}}
+@keyframes clinic-intro-line{
+  0%{opacity:1;transform:scaleX(0)}
+  70%{opacity:1;transform:scaleX(1)}
+  100%{opacity:0;transform:scaleX(1)}
+}
+@keyframes clinic-intro-out,clinic-intro-pending-out{
+  from{opacity:1;visibility:visible}to{opacity:0;visibility:hidden}
+}
+@keyframes clinic-intro-pending-logo{
+  from{opacity:0;transform:scale(.99)}to{opacity:1;transform:scale(1)}
+}
+@media(max-width:600px){.clinic-brand-intro__mark{width:min(88vw,390px)}}
+@media(prefers-reduced-motion:reduce){.clinic-brand-intro{display:none!important}}
