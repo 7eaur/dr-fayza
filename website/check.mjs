@@ -55,6 +55,7 @@ if(serviceHtml.includes('استقبال الحالات الطارئة وحالا
 for(const slug of ['pregnancy','womens-health','fertility','ultrasound','maternity','cosmetic']){
  const detailHtml=fs.readFileSync(path.join(root,'services',slug,'index.html'),'utf8');
  if(!detailHtml.includes('clinic-detail-overview__scope')) issues.push('Missing expanded scope details: '+slug);
+ if(!detailHtml.includes('clinic-detail-overview__opening')) issues.push('Service introduction missing: '+slug);
  if(!detailHtml.includes('clinic-detail-contact')) issues.push('Missing direct contact on detail page: '+slug);
  if(!detailHtml.includes('clinic-questions__list')) issues.push('Missing preparation questions: '+slug);
 }
