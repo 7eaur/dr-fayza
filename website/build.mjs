@@ -314,6 +314,15 @@ const serviceScope = {
 };
 
 
+const serviceIntroHeadings = {
+ pregnancy: 'متابعة تناسب كل مرحلة من الحمل',
+ 'womens-health': 'رعاية لأعراض وأولويات مختلفة',
+ fertility: 'خطوات واضحة لفهم تأخر الإنجاب',
+ ultrasound: 'التصوير لدعم التقييم الطبي',
+ maternity: 'الاستعداد والاستقبال بوضوح',
+ cosmetic: 'تقييم الاحتياج قبل أي إجراء'
+};
+
 function detail(s) {
  const extra=careTopics[s.id];
  const questions=extra.questions.map(q=>'<li>'+ico('check')+'<span>'+q+'</span></li>').join('');
@@ -321,7 +330,7 @@ function detail(s) {
  const highlights=(serviceScope[s.id]||[]).map(x=>'<li>'+ico('check')+'<span>'+x+'</span></li>').join('');
  return pageHead('خدمات العيادة',s.name,s.desc,s.art,'compact')+
  '<section class="section clinic-detail-overview"><div class="container clinic-detail-overview__layout"><article class="clinic-detail-overview__story">'+
- '<span class="kicker">عن الخدمة</span><h2>'+s.name+'</h2><p class="clinic-detail-overview__opening">'+extra.opening+'</p>'+
+ '<span class="kicker">عن الخدمة</span><h2>'+serviceIntroHeadings[s.id]+'</h2><p class="clinic-detail-overview__opening">'+extra.opening+'</p>'+
  '<div class="clinic-detail-overview__topics"><h3>ما الذي تشملُه الاستشارة؟</h3><ul class="clinic-detail-overview__benefits">'+s.benefits.map(x=>'<li>'+ico('check')+'<span>'+x+'</span></li>').join('')+'</ul></div>'+
  '<div class="clinic-detail-overview__topics clinic-detail-overview__topics--scope"><h3>موضوعات وخدمات مرتبطة</h3><ul class="clinic-detail-overview__scope">'+highlights+'</ul><p class="clinic-detail-overview__scope-note">إجراء الفحوصات أو العمليات وتوفر التقنيات ومكان تقديمها يحدَّد بعد التقييم ويُؤكَّد مباشرة مع العيادة.</p></div>'+
  '<div class="clinic-detail-overview__audience"><strong>لمن قد تناسب؟</strong><p>'+s.who+'</p></div></article>'+
