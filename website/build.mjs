@@ -3,7 +3,6 @@ import path from 'node:path';
 import sharp from 'sharp';
 import { transform } from 'esbuild';
 import { createHash } from 'node:crypto';
-import { execFileSync } from 'node:child_process';
 import { PurgeCSS } from 'purgecss';
 
 const ROOT = process.cwd();
@@ -397,7 +396,11 @@ const pages = [
 const pageTitle = p => p.seoTitle || p.title + ' | ' + site.short + ' في ذمار';
 const socialImage = p => p.url === '/about/' ? '/assets/clinic-about-hero.webp'
   : p.url === '/contact/' ? '/assets/clinic-contact-hero.webp'
-  : p.article ? '/assets/generated/' + p.article.image : '/assets/clinic-social-card.png';
+  : p.article ? '/assets/generated/' + p.article.image : '/assets/clinic-about-hero.webp';
+const socialMetadata = new Map();
+for (const image of new Set(pages.map(socialImage))) {
+  socialMetadata.set(image, await sharp(path.join(ROOT,image.slice(1))).metadata());
+}
 const pageTrail = p => [
   { name: 'الرئيسية', url: '/' },
   ...(p.service ? [{ name: 'الخدمات الطبية', url: '/services/' }] : p.article ? [{ name: 'التوعية الصحية', url: '/guides/' }] : []),
@@ -436,7 +439,8 @@ function html(p) {
     : '<meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="' + site.url + p.url + '">';
   const ogType = p.article ? 'article' : 'website';
   const ogImage = site.url + socialImage(p);
-  const ogImageAlt = p.url === '/about/' ? 'شعار واسم الدكتورة فايزة الوصابي على جدار العيادة'
+  const ogInfo = socialMetadata.get(socialImage(p));
+  const ogImageAlt = socialImage(p) === '/assets/clinic-about-hero.webp' ? 'شعار واسم الدكتورة فايزة الوصابي على جدار العيادة'
     : p.url === '/contact/' ? 'لوحة عيادة الدكتورة فايزة الوصابي على واجهة المبنى'
     : p.article ? p.article.title : 'عيادة الدكتورة فايزة الوصابي — رعاية متخصصة لصحة المرأة في ذمار';
   return '<!doctype html><html lang="ar" dir="rtl"><head>' +
@@ -453,7 +457,7 @@ function html(p) {
     '<meta property="og:description" content="' + p.desc + '">' +
     '<meta property="og:url" content="' + site.url + p.url + '">' +
     '<meta property="og:image" content="' + ogImage + '">' +
-    (ogImage.endsWith('/clinic-social-card.png') ? '<meta property="og:image:type" content="image/png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">' : '') +
+    '<meta property="og:image:type" content="image/' + ogInfo.format + '"><meta property="og:image:width" content="' + ogInfo.width + '"><meta property="og:image:height" content="' + ogInfo.height + '">' +
     '<meta property="og:image:alt" content="' + ogImageAlt + '">' +
     '<meta name="twitter:card" content="summary_large_image">' +
     '<meta name="twitter:title" content="' + title + '">' +
@@ -485,7 +489,6 @@ fs.writeFileSync(path.join(OUT,'styles','site.css'),optimizedCss,'utf8');
 fs.writeFileSync(path.join(OUT,'scripts','site.js'),optimizedJs,'utf8');
 console.log('Asset bundling (CSS minified, JS minified):',JSON.stringify({cssBeforeBytes:Buffer.byteLength(fullCss),cssAfterBytes:Buffer.byteLength(optimizedCss),jsAfterBytes:Buffer.byteLength(optimizedJs)}));
 fs.cpSync(path.join(ROOT, 'assets'), path.join(OUT, 'assets'), { recursive: true });
-execFileSync(process.execPath,[path.join(ROOT,'../tools/build_social_card.mjs')],{stdio:'inherit'});
 fs.writeFileSync(path.join(OUT, '404.html'), html({ url: '/404/', title: 'الصفحة غير موجودة', desc: 'الرابط غير موجود.', body: '<section class="clinic-notfound"><div class="clinic-notfound__inner"><img src="/assets/symbol-primary.png" width="72" height="72" alt=""><span class="clinic-notfound__code">404</span><h1>الصفحة غير موجودة</h1>' + link('/', 'العودة للرئيسية', 'solid','arrow') + '</div></section>' }));
 /* Images are transformed at build time, never in the visitor's browser. */
 const assetsOut=path.join(OUT,'assets');

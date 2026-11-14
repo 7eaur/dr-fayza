@@ -4,10 +4,6 @@ import path from 'node:path';
 
 const root=path.resolve('dist');
 const origin='https://dr-fayza.vercel.app';
-const card=fs.readFileSync(path.join(root,'assets/clinic-social-card.png'));
-assert.equal(card.subarray(1,4).toString(),'PNG');
-assert.equal(card.readUInt32BE(16),1200);
-assert.equal(card.readUInt32BE(20),630);
 const sitemap=fs.readFileSync(path.join(root,'sitemap.xml'),'utf8');
 const urls=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(x=>x[1]);
 assert.equal(urls.length,19);
@@ -45,9 +41,9 @@ for(const url of urls){
     assert(!/<img[^>]*womens-consultation/.test(html));
   }
   if(route==='/'){
-    assert(image.endsWith('/clinic-social-card.png'));
-    assert(html.includes('property="og:image:width" content="1200"'));
-    assert(html.includes('property="og:image:height" content="630"'));
+    assert(image.endsWith('/clinic-about-hero.webp'));
+    assert(html.includes('property="og:image:width" content="1280"'));
+    assert(html.includes('property="og:image:height" content="958"'));
   }
 }
 const notFound=fs.readFileSync(path.join(root,'404.html'),'utf8');
