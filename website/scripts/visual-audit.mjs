@@ -144,6 +144,8 @@ const introCheck=async(width)=>{
   await page.waitForFunction(()=>document.documentElement.classList.contains('clinic-intro-active'),null,{timeout:3500});
   await page.waitForTimeout(380);
   await page.screenshot({path:path.join(out,width+'__logo-intro.png'),animations:'allow'});
+  await page.waitForTimeout(740);
+  await page.screenshot({path:path.join(out,width+'__logo-finished.png'),animations:'allow'});
   await page.waitForFunction(()=>!document.querySelector('[data-clinic-brand-intro]'),null,{timeout:3500});
   const seen=await page.evaluate(()=>localStorage.getItem('dr-fayza-intro-v1'));
   if(seen!=='seen')report.errors.push({width,issue:'Brand intro completion is not persisted'});
